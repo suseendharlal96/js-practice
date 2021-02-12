@@ -60,6 +60,32 @@ const printNum = (num) => {
 
 // printNum(5);
 
+const startPattern = (n) => {
+  for (let i = 0; i < n * 2; i++) {
+    console.log(i);
+    if (i < 5) {
+      for (let j = n * 2; j > i; j--) {
+        document.write("&nbsp");
+      }
+      for (let j = 0; j <= i; j++) {
+        document.write("*");
+        document.write("\t");
+      }
+    } else {
+      for (let j = i; j < n * 2; j++) {
+        document.write("*");
+        document.write("\t");
+      }
+      for (let j = n * 2; j > i; j--) {
+        document.write("&nbsp");
+      }
+    }
+    document.write("</br>");
+  }
+};
+
+console.log(startPattern(5));
+
 const printNum2 = (num) => {
   let a = 1;
   let b = num - 1;
@@ -218,11 +244,12 @@ var reverse = (x) => {
   // }
   const limit = 2147483648;
   const k = x < 0 ? -1 : 1;
-  const n = +Math.abs(x).toString().split("").reverse().join("");
+  const n = Math.abs(x).toString().split("").reverse().join("");
+  console.log("reverse");
   return n > limit ? 0 : n * k;
 };
 
-// console.log(reverse(12000000000));
+console.log(reverse(12000000000));
 
 var romanToInt = function (s) {
   const roman = {

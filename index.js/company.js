@@ -77,7 +77,7 @@ const sumOfTwo = (arr1, arr2, t) => {
   return false;
 };
 
-// console.log(sumOfTwo([0, 0, -5, 30212], [-10, 40, -3, 9], -5));
+// console.log(sumOfTwo([0, 0, -5, 30212], [-10, 40, -3, 9], -8));
 
 // SLIDING WINDOW
 
@@ -255,15 +255,97 @@ const longestSubArrayOfKDistinctChar = (arr, t) => {
 // AMAZON
 
 const maxSumOfSubArray = (arr) => {
-  let max = arr[0],
-    currentSum = max,
-    maxArray = [];
-  for (let i = 1; i < arr.length; i++) {
-    currentSum = Math.max(currentSum + arr[i], arr[i]);
-    max = Math.max(currentSum, max);
-    console.log({ currentSum, max });
+  // let max = arr[0],
+  //   currentSum = max,
+  //   maxArray = [];
+  // for (let i = 1; i < arr.length; i++) {
+  //   currentSum = Math.max(currentSum + arr[i], arr[i]);
+  //   max = Math.max(currentSum, max);
+  //   console.log({ currentSum, max });
+  // }
+  // return { max, maxArray };
+
+  let maxArr = [],
+    ar = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    // currentSum += arr[i];
+    console.log(maxArr.length);
+    if (maxArr.length > 0) {
+      console.log(maxArr);
+      ar.forEach((a) => {
+        if (a + arr[i] > a) {
+          console.log(arr[i]);
+          maxArr = [arr[i]];
+        } else {
+          maxArr.push(arr[i]);
+        }
+      });
+    } else {
+      maxArr.push(arr[i]);
+      // console.log(maxArr)
+      ar.push(arr[i]);
+    }
+    // while (currentSum > max) {
+    //   max = currentSum;
+    // }
   }
-  return { max, maxArray };
+  return maxArr;
 };
 
-console.log(maxSumOfSubArray([2, 2, 5, -11, 6]));
+// console.log(maxSumOfSubArray([-2, 2, 5, 6, -11]));
+
+var diagonalSum = function (mat) {
+  let currentSum = 0;
+  for (let i = 0; i < mat.length; i++) {
+    for (let j = i; j < mat.length; j++) {
+      if (i == j) {
+        currentSum += mat[i][j];
+      }
+    }
+
+    currentSum += mat[i][mat.length - (i + 1)];
+  }
+  if (mat.length === 1) {
+    return (currentSum -= mat[0][0]);
+  } else if (mat.length % 2 !== 0) {
+    return (currentSum -=
+      mat[Math.floor(mat.length / 2)][Math.floor(mat.length / 2)]);
+  }
+  return currentSum;
+};
+
+// console.log(
+//   diagonalSum([
+//     [7, 9, 8, 6, 3],
+//     [3, 9, 4, 5, 2],
+//     [8, 1, 10, 4, 10],
+//     [9, 5, 10, 9, 6],
+//     [7, 2, 4, 10, 8],
+//   ])
+// );
+
+var flipAndInvertImage = function (A) {
+  let b = 0;
+  for (let i = 0; i < A.length; i++) {
+    while (b < A.length / 2) {
+      const temp = A[i][b] === 0 ? 1 : 0;
+      A[i][b] = A[i][A.length - 1 - b] === 0 ? 1 : 0;
+      A[i][A.length - 1 - b] = temp;
+      b++;
+    }
+    b = 0;
+  }
+  return A;
+  // Short solution(es6)
+  // return A.map(a => a.reverse().map(v => v===0?1:0));
+};
+
+// console.log(
+//   flipAndInvertImage([
+//     [1, 1, 0, 0],
+//     [1, 0, 0, 1],
+//     [0, 1, 1, 1],
+//     [1, 0, 1, 0],
+//   ])
+// );
