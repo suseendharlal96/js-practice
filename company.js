@@ -349,3 +349,81 @@ var flipAndInvertImage = function (A) {
 //     [1, 0, 1, 0],
 //   ])
 // );
+new String().replace();
+
+var maximum69Number = function (num) {
+  let max = 0;
+  for (let i = 0; i < num.toString().length; i++) {
+    max = Math.max(
+      num.toString()[i] === "6"
+        ? num.toString().replace(num.toString()[i], "9")
+        : num.toString().replace(num.toString()[i], "6"),
+      num > max ? num : max
+    );
+  }
+  return max;
+};
+
+// console.log(maximum69Number(9669));
+
+var sumOfUnique = function (nums) {
+  let numMap = new Map(),
+    curr = 0;
+  nums.forEach((n) => {
+    numMap.set(n, numMap.get(n) + 1 || 1);
+  });
+  numMap.forEach((value, key) => {
+    if (value === 1) {
+      curr += key;
+    }
+  });
+  return curr;
+};
+
+// console.log(sumOfUnique([1, 2, 3, 2,5,5]));
+
+// Given the array of integers nums,
+//  you will choose two different indices i and j of that array.
+//  Return the maximum value of (nums[i]-1)*(nums[j]-1).
+var maxProduct = function (nums) {
+  const sorted = nums.sort((a, b) => a - b);
+  return (sorted[nums.length - 1] - 1) * (sorted[nums.length - 2] - 1);
+};
+
+// console.log(maxProduct([3,7]));
+
+var destCity = function (paths) {
+  let destMap = new Map();
+  let dest;
+  if (paths.length === 1) {
+    dest = paths[0][paths[0].length - 1];
+  } else {
+    paths.forEach((path) => {
+      path.forEach((p, index) => {
+        destMap.set(p, destMap.get(p) ? [...destMap.get(p), index] : [index]);
+      });
+    });
+  }
+  destMap.forEach((value, key) => {
+    if (value.length === 1 && value[0] === 1) {
+      return (dest = key);
+    }
+  });
+  return dest;
+};
+
+// console.log(
+//   destCity([
+//     ["A", "B"],
+//     ["C", "A"],
+//   ])
+// );
+
+var replaceElements = function (arr) {
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = arr[i + 1] ? Math.max(...arr.slice(i + 1, arr.length + 1)) : -1;
+  }
+  return arr;
+};
+
+// console.log(replaceElements([17, 18, 5, 4, 6, 1]));
