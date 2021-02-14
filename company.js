@@ -427,3 +427,69 @@ var replaceElements = function (arr) {
 };
 
 // console.log(replaceElements([17, 18, 5, 4, 6, 1]));
+
+const numSquares = (n) => {
+  const dp = Array(n + 1).fill(Infinity);
+  dp[0] = 0;
+  console.log(dp);
+
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j * j <= i; j++) {
+      dp[i] = Math.min(dp[i], dp[i - j * j] + 1);
+    }
+  }
+  return dp[n];
+};
+
+// console.log(numSquares(12));
+
+var searchMatrix = function (matrix, target) {
+  const rows = matrix.length;
+  let col = matrix[0].length - 1;
+  let row = 0;
+  while (row < rows) {
+    if (matrix[row][col] === target) {
+      return true;
+    }
+    console.log(matrix[row][col]);
+    if (matrix[row][col] < target) {
+      row++;
+    } else {
+      col--;
+    }
+  }
+  return false;
+};
+
+// console.log(
+//   searchMatrix(
+//     [
+//       [1, 4, 7, 11, 15],
+//       [2, 5, 8, 12, 19],
+//       [3, 6, 9, 16, 22],
+//       [10, 13, 14, 17, 24],
+//       [18, 21, 23, 26, 30],
+//     ],
+//   )
+// );
+
+var findEvenDigitNumbers = function (nums) {
+  let count = 0;
+  nums.forEach((n) => {
+    n.toString().length % 2 === 0 ? (count += 1) : null;
+  });
+  return count;
+};
+
+// console.log(findEvenDigitNumbers([555,901,482,1771]));
+
+var searchInsert = function (nums, target) {
+  if (nums[0] > target) return 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === target || (nums[i] > target && nums[i - 1] < target))
+      return i;
+  }
+  return nums.length;
+};
+
+// console.log(searchInsert([1, 3, 5, 6], 4));
