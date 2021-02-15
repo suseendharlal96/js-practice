@@ -486,10 +486,214 @@ var findEvenDigitNumbers = function (nums) {
 var searchInsert = function (nums, target) {
   if (nums[0] > target) return 0;
   for (let i = 0; i < nums.length; i++) {
-    if (nums[i] === target || (nums[i] > target && nums[i - 1] < target))
-      return i;
+    if (nums[i] === target || nums[i] > target) return i;
   }
   return nums.length;
 };
 
-// console.log(searchInsert([1, 3, 5, 6], 4));
+// console.log(searchInsert([1, 3, 5, 6], 5));
+
+var maxSubArray = function (nums) {
+  if (nums.length === 1) return nums[0];
+  let max = nums[0],
+    curr = max;
+  for (let i = 1; i < nums.length; i++) {
+    curr = Math.max(nums[i], nums[i] + curr);
+    max = Math.max(max, curr);
+  }
+  return max;
+};
+
+// console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
+
+var plusOne = function (digits) {
+  let isNinePresent = true;
+  for (let i = digits.length - 1; i >= 0; i--) {
+    if (digits[i] > 8) {
+      digits[i] = 0;
+    } else {
+      isNinePresent = false;
+      digits[i] += 1;
+      break;
+    }
+  }
+  if (isNinePresent) digits.unshift(1);
+  return digits;
+};
+
+// console.log(plusOne([9, 9, 9]));
+
+var merge = function (nums1, m, nums2, n) {
+  if (n === 0) return nums1;
+  for (let i = m; i < nums1.length; i++) {
+    nums1[i] = nums2[n - (nums1.length - i)];
+  }
+  return nums1.sort((a, b) => a - b);
+};
+
+// console.log(merge([0], 0, [1], 1));
+
+var canBeEqual = function (target, arr) {
+  const a = target.sort((a, b) => a - b);
+  const b = arr.sort((a, b) => a - b);
+  return a.toString() == b.toString();
+};
+
+// console.log(canBeEqual([1, 12], [12, 1,1]));
+
+var sumZero = function (n) {
+  // if (n === 1) return [0];
+  let arr = [];
+  if (n % 2 !== 0) {
+    arr.push(0);
+  }
+  while (arr.length < n) {
+    const a = arr.length + 1;
+    arr.push(a);
+    arr.unshift(-a);
+  }
+  console.log(arr.length);
+  return arr;
+};
+
+// console.log(sumZero(4));
+
+var sortedSquares = function (nums) {
+  let arr = [];
+  for (let i = 0; i < nums.length; i++) {
+    nums[i] = nums[i] * nums[i];
+  }
+  return nums.sort((a, b) => a - b);
+};
+
+// console.log(sortedSquares([-4, -1, 0, 3, 10]));
+
+var maximumWealth = function (accounts) {
+  let max = Number.NEGATIVE_INFINITY;
+  for (let i = 0; i < accounts.length; i++) {
+    let curr = 0;
+    for (let j = 0; j < accounts[i].length; j++) {
+      curr += accounts[i][j];
+    }
+    max = Math.max(curr, max);
+  }
+  return max;
+};
+
+// console.log(
+//   maximumWealth([
+//     [2, 8, 7],
+//     [7, 1, 3],
+//     [1, 9, 5],
+//   ])
+// );
+
+var numIdenticalPairs = function (nums) {
+  let count = 0,
+    numMap = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    if (numMap.has(nums[i])) {
+      count += numMap.get(nums[i]);
+      numMap.set(nums[i], numMap.get(nums[i]) + 1);
+    } else {
+      numMap.set(nums[i], 1);
+    }
+  }
+  console.log(numMap);
+  return count;
+};
+
+// console.log(numIdenticalPairs([1, 2, 3, 1, 1, 3, 3]));
+
+var oddCells = function (n, m, indices) {
+  // first solution
+  let count = 0;
+  let matrix = [];
+  for (let i = 0; i < n; i++) {
+    matrix.push(new Array(m).fill(0));
+  }
+  for (let i = 0; i < indices.length; i++) {
+    for (let j = i; j <= i; j++) {
+      indices[j].forEach((ind, indexx) => {
+        if (indexx === 0) {
+          matrix[ind].forEach((_, index) => {
+            matrix[ind][index] += 1;
+          });
+        } else {
+          matrix.forEach((_, i) => {
+            matrix[i][ind] += 1;
+          });
+        }
+      });
+    }
+  }
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+      console.log(matrix[i][j]);
+      if (matrix[i][j] % 2 !== 0) {
+        count += 1;
+      }
+    }
+  }
+  return count;
+
+  // Second solution
+  const [rows, cols] = [new Array(n).fill(0), new Array(m).fill(0)];
+  for (const [ri, ci] of indices) [rows[ri]++, cols[ci]++];
+  const rowOdds = rows.filter((n) => 1 === n % 2).length;
+  const rowEvens = rows.length - rowOdds;
+  const colOdds = cols.filter((n) => 1 === n % 2).length;
+  const colEvens = cols.length - colOdds;
+  return rowOdds * colEvens + rowEvens * colOdds;
+  // console.log({ matrix, count });
+};
+
+// console.log(
+//   oddCells(2, 3, [
+//     [0, 1],
+//     [1, 1],
+//   ])
+// );
+
+var finalPrices = function (prices) {
+  for (let i = 0; i < prices.length - 1; i++) {
+    if (prices[i] >= prices[i + 1]) {
+      prices[i] = prices[i] - prices[i + 1];
+    } else {
+      const min = prices
+        .slice(i + 1, prices.length)
+        .find((d) => prices[i] - d >= 0);
+      prices[i] = min ? prices[i] - min : prices[i];
+    }
+  }
+  return prices;
+};
+
+// console.log(finalPrices([8, 7, 4, 2, 8, 1, 7, 7, 10, 1]));
+
+var luckyNumbers = function (matrix) {
+  for (let i = 0; i < matrix.length; i++) {
+    let min = Number.POSITIVE_INFINITY;
+    min = Math.min(min, ...matrix[i]);
+    minIndex = matrix[i].indexOf(min);
+    let a = 0;
+    max = Number.NEGATIVE_INFINITY;
+    while (a < matrix.length) {
+      console.log({ a, minIndex });
+      max = Math.max(matrix[a][minIndex], max);
+      a++;
+    }
+    if (min === max) {
+      return [min];
+    }
+  }
+  return [];
+};
+
+// console.log(
+//   luckyNumbers([
+//     [3, 7, 8],
+//     [9, 11, 13],
+//     [15, 16, 17],
+//   ])
+// );
