@@ -697,3 +697,266 @@ var luckyNumbers = function (matrix) {
 //     [15, 16, 17],
 //   ])
 // );
+
+var countNegatives = function (grid) {
+  let count = 0;
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = grid[i].length - 1; j >= 0; j--) {
+      if (grid[i][j] < 0) {
+        count += 1;
+      } else {
+        break;
+      }
+    }
+  }
+  return count;
+};
+
+// console.log(
+//   countNegatives([
+//     [5, 1, 0],
+//     [-5, -5, -5],
+//   ])
+// );
+
+var busyStudent = function (startTime, endTime, queryTime) {
+  let count = 0;
+  if (
+    startTime.length === 1 &&
+    startTime[0] === endTime[0] &&
+    (startTime[0] === queryTime || endTime[0] === queryTime)
+  )
+    return 1;
+  for (let i = 0; i < startTime.length; i++) {
+    if (startTime[i] <= queryTime && queryTime <= endTime[i]) {
+      count += 1;
+    }
+  }
+  return count;
+};
+
+// console.log(busyStudent([1, 2, 3], [3, 2, 7], 4));
+
+var commonChars = function (A) {
+  let res = [];
+  for (let i = 0; i < A[0].length; i++) {
+    let letter = A[0][i];
+    if (A.every((word) => word.indexOf(letter) !== -1)) {
+      res.push(letter);
+      A = A.map((word) => word.replace(letter, ""));
+      i--;
+    }
+  }
+
+  return res;
+};
+
+// console.log(commonChars(["bella", "label", "roller"]));
+
+var relativeSortArray = function (arr1, arr2) {
+  // needs changes
+  let arr = [],
+    d = [];
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr2.indexOf(arr1[i]) !== -1) {
+      if (arr.includes(arr1[i])) {
+        console.log(arr1[i]);
+        // console.log(arr.indexOf(arr1[i]));
+        const a = arr.splice(
+          arr.lastIndexOf(arr1[i]) + 1,
+          arr.slice(arr.lastIndexOf(arr1[i]) + 1, arr.length).length
+        );
+        console.log(a);
+        // console.log(arr);
+        arr[arr.lastIndexOf(arr1[i]) + 1] = arr1[i];
+        // console.log(arr);
+        let combined = arr.concat(a);
+        arr = combined;
+        console.log(arr);
+      } else {
+        arr[arr2.indexOf(arr1[i])] = arr1[i];
+      }
+    } else {
+      arr.push(arr1[i]);
+    }
+    // console.log(arr);
+  }
+  console.log({ arr, d });
+};
+
+// console.log(
+//   relativeSortArray([2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19], [2, 1, 4, 3, 9, 6])
+// );
+
+var findLucky = function (arr) {
+  let m = new Map(),
+    max = -1;
+  for (let i = 0; i < arr.length; i++) {
+    m.set(arr[i], m.get(arr[i]) + 1 || 1);
+  }
+  console.log(m);
+  m.forEach((value, key) => {
+    if (key === value) {
+      max = Math.max(value, max);
+    }
+  });
+  return max;
+};
+
+// console.log(findLucky([4, 3, 2, 2, 4, 1, 3, 4, 3]));
+
+var fib = function (N) {
+  var memo = {};
+  var helper = (x) => {
+    if (memo[x]) return memo[x];
+    if (x == 1 || x == 0) return x;
+    console.log(helper(x - 1));
+    return (memo[x] = helper(x - 1) + helper(x - 2));
+  };
+  return helper(N);
+};
+
+// console.log(fib(3));
+
+var canThreePartsEqualSum = function (A) {
+  let avg = 0;
+  A.forEach((item) => {
+    avg += item;
+  });
+  avg = avg / 3;
+  let a = 0,
+    count = 0;
+  console.log(avg);
+  A.forEach((item) => {
+    console.log(a);
+    a += item;
+    if (a === avg) {
+      count++;
+      a = 0;
+    }
+  });
+  return count >= 3;
+};
+
+// console.log(canThreePartsEqualSum([10, -10, 10, -10, 10, -10, 10, -10]));
+
+var frequencySort = function (nums) {
+  let m = new Map();
+  nums.forEach((n) => {
+    m.set(n, m.get(n) + 1 || 1);
+  });
+  // console.log(m);
+  return nums.sort((a, b) =>
+    m.get(a) === m.get(b) ? b - a : m.get(a) - m.get(b)
+  );
+};
+
+// console.log(frequencySort([2, 3, 1, 3, 2]));
+
+var transpose = function (A) {
+  // Solution 1
+  let a = [];
+  for (let i = 0; i < A[0].length; i++) {
+    let res = [];
+    for (let j = 0; j < A.length; j++) {
+      res.push(A[j][i]);
+    }
+    a[i] = res;
+  }
+  console.log(a);
+
+  // Solution 2
+  // let result = [];
+  // A.forEach((el, i) =>
+  //   el.forEach((elIn, iIn) => {
+  //     if (i === 0) {
+  //       console.log(elIn);
+  //       result.push([elIn]);
+  //     } else result[iIn].push(elIn);
+  //   })
+  // );
+
+  return a;
+};
+
+// console.log(
+//   transpose([
+//     [1, 2, 3],
+//     [4, 5, 6],
+//   ])
+// );
+
+var shiftGrid = function (grid, k) {
+  var arr = grid.flat();
+  while (k--) {
+    arr.unshift(arr.pop());
+  }
+
+  var res = [];
+  for (let i = 0; i < grid.length; i++) {
+    res.push(arr.splice(0, grid.length));
+  }
+
+  return res;
+};
+
+// console.log(
+//   shiftGrid(
+//     [
+//       [1, 2, 3],
+//       [4, 5, 6],
+//       [7, 8, 9],
+//     ],
+//     4
+//   )
+// );
+
+var matrixReshape = function (nums, r, c) {
+  if (nums[0].length * nums.length !== r * c) return nums;
+  let arr = nums.flat(),
+    a = [];
+  for (let i = 0; i < r; i++) {
+    a.push(arr.splice(0, c));
+  }
+  console.log(a);
+};
+
+// console.log(
+//   matrixReshape(
+//     [
+//       [1, 2],
+//       [3, 4],
+//     ],
+//     1,
+//     4
+//   )
+// );
+
+var containsDuplicate = function (nums) {
+  let dupMap = new Map();
+  nums.forEach((n) => {
+    dupMap.set(n, dupMap.get(n) + 1 || 1);
+  });
+  let a = false;
+  dupMap.forEach((value, key) => {
+    if (value > 1) {
+      a = true;
+    }
+  });
+  return a;
+};
+
+// console.log(containsDuplicate([1, 1, 1, 3, 3, 4, 3, 2, 4, 2]));
+
+var maximumProductOf3 = function (nums) {
+  nums = nums.sort((a, b) => Math.abs(a) - Math.abs(b));
+  console.log(nums);
+  let len = nums.length - 1;
+  // let product1 = nums[0] * nums[1] * nums[2];
+  // let product2 = nums[0] * nums[1] * nums[len];
+  let product3 = nums[len] * nums[len - 1] * nums[len - 2];
+
+  return product3;
+};
+
+// console.log(maximumProductOf3([-100, -98, -1, 2, 3, 4]));
