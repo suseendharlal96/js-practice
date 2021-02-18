@@ -952,11 +952,30 @@ var maximumProductOf3 = function (nums) {
   nums = nums.sort((a, b) => Math.abs(a) - Math.abs(b));
   console.log(nums);
   let len = nums.length - 1;
-  // let product1 = nums[0] * nums[1] * nums[2];
-  // let product2 = nums[0] * nums[1] * nums[len];
+  let product1 = nums[0] * nums[1] * nums[2];
+  let product2 = nums[0] * nums[1] * nums[len];
   let product3 = nums[len] * nums[len - 1] * nums[len - 2];
 
-  return product3;
+  return Math.max(product1, product2, product3);
 };
 
 // console.log(maximumProductOf3([-100, -98, -1, 2, 3, 4]));
+
+var maxProdSubArray = function (nums) {
+  let min = nums[0],
+    max = nums[0],
+    currMin = 0,
+    currMax = 0,
+    result = nums[0];
+  for (let i = 1; i < nums.length; i++) {
+    currMax = Math.max(min * nums[i], nums[i], max * nums[i]);
+    currMin = Math.min(max * nums[i], nums[i], min * nums[i]);
+    console.log({ currMin, currMax });
+    max = currMax;
+    min = currMin;
+    result = Math.max(max, result);
+  }
+  return result;
+};
+
+console.log(maxProdSubArray([-2, 3, -4]));
