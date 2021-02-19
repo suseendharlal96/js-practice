@@ -103,10 +103,9 @@ const smallestSubArrayGreaterOrEqBySum = (arr, t) => {
   return min;
 };
 
-console
-  .log
-  // smallestSubArrayGreaterOrEqBySum([4, 2, 2, 7, 9, 1, 2, 9, 1, 0], 8)
-  ();
+// console.log(
+//   smallestSubArrayGreaterOrEqBySum([4, 2, 2, 7, 7, 1, 2, 7, 1, 0], 8)
+// );
 
 //2. Smallest subarray by Sum(Exactly equal to given target)
 const smallestSubArrayEqBySum = (arr, t) => {
@@ -255,42 +254,41 @@ const longestSubArrayOfKDistinctChar = (arr, t) => {
 // AMAZON
 
 const maxSumOfSubArray = (arr) => {
-  // let max = arr[0],
-  //   currentSum = max,
-  //   maxArray = [];
-  // for (let i = 1; i < arr.length; i++) {
-  //   currentSum = Math.max(currentSum + arr[i], arr[i]);
-  //   max = Math.max(currentSum, max);
-  //   console.log({ currentSum, max });
-  // }
-  // return { max, maxArray };
-
-  let maxArr = [],
-    ar = [];
-
-  for (let i = 0; i < arr.length; i++) {
-    // currentSum += arr[i];
-    console.log(maxArr.length);
-    if (maxArr.length > 0) {
-      console.log(maxArr);
-      ar.forEach((a) => {
-        if (a + arr[i] > a) {
-          console.log(arr[i]);
-          maxArr = [arr[i]];
-        } else {
-          maxArr.push(arr[i]);
-        }
-      });
-    } else {
-      maxArr.push(arr[i]);
-      // console.log(maxArr)
-      ar.push(arr[i]);
-    }
-    // while (currentSum > max) {
-    //   max = currentSum;
-    // }
+  let max = arr[0],
+    currentSum = max;
+  for (let i = 1; i < arr.length; i++) {
+    currentSum = Math.max(currentSum + arr[i], arr[i]);
+    max = Math.max(currentSum, max);
+    // console.log({ currentSum, max });
   }
-  return maxArr;
+  return max;
+
+  // let maxArr = [],
+  //   ar = [];
+
+  // for (let i = 0; i < arr.length; i++) {
+  //   // currentSum += arr[i];
+  //   console.log(maxArr.length);
+  //   if (maxArr.length > 0) {
+  //     console.log(maxArr);
+  //     ar.forEach((a) => {
+  //       if (a + arr[i] > a) {
+  //         console.log(arr[i]);
+  //         maxArr = [arr[i]];
+  //       } else {
+  //         maxArr.push(arr[i]);
+  //       }
+  //     });
+  //   } else {
+  //     maxArr.push(arr[i]);
+  //     // console.log(maxArr)
+  //     ar.push(arr[i]);
+  //   }
+  //   // while (currentSum > max) {
+  //   //   max = currentSum;
+  //   // }
+  // }
+  // return maxArr;
 };
 
 // console.log(maxSumOfSubArray([-2, 2, 5, 6, -11]));
@@ -315,15 +313,15 @@ var diagonalSum = function (mat) {
   return currentSum;
 };
 
-// console.log(
-//   diagonalSum([
-//     [7, 9, 8, 6, 3],
-//     [3, 9, 4, 5, 2],
-//     [8, 1, 10, 4, 10],
-//     [9, 5, 10, 9, 6],
-//     [7, 2, 4, 10, 8],
-//   ])
-// );
+console.log(
+  diagonalSum([
+    [7, 9, 8, 6, 3],
+    [3, 9, 4, 5, 2],
+    [8, 1, 10, 4, 10],
+    [9, 5, 10, 9, 6],
+    [7, 2, 4, 10, 8],
+  ])
+);
 
 var flipAndInvertImage = function (A) {
   let b = 0;
@@ -380,7 +378,7 @@ var sumOfUnique = function (nums) {
   return curr;
 };
 
-// console.log(sumOfUnique([1, 2, 3, 2,5,5]));
+// console.log(sumOfUnique([1, 2, 3, 2, 5, 5]));
 
 // Given the array of integers nums,
 //  you will choose two different indices i and j of that array.
@@ -491,7 +489,7 @@ var searchInsert = function (nums, target) {
   return nums.length;
 };
 
-// console.log(searchInsert([1, 3, 5, 6], 5));
+// console.log(searchInsert([1, 3, 5, 6], 2));
 
 var maxSubArray = function (nums) {
   if (nums.length === 1) return nums[0];
@@ -549,14 +547,13 @@ var sumZero = function (n) {
   }
   while (arr.length < n) {
     const a = arr.length + 1;
-    arr.push(a);
-    arr.unshift(-a);
+    arr.push(a, -a);
   }
   console.log(arr.length);
   return arr;
 };
 
-// console.log(sumZero(4));
+// console.log(sumZero(6));
 
 var sortedSquares = function (nums) {
   let arr = [];
@@ -612,30 +609,36 @@ var oddCells = function (n, m, indices) {
   for (let i = 0; i < n; i++) {
     matrix.push(new Array(m).fill(0));
   }
-  for (let i = 0; i < indices.length; i++) {
-    for (let j = i; j <= i; j++) {
-      indices[j].forEach((ind, indexx) => {
-        if (indexx === 0) {
-          matrix[ind].forEach((_, index) => {
-            matrix[ind][index] += 1;
-          });
-        } else {
-          matrix.forEach((_, i) => {
-            matrix[i][ind] += 1;
-          });
-        }
-      });
-    }
-  }
+  // console.log(matrix);
+  indices.forEach((item) => {
+    item.forEach((ind, indexx) => {
+      console.log(ind);
+      if (indexx === 0) {
+        matrix[ind].forEach((item, index) => {
+          // console.log(item)
+          item += 1;
+          matrix[ind][index] = item;
+        });
+      } else {
+        matrix.forEach((_, i) => {
+          matrix[i][ind] += 1;
+        });
+      }
+    });
+  });
+  // for (let i = 0; i < indices.length; i++) {
+  //   for (let j = i; j <= i; j++) {
+  //   }
+  // }
   for (let i = 0; i < matrix.length; i++) {
     for (let j = 0; j < matrix[i].length; j++) {
-      console.log(matrix[i][j]);
+      // console.log(matrix[i][j]);
       if (matrix[i][j] % 2 !== 0) {
         count += 1;
       }
     }
   }
-  return count;
+  return { count, matrix };
 
   // Second solution
   const [rows, cols] = [new Array(n).fill(0), new Array(m).fill(0)];
@@ -645,15 +648,15 @@ var oddCells = function (n, m, indices) {
   const colOdds = cols.filter((n) => 1 === n % 2).length;
   const colEvens = cols.length - colOdds;
   return rowOdds * colEvens + rowEvens * colOdds;
-  // console.log({ matrix, count });
+  console.log({ matrix, count });
 };
 
-// console.log(
-//   oddCells(2, 3, [
-//     [0, 1],
-//     [1, 1],
-//   ])
-// );
+console.log(
+  oddCells(2, 3, [
+    [0, 1],
+    [1, 1],
+  ])
+);
 
 var finalPrices = function (prices) {
   for (let i = 0; i < prices.length - 1; i++) {
@@ -889,6 +892,7 @@ var transpose = function (A) {
 var shiftGrid = function (grid, k) {
   var arr = grid.flat();
   while (k--) {
+    console.log(k);
     arr.unshift(arr.pop());
   }
 
@@ -900,16 +904,16 @@ var shiftGrid = function (grid, k) {
   return res;
 };
 
-// console.log(
-//   shiftGrid(
-//     [
-//       [1, 2, 3],
-//       [4, 5, 6],
-//       [7, 8, 9],
-//     ],
-//     4
-//   )
-// );
+console.log(
+  shiftGrid(
+    [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+    ],
+    4
+  )
+);
 
 var matrixReshape = function (nums, r, c) {
   if (nums[0].length * nums.length !== r * c) return nums;
@@ -978,4 +982,143 @@ var maxProdSubArray = function (nums) {
   return result;
 };
 
-console.log(maxProdSubArray([-2, 3, -4]));
+// console.log(maxProdSubArray([-2, 3, -4]));
+
+var sumOddLengthSubarrays = function (arr) {
+  const odd = [];
+  let count = 0;
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i; j < arr.length; j++) {
+      odd.push(arr[j]);
+      if (odd.length % 2 !== 0) {
+        for (let val of odd) {
+          count += val;
+        }
+      }
+    }
+    odd.length = 0;
+  }
+  return count;
+};
+// console.log(sumOddLengthSubarrays([1, 2]));
+
+var createTargetArray = function (nums, index) {
+  const a = [];
+  for (let key in index) {
+    a.splice(index[key], 0, nums[key]);
+  }
+  return a;
+};
+// console.log(createTargetArray([0, 1, 2, 3, 4], [0, 1, 2, 2, 1]));
+
+var arrayPairSum = function (arr) {
+  let sorted = arr.sort((a, b) => b - a);
+  console.log(sorted);
+  let filter = sorted.filter((item, i) => i % 2 !== 0);
+  console.log(filter);
+  let count = 0;
+  filter.forEach((item) => {
+    count += item;
+  });
+  return count;
+};
+
+// console.log(arrayPairSum([6, 2, 6, 5, 1, 2]));
+
+var sumSubarrayMins = function (arr) {
+  let count = 0;
+  for (let i = 0; i < arr.length; i++) {
+    let a = [];
+    let right = i;
+    while (right < arr.length) {
+      a.push(arr[right]);
+      let min = Math.min(...a);
+      count += min;
+      right++;
+    }
+  }
+  return (count % 1e9) + 7;
+};
+
+// console.log(sumSubarrayMins([11, 81, 94, 43, 3]));
+
+var rotate = function (nums, k) {
+  while (k--) {
+    nums.unshift(nums.pop());
+  }
+  return nums;
+};
+
+// console.log(rotate([1, 2, 3, 4, 5, 6, 7], 3));
+
+var minSubarray = function (arr, p) {
+  // let count = 0;
+  if (arr.reduce((prev, curr) => prev + curr, 0) % p === 0) return 0;
+  let allPossiblePairs = [];
+  for (let i = 0; i < arr.length; i++) {
+    let a = [];
+    let right = i;
+    while (right < arr.length) {
+      let temp = [];
+      a.push(arr[right]);
+      temp = [...a];
+      // unique contiguous sub array pairs
+      allPossiblePairs.push(temp);
+      let sum = a.reduce((prev, curr) => prev + curr, 0);
+      if (sum % p === 0) {
+        console.log(a);
+        return arr.length - a.length;
+      }
+      right++;
+    }
+  }
+  console.log(allPossiblePairs);
+  return -1;
+};
+
+// console.log(minSubarray([3, 1, 4, 2], 6));
+
+var spiralOrder = function (matrix) {
+  let res = [];
+  while (matrix.length > 0) {
+    let top = [],
+      bottom = [],
+      right = [],
+      left = [];
+    top = matrix.shift();
+    bottom = matrix.length > 0 ? matrix.pop().reverse() : [];
+    console.log({ top, bottom });
+    for (let i = 0; i < matrix.length; i++) {
+      matrix[i].length > 0 ? right.push(matrix[i].pop()) : [];
+      matrix[i].length > 0 ? left.push(matrix[i].shift()) : [];
+      console.log(matrix.length);
+    }
+    res.push(...top, ...right, ...bottom, ...left.reverse());
+  }
+
+  return res;
+};
+
+// console.log(
+//   spiralOrder([
+//     [1, 11],
+//     [2, 12],
+//     [3, 13],
+//     [4, 14],
+//     [5, 15],
+//     [6, 16],
+//     [7, 17],
+//     [8, 18],
+//     [9, 19],
+//     [10, 20],
+//   ])
+// );
+// console.log(
+//   spiralOrder([
+//     [1, 2, 3, 4],
+//     [5, 6, 7, 8],
+//     [9, 10, 11, 12],
+//     [13, 14, 15, 16],
+//     [17, 18, 19, 20],
+//   ])
+// );
