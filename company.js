@@ -1122,3 +1122,28 @@ var spiralOrder = function (matrix) {
 //     [17, 18, 19, 20],
 //   ])
 // );
+
+var sortArrayByParity = function (A) {
+  let even = [],
+    odd = [];
+  even = A.filter((item, i) => item % 2 === 0);
+  odd = A.filter((item, i) => item % 2 !== 0);
+  return even.concat(odd);
+
+  // Solution 2
+  let even = 0;
+  let odd = A.length - 1;
+  let result = [];
+  for (i in A) {
+    if (A[i] % 2 === 0) {
+      result[even] = A[i];
+      even++;
+    } else {
+      result[odd] = A[i];
+      odd--;
+    }
+  }
+  return result;
+};
+
+// console.log(sortArrayByParity([1, 2, 4, 6]));
