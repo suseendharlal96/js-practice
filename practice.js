@@ -149,7 +149,7 @@ var reshape = (nums, r, c) => {
   for (let i = 0; i < r; i++) {
     a.push(arr.splice(0, c));
   }
-    return a
+  return a;
 };
 
 console.log(
@@ -161,4 +161,57 @@ console.log(
     1,
     4
   )
+);
+
+const longestSubArrayEqBySum3 = (arr, t) => {
+  let curr = 0,
+    left = 0,
+    subArr = [],
+    max = Number.NEGATIVE_INFINITY,
+    boundary = [];
+  for (let i = 0; i < arr.length; i++) {
+    curr += arr[i];
+    while (curr > t) {
+      curr -= arr[left];
+      left++;
+    }
+    if (curr === t) {
+      max = Math.max(i - left + 1, max);
+      if (arr.slice(left, i + 1).length > subArr.length) {
+        subArr = arr.slice(left, i + 1);
+        boundary = [left + 1, i + 1];
+      }
+    }
+  }
+  return { boundary, max, subArr };
+};
+
+// console.log(longestSubArrayEqBySum3([1, 2, 3, 5, 12], 12));
+console.log(
+  longestSubArrayEqBySum3([1, 2, 3, 4, 5, 0, 0, 0, 0, 8, 7, 8, 15, 5], 15)
+);
+
+const smallestSubArrayGreaterOrEqBySum3 = (arr, t) => {
+  let curr = 0,
+    subArr = new Array(arr.length),
+    left = 0;
+  for (let i = 0; i < arr.length; i++) {
+    curr += arr[i];
+    while (curr > t) {
+      curr -= arr[left];
+      left++;
+    }
+    while (curr === t) {
+      if (arr.slice(left, i + 1).length < subArr.length) {
+        subArr = arr.slice(left, i + 1);
+      }
+      curr -= arr[left];
+      left++;
+    }
+  }
+  return subArr;
+};
+
+console.log(
+  smallestSubArrayGreaterOrEqBySum3([4, 2, 2, 7, 4, 1, 2, 4, 1, 0], 8)
 );

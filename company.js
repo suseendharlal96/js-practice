@@ -1131,19 +1131,241 @@ var sortArrayByParity = function (A) {
   return even.concat(odd);
 
   // Solution 2
-  let even = 0;
-  let odd = A.length - 1;
-  let result = [];
-  for (i in A) {
-    if (A[i] % 2 === 0) {
-      result[even] = A[i];
-      even++;
-    } else {
-      result[odd] = A[i];
-      odd--;
-    }
-  }
-  return result;
+  // let even = 0;
+  // let odd = A.length - 1;
+  // let result = [];
+  // for (i in A) {
+  //   if (A[i] % 2 === 0) {
+  //     result[even] = A[i];
+  //     even++;
+  //   } else {
+  //     result[odd] = A[i];
+  //     odd--;
+  //   }
+  // }
+  // return result;
 };
 
 // console.log(sortArrayByParity([1, 2, 4, 6]));
+
+var kidsWithCandies = function (candies, extraCandies) {
+  let max = Math.max(...candies);
+  console.log(max);
+  candies.forEach((c, i) => {
+    candies[i] = c + extraCandies >= max ? true : false;
+  });
+  return candies;
+};
+
+// console.log(kidsWithCandies([2, 3, 5, 1, 3], 3));
+
+var sortArrayByParityII = function (A) {
+  let oddParity = A.length - 1,
+    evenParity = 0,
+    arr = [],
+    parity = [];
+  for (let i = 0; i < A.length; i++) {
+    if (A[i] % 2 == 0) {
+      arr[evenParity] = A[i];
+      evenParity++;
+    } else {
+      arr[oddParity] = A[i];
+      oddParity--;
+    }
+  }
+  for (let i = 0; i < A.length / 2; i++) {
+    parity.push(arr[i], arr[arr.length - (i + 1)]);
+  }
+};
+
+// console.log(sortArrayByParityII([4, 2, 5, 7]));
+
+// 1160
+var countCharacters = function (words, chars) {
+  let counter = 0;
+  words.forEach((word) => {
+    let contains = true;
+    let str = chars;
+    if (word.length <= chars.length) {
+      for (let w of word) {
+        contains = contains && str.includes(w);
+        contains ? (str = str.replace(w, "")) : null;
+      }
+    } else {
+      contains = false;
+    }
+    console.log({ word, contains });
+    if (contains) {
+      counter += word.length;
+    }
+  });
+
+  return counter;
+};
+
+// console.log(
+//   countCharacters(
+//     [
+//       "dyiclysmffuhibgfvapygkorkqllqlvokosagyelotobicwcmebnpznjbirzrzsrtzjxhsfpiwyfhzyonmuabtlwin",
+//       "ndqeyhhcquplmznwslewjzuyfgklssvkqxmqjpwhrshycmvrb",
+//       "ulrrbpspyudncdlbkxkrqpivfftrggemkpyjl",
+//       "boygirdlggnh",
+//       "xmqohbyqwagkjzpyawsydmdaattthmuvjbzwpyopyafphx",
+//       "nulvimegcsiwvhwuiyednoxpugfeimnnyeoczuzxgxbqjvegcxeqnjbwnbvowastqhojepisusvsidhqmszbrnynkyop",
+//       "hiefuovybkpgzygprmndrkyspoiyapdwkxebgsmodhzpx",
+//       "juldqdzeskpffaoqcyyxiqqowsalqumddcufhouhrskozhlmobiwzxnhdkidr",
+//       "lnnvsdcrvzfmrvurucrzlfyigcycffpiuoo",
+//       "oxgaskztzroxuntiwlfyufddl",
+//       "tfspedteabxatkaypitjfkhkkigdwdkctqbczcugripkgcyfezpuklfqfcsccboarbfbjfrkxp",
+//       "qnagrpfzlyrouolqquytwnwnsqnmuzphne",
+//       "eeilfdaookieawrrbvtnqfzcricvhpiv",
+//       "sisvsjzyrbdsjcwwygdnxcjhzhsxhpceqz",
+//       "yhouqhjevqxtecomahbwoptzlkyvjexhzcbccusbjjdgcfzlkoqwiwue",
+//       "hwxxighzvceaplsycajkhynkhzkwkouszwaiuzqcleyflqrxgjsvlegvupzqijbornbfwpefhxekgpuvgiyeudhncv",
+//       "cpwcjwgbcquirnsazumgjjcltitmeyfaudbnbqhflvecjsupjmgwfbjo",
+//       "teyygdmmyadppuopvqdodaczob",
+//       "qaeowuwqsqffvibrtxnjnzvzuuonrkwpysyxvkijemmpdmtnqxwekbpfzs",
+//       "qqxpxpmemkldghbmbyxpkwgkaykaerhmwwjonrhcsubchs",
+//     ],
+//     "usdruypficfbpfbivlrhutcgvyjenlxzeovdyjtgvvfdjzcmikjraspdfp"
+//   )
+// );
+
+// 766
+var isToeplitzMatrix = function (matrix) {
+  for (let i = 0; i < matrix.length - 1; i++) {
+    for (let j = 0; j < matrix[i].length; j++) {
+      if (matrix[i + 1][j + 1] >= 0) {
+        if (matrix[i + 1][j + 1] !== matrix[i][j]) return false;
+      }
+    }
+  }
+  return true;
+};
+
+// console.log(
+//   isToeplitzMatrix([
+//     [36, 86, 7, 94, 71, 59, 10],
+//     [19, 0, 86, 7, 94, 71, 59],
+//   ])
+// );
+
+// 1652
+var decrypt = function (code, k) {
+  const res = new Array(code.length).fill(0);
+  if (k > 0) {
+    for (let i = 0; i < code.length; i++) {
+      let count = 0,
+        j = i + 1;
+      while (count < k) {
+        if (j === code.length) j = 0;
+        res[i] += code[j];
+        j++;
+        count++;
+      }
+    }
+  }
+  if (k < 0) {
+    for (let i = 0; i < code.length; i++) {
+      let count = Math.abs(k),
+        j = i - 1;
+      while (count--) {
+        if (j === -1) j = code.length - 1;
+        res[i] += code[j];
+        j--;
+      }
+    }
+  }
+  return res;
+};
+
+// console.log(decrypt([2, 4, 9, 3], -2));
+
+// 1491
+var average = function (salary) {
+  const min = Math.min(...salary);
+  const max = Math.max(...salary);
+
+  const minIndex = salary.indexOf(min);
+  salary.splice(minIndex, 1);
+  const maxIndex = salary.indexOf(max);
+  console.log({ minIndex, maxIndex });
+  salary.splice(maxIndex, 1);
+  console.log(salary);
+  let total = 0;
+  salary.forEach((s) => {
+    total += s;
+  });
+
+  return total / salary.length;
+};
+
+// console.log(average([1000, 2000, 3000]));
+
+// 896
+var isMonotonic = function (A) {
+  let increasing = true;
+  let decreasing = true;
+
+  for (let i = 0; i < A.length - 1; i++) {
+    if (A[i] > A[i + 1]) decreasing = false;
+    if (A[i] < A[i + 1]) increasing = false;
+    if (!increasing && !decreasing) return false;
+  }
+
+  return true;
+};
+
+// console.log(isMonotonic([1, 1, 1, 3, 3, 2]));
+
+// 118
+var pascalTriangle = function (numRows) {
+  let triangle = [];
+  if (numRows <= 0) return triangle;
+  triangle.push([1]);
+  for (let i = 1; i < numRows; i++) {
+    triangle[i] = [];
+    triangle[i].push(1);
+    for (let j = triangle.length - 2; j > 0; j--) {
+      triangle[i][j] = triangle[i - 1][j - 1] + triangle[i - 1][j];
+    }
+    triangle[i].push(1);
+  }
+  return triangle;
+};
+// console.log(pascalTriangle(5));
+
+// 119
+var pascalTriangle2 = function (rowIndex) {
+  let triangle = [],
+    numRows = rowIndex + 1;
+  if (numRows <= 0) return triangle;
+  triangle.push([1]);
+  for (let i = 1; i < numRows; i++) {
+    triangle[i] = [];
+    triangle[i].push(1);
+    for (let j = triangle.length - 2; j > 0; j--) {
+      triangle[i][j] = triangle[i - 1][j - 1] + triangle[i - 1][j];
+    }
+    triangle[i].push(1);
+  }
+  return triangle[rowIndex];
+};
+// console.log(pascalTriangle2(3));
+
+// 485
+var findMaxConsecutiveOnes = function (nums) {
+  let arr = [],
+    max = 0;
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === 1) {
+      arr.push(nums[i]);
+      max = Math.max(max, arr.length);
+    } else {
+      arr = [];
+    }
+  }
+  return max;
+};
+
+console.log(findMaxConsecutiveOnes([1, 1, 1, 1, 1, 0, 1, 1, 1]));
