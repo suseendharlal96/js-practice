@@ -117,13 +117,14 @@ var luckyNumbers = function (matrix) {
 //   ])
 // );
 
-var transpose = (arr) => {
+var rotate90 = (arr) => {
   let a = [];
   for (let i = 0; i < arr[0].length; i++) {
     const temp = [];
     for (let j = 0; j < arr.length; j++) {
       temp.push(arr[j][i]);
-      for (let i = 0; i < Math.floor(temp.length / 2); i++) {
+      // rotate
+      for (let i = 0; i <= Math.floor(temp.length / 2); i++) {
         const t = temp[i];
         temp[i] = temp[temp.length - 1];
         temp[temp.length - 1] = t;
@@ -134,13 +135,13 @@ var transpose = (arr) => {
   return a;
 };
 
-// console.log(
-//   transpose([
-//     [1, 2, 3],
-//     [4, 5, 6],
-//     [7, 8, 9],
-//   ])
-// );
+console.log(
+  rotate90([
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+  ])
+);
 
 var reshape = (nums, r, c) => {
   if (nums.length * nums[0].length !== r * c) return nums;
@@ -187,9 +188,9 @@ const longestSubArrayEqBySum3 = (arr, t) => {
 };
 
 // console.log(longestSubArrayEqBySum3([1, 2, 3, 5, 12], 12));
-console.log(
-  longestSubArrayEqBySum3([1, 2, 3, 4, 5, 0, 0, 0, 0, 8, 7, 8, 15, 5], 15)
-);
+// console.log(
+//   longestSubArrayEqBySum3([1, 2, 3, 4, 5, 0, 0, 0, 0, 8, 7, 8, 15, 5], 15)
+// );
 
 const smallestSubArrayGreaterOrEqBySum3 = (arr, t) => {
   let curr = 0,
@@ -212,6 +213,67 @@ const smallestSubArrayGreaterOrEqBySum3 = (arr, t) => {
   return subArr;
 };
 
-console.log(
-  smallestSubArrayGreaterOrEqBySum3([4, 2, 2, 7, 4, 1, 2, 4, 1, 0], 8)
-);
+// console.log(
+//   smallestSubArrayGreaterOrEqBySum3([4, 2, 2, 7, 4, 1, 2, 4, 1, 0], 8)
+// );
+
+const pascal = (rows) => {
+  let arr = [];
+  if (rows <= 0) return arr;
+  arr.push([1]);
+  for (let i = 1; i < rows; i++) {
+    arr[i] = [];
+    arr[i].push(1);
+    for (let j = 1; j < arr.length - 1; j++) {
+      arr[i][j] = arr[i - 1][j - 1] + arr[i - 1][j];
+    }
+    arr[i].push(1);
+  }
+  console.log(arr);
+};
+// console.log(pascal(5));
+
+const shift = (arr, k) => {
+  let a = arr.flat();
+  while (k--) {
+    a.unshift(a.pop());
+  }
+  let temp = [];
+  for (let i = 0; i < 3; i++) {
+    temp.push(a.splice(0, arr[i].length));
+  }
+};
+
+// console.log(
+//   shift(
+//     [
+//       [1, 2, 3],
+//       [4, 5, 6],
+//       [7, 8, 9],
+//     ],
+//     4
+//   )
+// );
+
+const reshape2 = (nums, r, c) => {
+  if (nums.length * nums[0].length !== r * c) return nums;
+  let a = [],
+    arr = nums.flat();
+  for (let i = 0; i < r; i++) {
+    a[i] = arr.splice(0, c);
+  }
+  console.log(a);
+};
+
+// console.log(
+//   reshape2(
+//     [
+//       [1, 2],
+//       [3, 4],
+//     ],
+//     1,
+//     4
+//   )
+// );
+
+

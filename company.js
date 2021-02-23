@@ -40,10 +40,9 @@ const rotateImage = (arr) => {
 
 // console.log(
 //   rotateImage([
-//     [1, 2, 3, 4],
-//     [5, 6, 7, 8],
-//     [9, 10, 11, 12],
-//     [13, 14, 15, 16],
+//     [1, 2, 3],
+//     [4, 5, 6],
+//     [7, 8, 9],
 //   ])
 // );
 
@@ -313,15 +312,15 @@ var diagonalSum = function (mat) {
   return currentSum;
 };
 
-console.log(
-  diagonalSum([
-    [7, 9, 8, 6, 3],
-    [3, 9, 4, 5, 2],
-    [8, 1, 10, 4, 10],
-    [9, 5, 10, 9, 6],
-    [7, 2, 4, 10, 8],
-  ])
-);
+// console.log(
+//   diagonalSum([
+//     [7, 9, 8, 6, 3],
+//     [3, 9, 4, 5, 2],
+//     [8, 1, 10, 4, 10],
+//     [9, 5, 10, 9, 6],
+//     [7, 2, 4, 10, 8],
+//   ])
+// );
 
 var flipAndInvertImage = function (A) {
   let b = 0;
@@ -651,12 +650,12 @@ var oddCells = function (n, m, indices) {
   console.log({ matrix, count });
 };
 
-console.log(
-  oddCells(2, 3, [
-    [0, 1],
-    [1, 1],
-  ])
-);
+// console.log(
+//   oddCells(2, 3, [
+//     [0, 1],
+//     [1, 1],
+//   ])
+// );
 
 var finalPrices = function (prices) {
   for (let i = 0; i < prices.length - 1; i++) {
@@ -904,16 +903,16 @@ var shiftGrid = function (grid, k) {
   return res;
 };
 
-console.log(
-  shiftGrid(
-    [
-      [1, 2, 3],
-      [4, 5, 6],
-      [7, 8, 9],
-    ],
-    4
-  )
-);
+// console.log(
+//   shiftGrid(
+//     [
+//       [1, 2, 3],
+//       [4, 5, 6],
+//       [7, 8, 9],
+//     ],
+//     4
+//   )
+// );
 
 var matrixReshape = function (nums, r, c) {
   if (nums[0].length * nums.length !== r * c) return nums;
@@ -1368,4 +1367,183 @@ var findMaxConsecutiveOnes = function (nums) {
   return max;
 };
 
-console.log(findMaxConsecutiveOnes([1, 1, 1, 1, 1, 0, 1, 1, 1]));
+// console.log(findMaxConsecutiveOnes([1, 1, 1, 1, 1, 0, 1, 1, 1]));
+
+var minTimeToVisitAllPoints = function (points) {
+  let time = 0;
+  for (let i = 0; i < points.length - 1; i++) {
+    const x = Math.abs(points[i][0] - points[i + 1][0]);
+    const y = Math.abs(points[i][1] - points[i + 1][1]);
+    console.log({ x, y });
+
+    const max = Math.max(x, y);
+    time += max;
+  }
+  return time;
+};
+
+// console.log(
+//   minTimeToVisitAllPoints([
+//     [1, 1],
+//     [3, 4],
+//     [-1, 0],
+//   ])
+// );
+
+var threeConsecutiveOdds = function (arr) {
+  let count = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] % 2 !== 0) {
+      count++;
+      if (count === 3) return true;
+    } else {
+      count = 0;
+    }
+  }
+  return false;
+};
+
+// console.log(threeConsecutiveOdds([2, 6, 4, 1]));
+
+// 448
+var findDisappearedNumbers = function (nums) {
+  // if (nums.length === 0) return [];
+  // const sorted = [...nums.sort()],
+  //   arr = [];
+  // // console.log(sorted);
+  // if (sorted[0] !== 1) {
+  //   arr.push(1);
+  // }
+  // for (let i = 0; i < nums.length - 1; i++) {
+  //   if (!(sorted[i + 1] === sorted[i] + 1 || sorted[i + 1] === sorted[i])) {
+  //     console.log(1)
+  //     sorted.splice(i + 1, 0, sorted[i] + 1);
+  //     arr.push(sorted[i] + 1);
+  //   }
+  // }
+  // console.log(arr);
+  let arr = new Array(nums.length);
+  console.log(arr);
+  let outputArr = [];
+  for (let i = 0; i < nums.length; i++) {
+    arr[nums[i] - 1] = 0;
+  }
+  console.log(arr);
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] == undefined) {
+      outputArr.push(i + 1);
+    }
+  }
+  return outputArr;
+};
+
+// console.log(findDisappearedNumbers([2, 2]));
+// console.log(findDisappearedNumbers([1, 1]));
+
+// 1337
+var kWeakestRows = function (mat, k) {
+  let a = [],
+    m = new Map();
+  for (let i = 0; i < mat.length; i++) {
+    let count = 0;
+    for (let j = 0; j < mat[i].length; j++) {
+      if (mat[i][j] === 1) {
+        count++;
+      }
+    }
+    m.set(i, count);
+  }
+  let sortMap = new Map([...m.entries()].sort((a, b) => a[1] - b[1]));
+
+  sortMap.forEach((_, key) => {
+    a.push(key);
+  });
+
+  return a.slice(0, k);
+};
+
+// console.log(
+//   kWeakestRows(
+//     [
+//       [1, 0, 0, 0],
+//       [1, 1, 1, 1],
+//       [1, 0, 0, 0],
+//       [1, 0, 0, 0],
+//     ],
+//     2
+//   )
+// );
+
+const minStartValue = (nums) => {
+  for (let i = 1; i < nums.length; i++) {
+    nums[i] = nums[i] + nums[i - 1];
+  }
+
+  return Math.max(-Math.min(...nums) + 1, 1);
+};
+
+// console.log(minStartValue([-3, 2, -3, 4, 2]));
+
+// 1619
+var trimMean = function (arr) {
+  // console.log(0.05 * arr.length);
+  var take = arr.length / 20;
+  const sort = arr.sort((a, b) => a - b);
+  for (let i = 0; i < take; i++) {
+    // removing smallest
+    arr.shift();
+    // removing largest
+    arr.pop();
+  }
+  let count = 0;
+  sort.forEach((it) => {
+    count += it;
+  });
+  return (count = count / sort.length);
+};
+
+// console.log(trimMean([6, 0, 7, 0, 7, 4]));
+
+// 1582
+var numSpl = function (mat) {
+  const rows = mat.length;
+  const cols = mat[0].length;
+  const rowArr = new Array(rows).fill(0);
+  const colArr = new Array(cols).fill(0);
+  const a = new Array();
+  // console.log({ rowArr, colArr });
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (mat[i][j] === 1) {
+        a.push([i, j]);
+        rowArr[i]++;
+        colArr[j]++;
+      }
+    }
+  }
+  console.table({ a, rowArr, colArr });
+
+  let count = 0;
+  for (const [x, y] of a) {
+    console.log({ x, y });
+    if (rowArr[x] === 1 && colArr[y] === 1) count++;
+  }
+  return count;
+};
+
+// console.log(
+//   numSpl([
+//     [0, 0, 0, 0, 0],
+//     [1, 0, 0, 0, 0],
+//     [0, 1, 0, 0, 0],
+//     [0, 0, 1, 0, 0],
+//     [0, 0, 0, 1, 1],
+//   ])
+// );
+
+var isAnagram = function (s, t) {
+  console.log(s.split("").sort());
+  return s.split("").sort().join("") === t.split("").sort().join("");
+};
+
+// console.log(isAnagram("anagram", "nagaram"));
