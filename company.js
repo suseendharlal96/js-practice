@@ -1453,7 +1453,9 @@ var kWeakestRows = function (mat, k) {
     }
     m.set(i, count);
   }
+  // console.log(m);
   let sortMap = new Map([...m.entries()].sort((a, b) => a[1] - b[1]));
+  console.log({ m, sortMap });
 
   sortMap.forEach((_, key) => {
     a.push(key);
@@ -1547,3 +1549,77 @@ var isAnagram = function (s, t) {
 };
 
 // console.log(isAnagram("anagram", "nagaram"));
+
+var shortestToChar = function (s, c) {
+  let a = [];
+  b = [];
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === c) {
+      a.push(i);
+    }
+  }
+  for (let i = 0; i < s.length; i++) {
+    b[i] = Number.POSITIVE_INFINITY;
+    for (let j = 0; j < a.length; j++) {
+      b[i] = Math.min(Math.abs(i - a[j]), b[i]);
+    }
+  }
+  return b;
+};
+// console.log(shortestToChar("loveleetcode", "e"));
+
+var numberOfSteps = function (num) {
+  let count = 0;
+  while (num > 0) {
+    if (num % 2 === 0) {
+      num = num / 2;
+    } else {
+      num -= 1;
+    }
+    count++;
+  }
+  return count;
+};
+
+// console.log(numberOfSteps(8));
+
+var romanToInt = function (s) {
+  const a = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+  // console.log(object)
+  s = s.split("").reverse();
+  console.log(s);
+  let count = 0;
+  for (let i = 0; i < s.length; i++) {
+    console.log(a[s[i]]);
+    if (i !== 0 && a[s[i - 1]] > a[s[i]]) {
+      count = Math.abs(a[s[i]] - count);
+    } else {
+      count += a[s[i]];
+    }
+    console.log("count", count);
+  }
+  return count;
+};
+
+// console.log(romanToInt("MCMXCIV"));
+
+// 413
+var numberOfArithmeticSlices = function (A) {
+  let count = 0;
+
+  for (let i = 0; i < A.length - 2; i++) {
+    for (let j = i + 2; j < A.length; j++) {
+      const diffA = A[j - 1] - A[j - 2];
+      const diffB = A[j] - A[j - 1];
+      if (diffA === diffB) {
+        count++;
+      } else {
+        break;
+      }
+    }
+  }
+
+  return count;
+};
+
+// console.log(numberOfArithmeticSlices([1, 2, 3, 8, 9, 10]));

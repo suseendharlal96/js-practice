@@ -276,4 +276,33 @@ const reshape2 = (nums, r, c) => {
 //   )
 // );
 
+const numspl2 = (mat) => {
+  let rowArr = new Array(mat[0].length).fill(0),
+    colArr = new Array(mat[0].length).fill(0),
+    a = new Array(),
+    count = 0;
+  for (let i = 0; i < mat.length; i++) {
+    for (let j = 0; j < mat[i].length; j++) {
+      if (mat[i][j]) {
+        a.push([i, j]);
+        rowArr[i]++;
+        colArr[j]++;
+      }
+    }
+  }
+  console.log({ a, rowArr, colArr });
+  for (let [r, c] of a) {
+    if (rowArr[r] === 1 && colArr[c] === 1) count++;
+  }
+  return count;
+};
 
+// console.log(
+//   numspl2([
+//     [0, 0, 0, 0, 0],
+//     [1, 0, 0, 0, 0],
+//     [0, 1, 0, 0, 0],
+//     [0, 0, 1, 0, 0],
+//     [0, 0, 0, 1, 1],
+//   ])
+// );
