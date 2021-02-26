@@ -306,3 +306,22 @@ const numspl2 = (mat) => {
 //     [0, 0, 0, 1, 1],
 //   ])
 // );
+
+const spiralMatrix2 = (mat) => {
+  let res = [],
+    arr = mat.flat();
+  while (mat.length > 0) {
+    let top = mat.length > 0 ? mat.shift() : [];
+    let bottom = mat.length > 0 ? mat.pop() : [];
+    let right = [],
+      left = [];
+    for (let i = 0; i < mat.length; i++) {
+      right.push(mat[i].pop());
+      mat[i].length > 0 ? left.push(mat[i].shift()) : [];
+    }
+    res.push(...top, ...right, ...bottom.reverse(), ...left.reverse());
+    if (arr.length === res.length) break;
+  }
+  return res;
+};
+// console.log(spiralMatrix2([[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]]));

@@ -1623,3 +1623,322 @@ var numberOfArithmeticSlices = function (A) {
 };
 
 // console.log(numberOfArithmeticSlices([1, 2, 3, 8, 9, 10]));
+
+var searchMatrix2 = function (matrix, target) {
+  const flat = matrix.flat();
+  for (let i = 0; i < flat.length; i++) {
+    if (flat[i] == target) return true;
+  }
+  return false;
+  // let row = 0,
+  //   col = matrix[0].length - 1;
+  // while (row < matrix.length) {
+  //   if (matrix[row][col] === target) {
+  //     return true;
+  //   }
+  //   if (matrix[row][col] < target) {
+  //     row++;
+  //   } else {
+  //     col--;
+  //     if (col === 0) {
+  //       row++;
+  //     }
+  //   }
+  // }
+  // return false;
+};
+
+// console.log(
+//   searchMatrix2(
+//     [
+//       [1, 3, 5, 7],
+//       [10, 11, 16, 20],
+//       [23, 30, 34, 60],
+//     ],
+//     3
+//   )
+// );
+
+var findLongestWord = function (chars, words) {
+  let a = "";
+  words.forEach((word) => {
+    let pivot = -1;
+    if (word.length <= chars.length) {
+      for (let i = 0; i < word.length; i++) {
+        pivot = chars.indexOf(word[i], pivot + 1);
+        if (pivot == -1) break;
+      }
+    }
+    if (pivot > -1) {
+      if (a.length < word.length || (a.length === word.length && word < a)) {
+        a = word;
+      }
+    }
+  });
+  return a;
+};
+
+// console.log(
+//   findLongestWord("aewfafwafjlwajflwajflwafj", [
+//     "apple",
+//     "ewaf",
+//     "awefawfwaf",
+//     "awef",
+//     "awefe",
+//     "ewafeffewafewf",
+//   ])
+// );
+
+// 728
+var selfDividingNumbers = function (left, right) {
+  let a = [];
+  for (let i = left; i <= right; i++) {
+    if (i.toString().search("0") === -1) {
+      let self = true;
+      for (let j = 0; j < i.toString().length; j++) {
+        self = self && i % i.toString()[j] === 0;
+      }
+      if (self) {
+        a.push(i);
+      }
+    }
+  }
+  return a;
+};
+
+// console.log(selfDividingNumbers(1, 22));
+
+// 1704
+var halvesAreAlike = function (s) {
+  let arr = s.split("");
+  let a = arr.splice(0, s.length / 2);
+  let b = arr;
+
+  let aVowels = 0,
+    bVowels = 0,
+    vowels = ["a", "e", "i", "o", "u", "A", "E", "I", "O", "U"];
+  a.forEach((l) => {
+    if (vowels.includes(l)) {
+      aVowels++;
+    }
+  });
+  b.forEach((l) => {
+    if (vowels.includes(l)) {
+      bVowels++;
+    }
+  });
+  return aVowels === bVowels;
+
+  // console.log({ a, b });
+};
+
+// console.log(halvesAreAlike("textbook"));
+
+// 961
+var repeatedNTimes = function (A) {
+  let m = new Map();
+  for (let i = 0; i < A.length; i++) {
+    m.set(A[i], m.get(A[i]) + 1 || 1);
+    if (m.get(A[i]) > 1) {
+      return A[i];
+    }
+  }
+};
+
+// console.log(repeatedNTimes([2, 1, 2, 5, 3, 2]));
+
+// 1486
+var xorOperation = function (n, start) {
+  // let arr = Array.from({ length: n });
+  let res;
+  for (let i = 0; i < n; i++) {
+    res ^= start + 2 * i;
+    // res ^= a[i];
+  }
+  return res;
+};
+
+// console.log(xorOperation(5, 0));
+
+// 1051
+var heightChecker = function (heights) {
+  const sort = [...heights].sort((a, b) => a - b);
+  let count = 0;
+  for (let i = 0; i < heights.length; i++) {
+    if (heights[i] !== sort[i]) {
+      count++;
+    }
+  }
+  return count;
+};
+
+// console.log(heightChecker([10,6,6,10,10,9,8,8,3,3,8,2,1,5,1,9,5,2,7,4,7,7]));
+
+// 268
+var missingNumber = function (nums) {
+  if (!nums.includes(0)) return 0;
+  const sort = nums.sort((a, b) => a - b);
+  for (let i = 0; i < sort.length; i++) {
+    if (sort[i + 1] !== sort[i] + 1) {
+      return sort[i] + 1;
+    }
+  }
+};
+
+// console.log(missingNumber([1]));
+
+// 1646
+var getMaximumGenerated = function (n) {
+  let arr = [];
+  for (let i = 0; i <= n; i++) {
+    if (i == 0 || i == 1) {
+      arr[i] = i;
+    } else if (i % 2 == 0) {
+      arr[i] = arr[Math.floor(i / 2)];
+    } else {
+      arr[i] = arr[Math.floor((i - 1) / 2)] + arr[Math.floor((i + 1) / 2)];
+    }
+  }
+  return Math.max(...arr);
+};
+
+// console.log(getMaximumGenerated(7));
+
+// 1089
+var duplicateZeros = function (arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === 0) {
+      arr.splice(i, 0, 0);
+      i++;
+      arr.pop();
+    }
+  }
+
+  console.log(arr);
+};
+
+// console.log(duplicateZeros([1, 0, 2, 3, 0, 4, 5, 0]));
+
+// 724
+var pivotIndex = function (nums) {
+  for (let i = 0; i < nums.length; i++) {
+    if (
+      nums.slice(0, i).reduce((prev, curr) => prev + curr, 0) ===
+      nums.slice(i + 1).reduce((prev, curr) => prev + curr, 0)
+    ) {
+      return i;
+    }
+  }
+  return -1;
+};
+
+// console.log(pivotIndex([2, 1, -1]));
+
+// 989
+var addToArrayForm = function (A, K) {
+  return (BigInt(A.join("")) + BigInt(K)).toString().split("");
+};
+
+// console.log(
+//   addToArrayForm(
+//     [1, 2, 6, 3, 0, 7, 1, 7, 1, 9, 7, 5, 6, 6, 4, 4, 0, 0, 6, 3],
+//     516
+//   )
+// );
+
+// 1346
+var checkIfExist = function (arr) {
+  for (let i = 0; i < arr.length; i++) {
+    const c = arr[i] * 2;
+    const b = arr.findIndex((a) => a === c);
+    if (b >= 0 && i !== b) return true;
+  }
+  return false;
+};
+
+// console.log(checkIfExist([-10, 12, -20, -8, 15]));
+// console.log(checkIfExist([-2, 0, 10, -19, 4, 6, -8]));
+// console.log(checkIfExist([0, 0]));
+
+// 219
+var containsNearbyDuplicate = function (nums, k) {
+  // Solution 1(slow)
+  // let left = 0;
+  // for (let i = 1; i < nums.length; i++) {
+  //   let a = i;
+  //   while (a - left <= k) {
+  //     if (nums[left] === nums[a]) {
+  //       return true;
+  //     }
+  //     a++;
+  //   }
+  //   left++;
+  // }
+  // return false;
+  const wnd = new Set();
+  for (let i = 0; i < nums.length; i++) {
+    if (wnd.has(nums[i])) return true;
+    wnd.add(nums[i]);
+    if (i >= k) wnd.delete(nums[i - k]);
+  }
+  return false;
+};
+
+// console.log(containsNearbyDuplicate([1, 0, 1, 1], 1));
+// console.log(containsNearbyDuplicate([1, 2, 1], 0));
+// console.log(containsNearbyDuplicate([1, 2, 3, 1], 3));
+// console.log(containsNearbyDuplicate([1, 2, 3, 1, 2, 3], 2));
+
+// 1329
+var diagonalSort = function (mat) {
+  let obj = {};
+  for (let i = 0; i < mat.length; i++) {
+    for (let j = 0; j < mat[0].length; j++) {
+      // console.log({i,j})
+      let d = i - j;
+      if (!obj[d]) {
+        obj[d] = [];
+      }
+      obj[d].push(mat[i][j]);
+    }
+  }
+  // console.log(obj);
+  for (let key in obj) {
+    obj[key].sort((a, b) => {
+      return a - b;
+    });
+  }
+  // console.log(obj);
+  for (let i = 0; i < mat.length; i++) {
+    for (let j = 0; j < mat[0].length; j++) {
+      let d = i - j;
+      mat[i][j] = obj[d].shift();
+    }
+  }
+  return mat;
+};
+
+console.log(
+  diagonalSort([
+    [3, 3, 1, 1],
+    [2, 2, 1, 2],
+    [1, 1, 1, 2],
+  ])
+);
+
+console.log(
+  diagonalSort([
+    [11, 25, 66, 1, 69, 7],
+    [23, 55, 17, 45, 15, 52],
+    [75, 31, 36, 44, 58, 8],
+    [22, 27, 33, 25, 68, 4],
+    [84, 28, 14, 11, 5, 50],
+  ])
+);
+// [
+//   [5, 17, 4, 1, 52, 7],
+//   [11, 11, 25, 45, 8, 69],
+//   [14, 23, 25, 44, 58, 15],
+//   [22, 27, 31, 36, 50, 66],
+//   [84, 28, 75, 33, 55, 68],
+// ];
