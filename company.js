@@ -1894,7 +1894,7 @@ var diagonalSort = function (mat) {
   let obj = {};
   for (let i = 0; i < mat.length; i++) {
     for (let j = 0; j < mat[0].length; j++) {
-      // console.log({i,j})
+      console.log({ i, j });
       let d = i - j;
       if (!obj[d]) {
         obj[d] = [];
@@ -1902,13 +1902,13 @@ var diagonalSort = function (mat) {
       obj[d].push(mat[i][j]);
     }
   }
-  // console.log(obj);
+  console.log(obj);
   for (let key in obj) {
     obj[key].sort((a, b) => {
       return a - b;
     });
   }
-  // console.log(obj);
+  console.log(obj);
   for (let i = 0; i < mat.length; i++) {
     for (let j = 0; j < mat[0].length; j++) {
       let d = i - j;
@@ -1918,23 +1918,23 @@ var diagonalSort = function (mat) {
   return mat;
 };
 
-console.log(
-  diagonalSort([
-    [3, 3, 1, 1],
-    [2, 2, 1, 2],
-    [1, 1, 1, 2],
-  ])
-);
+// console.log(
+//   diagonalSort([
+//     [3, 3, 1, 1],
+//     [2, 2, 1, 2],
+//     [1, 1, 1, 2],
+//   ])
+// );
 
-console.log(
-  diagonalSort([
-    [11, 25, 66, 1, 69, 7],
-    [23, 55, 17, 45, 15, 52],
-    [75, 31, 36, 44, 58, 8],
-    [22, 27, 33, 25, 68, 4],
-    [84, 28, 14, 11, 5, 50],
-  ])
-);
+// console.log(
+//   diagonalSort([
+//     [11, 25, 66, 1, 69, 7],
+//     [23, 55, 17, 45, 15, 52],
+//     [75, 31, 36, 44, 58, 8],
+//     [22, 27, 33, 25, 68, 4],
+//     [84, 28, 14, 11, 5, 50],
+//   ])
+// );
 // [
 //   [5, 17, 4, 1, 52, 7],
 //   [11, 11, 25, 45, 8, 69],
@@ -1942,3 +1942,157 @@ console.log(
 //   [22, 27, 31, 36, 50, 66],
 //   [84, 28, 75, 33, 55, 68],
 // ];
+
+// 1287
+var findSpecialInteger = function (arr) {
+  let m = new Map();
+  for (let i = 0; i < arr.length; i++) {
+    m.set(arr[i], m.get(arr[i]) + 1 || 1);
+  }
+  console.log(m);
+  let a;
+  m.forEach((value, key) => {
+    if (value > arr.length / 4) {
+      return (a = key);
+    }
+  });
+  return a;
+};
+// console.log(findSpecialInteger([5668, 5668, 5668, 5668, 22011]));
+
+// 169
+var majorityElement = function (nums) {
+  let m = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    m.set(nums[i], m.get(nums[i]) + 1 || 1);
+  }
+  let a;
+  m.forEach((value, key) => {
+    if (value > Math.floor(nums.length / 2)) {
+      a = key;
+    }
+  });
+  return a;
+};
+
+// console.log(majorityElement([2, 2, 1, 1, 1, 2, 2]));
+
+// 1640
+var canFormArray = function (arr, pieces) {
+  for (let i = 0; i < pieces.length; i++) {
+    let ind = -1;
+    for (let j = 0; j < pieces[i].length; j++) {
+      if (j == 0) {
+        ind = arr.indexOf(pieces[i][j]);
+      }
+      if (ind !== -1) {
+        if (j >= 1) {
+          ind = ind + 1;
+          if (ind !== arr.indexOf(pieces[i][j])) return false;
+        }
+      } else {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+// console.log(canFormArray([91, 4, 64, 78], [[78], [4, 64], [91]]));
+// console.log(canFormArray([49, 18, 16], [[16, 18, 49]]));
+// console.log(canFormArray([37, 69, 3, 74, 46], [[37, 69, 3, 74, 46]]));
+// console.log(canFormArray([12], [[1]]));
+// console.log(
+//   canFormArray(
+//     [12, 21, 11, 22],
+//     [
+//       [12, 21],
+//       [1, 2],
+//     ]
+//   )
+// );
+// console.log(
+//   canFormArray(
+//     [91, 2, 4, 64, 5, 78, 12, 9],
+//     [
+//       [78, 12, 3],
+//       [4, 64, 5],
+//       [91, 2],
+//     ]
+//   )
+// );
+
+// 1758
+var minOperations = function (s) {
+  // let a = s[0],
+  //   count = 0;
+  // for (let i = 1; i < s.length; i++) {
+  //   if (
+  //     a === "0" &&
+  //     ((i % 2 !== 0 && s[i] !== "1") || (i % 2 === 0 && s[i] !== "0"))
+  //   ) {
+  //     count++;
+  //   }
+  //   if (
+  //     a === "1" &&
+  //     ((i % 2 !== 0 && s[i] !== "0") || (i % 2 === 0 && s[i] !== "1"))
+  //   ) {
+  //     count++;
+  //   }
+  // }
+  // return count;
+  let chars = ["1", "0"];
+  let count = 0;
+  for (let i = 0; i < s.length; i++) {
+    console.log({ c: chars[i % 2], s: s[i] });
+    if (chars[i % 2] === s[i]) {
+      count++;
+    }
+  }
+  console.log(count);
+  return Math.min(count, s.length - count);
+};
+
+// console.log(minOperations("0100"));
+// console.log(minOperations("10"));
+// console.log(minOperations("1111"));
+// console.log(minOperations("110010"));
+// console.log(minOperations("10010100"));
+
+// 747
+var dominantIndex = function (nums) {
+  let max = Math.max(...nums);
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] !== max && nums[i] * 2 > max) {
+      return -1;
+    }
+  }
+  return nums.indexOf(max);
+};
+// console.log(dominantIndex([1, 2, 3, 4]));
+// console.log(dominantIndex([3, 6, 1, 0]));
+
+// 414
+var thirdMax = function (nums) {
+  const unique = [...new Set(nums)];
+  if (unique.length >= 3) {
+    return unique.sort((a, b) => b - a)[2];
+  } else {
+    return Math.max(...unique);
+  }
+};
+
+// console.log(thirdMax([1, 2]));
+
+// 1768
+var mergeAlternately = function (word1, word2) {
+  let a = "",
+    max = Math.max(word1.length, word2.length);
+  for (let i = 0; i < max; i++) {
+    a += word1[i] ? word1[i] + (word2[i] ? word2[i] : '') : word2[i];
+  }
+  console.log(a);
+};
+
+// console.log(mergeAlternately("ab", "pqrs"));
+// console.log(mergeAlternately("abcd", "pq"));
