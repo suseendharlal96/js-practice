@@ -117,26 +117,54 @@ var luckyNumbers = function (matrix) {
 //   ])
 // );
 
+// This rotation is for matrix whose rows and cols dont match
 var rotate90 = (arr) => {
   let a = [];
   for (let i = 0; i < arr[0].length; i++) {
     const temp = [];
-    for (let j = 0; j < arr.length; j++) {
+    for (let j = arr.length - 1; j >= 0; j--) {
       temp.push(arr[j][i]);
       // rotate
-      for (let i = 0; i <= Math.floor(temp.length / 2); i++) {
-        const t = temp[i];
-        temp[i] = temp[temp.length - 1];
-        temp[temp.length - 1] = t;
-      }
+      // for (let i = 0; i <= Math.floor(temp.length / 2); i++) {
+      //   const t = temp[i];
+      //   temp[i] = temp[temp.length - 1];
+      //   temp[temp.length - 1] = t;
+      // }
     }
     a[i] = temp;
   }
   return a;
 };
 
+// console.log(
+//   rotate90([
+//     [1, 2, 3],
+//     [4, 5, 6],
+//     [7, 8, 9],
+//   ])
+// );
+
+// This rotation is for matrix whose rows and cols match
+var rotate90Match = (arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i; j < arr.length; j++) {
+      const temp = arr[i][j];
+      arr[i][j] = arr[j][i];
+      arr[j][i] = temp;
+    }
+  }
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length / 2; j++) {
+      const temp = arr[i][j];
+      arr[i][j] = arr[i][arr.length - 1 - j];
+      arr[i][arr.length - 1 - j] = temp;
+    }
+  }
+  console.log(arr);
+};
+
 console.log(
-  rotate90([
+  rotate90Match([
     [1, 2, 3],
     [4, 5, 6],
     [7, 8, 9],
@@ -153,16 +181,16 @@ var reshape = (nums, r, c) => {
   return a;
 };
 
-console.log(
-  reshape(
-    [
-      [1, 2],
-      [3, 4],
-    ],
-    1,
-    4
-  )
-);
+// console.log(
+//   reshape(
+//     [
+//       [1, 2],
+//       [3, 4],
+//     ],
+//     1,
+//     4
+//   )
+// );
 
 const longestSubArrayEqBySum3 = (arr, t) => {
   let curr = 0,

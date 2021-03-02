@@ -2089,10 +2089,517 @@ var mergeAlternately = function (word1, word2) {
   let a = "",
     max = Math.max(word1.length, word2.length);
   for (let i = 0; i < max; i++) {
-    a += word1[i] ? word1[i] + (word2[i] ? word2[i] : '') : word2[i];
+    a += word1[i] ? word1[i] + (word2[i] ? word2[i] : "") : word2[i];
   }
   console.log(a);
 };
 
 // console.log(mergeAlternately("ab", "pqrs"));
 // console.log(mergeAlternately("abcd", "pq"));
+
+// 804
+var uniqueMorseRepresentations = function (words) {
+  // const morse=[".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."]
+  let a = [];
+  words.forEach((word, index) => {
+    word.split("").forEach((letter) => {
+      a[index] = a[index]
+        ? a[index] + morse[letter.charCodeAt() - 97]
+        : morse[letter.charCodeAt() - 97];
+    });
+  });
+  return [...new Set(a)].length;
+};
+
+// console.log(uniqueMorseRepresentations(["gin", "zen", "gig", "msg"]));
+
+// 1309
+var freqAlphabets = function (s) {
+  const alphabets = "abcdefghijklmnopqrstuvwxyz";
+  let resArr = [];
+  for (let i = 0; i < s.length; i++) {
+    if (s[i + 2] === "#") {
+      resArr.push(s[i] + s[i + 1]);
+      i += 2;
+    } else {
+      resArr.push(s[i]);
+    }
+  }
+  return resArr.map((num) => alphabets[num - 1]).join("");
+};
+
+// console.log(freqAlphabets("10#11#12"));
+
+// 1374
+var generateTheString = function (n) {
+  return n % 2 === 0 ? "a".repeat(n - 1) + "b" : "a".repeat(n);
+};
+
+// console.log(generateTheString(100));
+
+// 557
+var reverseWords = function (s) {
+  let arr = s.split(" ");
+  let rev = [];
+  arr.forEach((a) => rev.push([...a].reverse().join("")));
+  return rev.join(" ");
+};
+
+// console.log(reverseWords("ab cd"));
+
+// 1455
+var isPrefixOfWord = function (sentence, searchWord) {
+  const arr = sentence.split(" ");
+  for (let i = 0; i < arr.length; i++) {
+    console.log(arr[i]);
+    if (arr[i].startsWith(searchWord)) {
+      return i + 1;
+    }
+  }
+  return -1;
+};
+
+// console.log(isPrefixOfWord("this problem is an easy problem", "pro"));
+// console.log(isPrefixOfWord("hellohello burger", "bur"));
+
+// 1332
+var removePalindromeSub = function (s) {
+  let txt = s.split("").reverse().join("");
+  if (s === "") return 0;
+  if (s === txt) return 1;
+  else return 2;
+};
+
+// console.log(removePalindromeSub("baabbababbba"));
+
+// 1408
+var stringMatching = function (words) {
+  let a = [];
+  for (let i = 0; i < words.length; i++) {
+    words.forEach((w) => {
+      if (w.search(words[i]) !== -1 && w !== words[i]) {
+        a.push(words[i]);
+      }
+    });
+  }
+  return [...new Set(a)];
+};
+
+// console.log(stringMatching(["mass", "as", "hero", "superhero"]));
+// console.log(stringMatching(["leetcode", "et", "code"]));
+// console.log(stringMatching(["leetcoder", "leetcode", "od", "hamlet", "am"]));
+
+// 125
+var isPalindrome = function (s) {
+  let a = [],
+    b = s.split("");
+  for (let i = 0; i < b.length; i++) {
+    let charCode = b[i].charCodeAt();
+    if (
+      // numerals
+      (48 <= charCode && charCode <= 57) ||
+      // capital letters
+      (65 <= charCode && charCode <= 90) ||
+      // small letters
+      (97 <= charCode && charCode <= 122)
+    ) {
+      a.push(b[i]);
+    }
+  }
+  return [...a].reverse().join("").toLowerCase() === a.join("").toLowerCase();
+};
+// console.log(isPalindrome("0P"));
+// console.log(isPalindrome("ab_a"));
+
+// 1446
+var maxPower = function (s) {
+  let max = 1,
+    count = 1;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === s[i + 1]) {
+      count++;
+      max = Math.max(count, max);
+      // console.log(max);
+    } else {
+      count = 1;
+    }
+  }
+  console.log(max);
+};
+
+// console.log(maxPower("abbcccddddeeeeedcba"));
+// console.log(maxPower("triplepillooooow"));
+// console.log(maxPower("hooraaaaaaaaaaay"));
+// console.log(maxPower("leetcode"));
+// console.log(maxPower("tourist"));
+
+// 1507
+var reformatDate = function (date) {
+  const arr = date.split(" "),
+    months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+  const getDate = (date) => {
+    let a = "";
+    for (let i = 0; i < date.length; i++) {
+      if (48 <= date[i].charCodeAt() && date[i].charCodeAt() <= 57) {
+        a += date[i];
+        console.log(a);
+        console.log(a.length);
+      }
+    }
+    if (a.length === 1) a = "0" + a;
+    return a;
+  };
+  const month = (months.indexOf(arr[1]) + 1).toString();
+  return (
+    arr[2] +
+    "-" +
+    (month.length === 1 ? "0" + month : month) +
+    "-" +
+    getDate(arr[0])
+  );
+};
+
+// console.log(reformatDate("20th Oct 2052"));
+// console.log(reformatDate("6th Jun 1933"));
+// console.log(reformatDate("26th May 1960"));
+
+// 917
+var reverseOnlyLetters = function (S) {
+  let a = [],
+    b = S.split(""),
+    c = new Map();
+  for (let i = 0; i < b.length; i++) {
+    let charCode = b[i].charCodeAt();
+    if (
+      // capital letters
+      (65 <= charCode && charCode <= 90) ||
+      // small letters
+      (97 <= charCode && charCode <= 122)
+    ) {
+      a.push(b[i]);
+    } else {
+      c.set(i, b[i]);
+    }
+  }
+  console.log({ a, c });
+  const reverse = a.reverse();
+  console.log(reverse);
+  for (let i = 0; i < reverse.length + 1; i++) {
+    if (c.get(i)) {
+      reverse.splice(i, 0, c.get(i));
+      // i-=1
+    }
+  }
+  console.log(reverse.join(""));
+};
+
+// console.log(reverseOnlyLetters("Test1ng-Leet=code-Q!!"));
+// console.log(reverseOnlyLetters("a-bC-dEf-ghIj"));
+
+// 1422
+var maxScore = function (s) {
+  let max = 0;
+  for (let i = 0; i < s.length - 1; i++) {
+    let a = [],
+      b = [],
+      aCount = 0,
+      bCount = 0;
+    a.push(s.substring(0, i + 1));
+    b.push(s.substring(i + 1));
+    a[0].split("").forEach((num) => {
+      if (num === "0") {
+        aCount++;
+      }
+    });
+    b[0].split("").forEach((num) => {
+      if (num === "1") {
+        aCount++;
+      }
+    });
+    max = Math.max(aCount + bCount, max);
+  }
+  return max;
+};
+// console.log(maxScore("1111"));
+
+// 387
+var firstUniqChar = function (s) {
+  let map = new Map(),
+    a = [];
+  for (let i = 0; i < s.length; i++) {
+    map.set(s[i], map.get(s[i]) + 1 || 1);
+  }
+  map.forEach((value, key) => {
+    if (value == 1) {
+      a.push(key);
+    }
+  });
+  return s.split("").indexOf(a[0]);
+};
+
+// console.log(firstUniqChar("loveleetcode"));
+
+// 345
+var reverseVowels = function (s) {
+  let b = [],
+    v = ["a", "e", "i", "o", "u"];
+  s.split("");
+  for (let i = 0; i < s.length; i++) {
+    if (v.includes(s[i].toLowerCase())) {
+      b.push(s[i]);
+    }
+  }
+  for (let i = 0; i < s.length; i++) {
+    if (v.includes(s[i].toLowerCase())) {
+      s[i] = b.pop();
+    }
+  }
+  return s;
+};
+
+// console.log(reverseVowels("aeetcode"));
+
+// 925
+var isLongPressedName = function (name, typed) {
+  let nameMap = new Map(),
+    typedMap = new Map();
+
+  for (let i = 0; i < name.length; i++) {
+    nameMap.set(name[i], nameMap.get(name[i]) + 1 || 1);
+  }
+
+  for (let i = 0; i < typed.length; i++) {
+    typedMap.set(typed[i], typedMap.get(typed[i]) + 1 || 1);
+  }
+  console.log({ typedMap, nameMap });
+  if (typedMap.size < nameMap.size) return false;
+  for (let i = 0; i < name.length; i++) {
+    if (
+      (typed.length !== name.length &&
+        (!typedMap.has(name[i]) ||
+          typedMap.get(name[i]) < nameMap.get(name[i]) ||
+          name[name.length - 1] !== typed[typed.length - 1] ||
+          typed[typed.length - 2] !== name[name.length - 1])) ||
+      (typed.length === name.length && name[i] !== typed[i])
+    ) {
+      return false;
+    }
+  }
+  return true;
+  // console.log({ nameMap, typedMap });
+
+  let arr1 = groupify(name);
+  let arr2 = groupify(typed);
+  if (arr1.length !== arr2.length) return false;
+  for (i = 0; i < arr1.length; i++) {
+    if (arr1[i][1] > arr2[i][1]) return false;
+  }
+  return true;
+};
+
+var groupify = function (word) {
+  let str = "",
+    arr = [];
+  for (i = 0; i < word.length; i++) {
+    str += word[i];
+    if (word[i] !== word[i + 1]) {
+      arr.push([str, str.length]);
+      str = "";
+    }
+  }
+  return arr;
+};
+
+// console.log(isLongPressedName("alex", "aaleex"));
+// console.log(isLongPressedName("laiden", "laiden"));
+// console.log(isLongPressedName("leelee", "lleeelee"));
+// console.log(isLongPressedName("saeed", "ssaaedd"));
+// console.log(isLongPressedName("xnhtq", "xhhttqq"));
+// console.log(isLongPressedName("a", "b"));
+// console.log(isLongPressedName("rick", "kric"));
+// console.log(isLongPressedName("alex", "aaleexa"));
+// console.log(isLongPressedName("axlex", "aaxleexexxx"));
+
+// 520
+var detectCapitalUse = function (word) {
+  if (
+    word === word.toUpperCase() ||
+    word === word.toLowerCase() ||
+    (word[0] === word[0].toUpperCase() &&
+      word.substring(1) === word.substring(1).toLowerCase())
+  ) {
+    return true;
+  }
+  return false;
+};
+
+// console.log(detectCapitalUse("USA"));
+// console.log(detectCapitalUse("usa"));
+// console.log(detectCapitalUse("Google"));
+// console.log(detectCapitalUse("GooglE"));
+
+// 819
+var mostCommonWord = function (paragraph, banned) {
+  let paraArr = paragraph.split(/\W/g),
+    max = 0,
+    maxWord = "",
+    map = new Map();
+  console.log(paraArr);
+  for (let i = 0; i < paraArr.length; i++) {
+    if (paraArr[i] !== "") {
+      let charCode = paraArr[i].toLowerCase().charCodeAt();
+      if (97 <= charCode && charCode <= 122) {
+        map.set(
+          paraArr[i].toLowerCase(),
+          map.get(paraArr[i].toLowerCase()) + 1 || 1
+        );
+      }
+    }
+  }
+  console.log(map);
+  map.forEach((value, key) => {
+    if (!banned.includes(key)) {
+      let currMax = Math.max(max, value);
+      if (currMax > max) {
+        max = currMax;
+        maxWord = key;
+      }
+    }
+  });
+  console.log(maxWord);
+};
+
+// console.log(
+//   mostCommonWord("Bob hit a ball, the hit BALL hit, hit, after it was hit.", [
+//     "hit",
+//   ])
+// );
+// console.log(mostCommonWord("a, a, a, a, b,b,b,c, c", ["a"]));
+
+// 58
+var lengthOfLastWord = function (s) {
+  let a = s.trim();
+  // console.log(arr)
+  if (a === "") return 0;
+  console.log(a.split(" ").pop().length);
+};
+// console.log(lengthOfLastWord("Hello World"))
+// console.log(lengthOfLastWord(" "))
+
+// 239
+var maxSlidingWindow = function (nums, k) {
+  let arr = [],
+    max = [];
+  for (let i = 0; i < nums.length; i++) {
+    arr.push(nums[i]);
+    if (arr.length === k) {
+      max.push(Math.max(...arr));
+      arr.splice(0, 1);
+    }
+  }
+  return max;
+};
+
+// console.log(maxSlidingWindow([1, 3, -1, -3, 5, 3, 6, 7], 3));
+// console.log(maxSlidingWindow([1], 1));
+// console.log(maxSlidingWindow([1, -1], 1));
+// console.log(maxSlidingWindow([9, 11], 2));
+// console.log(maxSlidingWindow([4, -2], 2));
+
+// 1773
+var countMatches = function (items, ruleKey, ruleValue) {
+  const a = ["type", "color", "name"],
+    ruleIndex = a.indexOf(ruleKey);
+  let count = 0;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i][ruleIndex] === ruleValue) {
+      count++;
+    }
+  }
+  return count;
+};
+// console.log(
+//   countMatches(
+//     [
+//       ["phone", "blue", "pixel"],
+//       ["computer", "silver", "lenovo"],
+//       ["phone", "gold", "iphone"],
+//     ],
+//     "type",
+//     "phone"
+//   )
+// );
+
+// 34
+var searchRange = function (nums, target) {
+  let s = [-1, -1];
+  // s[0] = nums.indexOf(target);
+  // s[1] = nums.lastIndexOf(target);
+  // return s;
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === target) {
+      s[0] = i;
+      break;
+    }
+  }
+  for (let i = nums.length - 1; i >= 0; i--) {
+    if (nums[i] === target) {
+      s[1] = i;
+      break;
+    }
+  }
+  console.log(s);
+};
+
+// console.log(searchRange([5, 7, 7, 8, 8, 10], 8));
+
+// 120
+var minimumTotal = function (triangle) {
+  let count = 0;
+  for (let i = 0; i < triangle.length; i++) {
+    count += Math.min(...triangle[i]);
+    console.log(count);
+  }
+  console.log(count);
+};
+
+// console.log(minimumTotal([[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]));
+// console.log(minimumTotal([[-10]]));
+// console.log(minimumTotal(
+//   [[-1],
+//   [2,3],
+//   [1,-1,-3]]));
+
+// 643
+var findMaxAverage = function (nums, k) {
+  let max = Number.NEGATIVE_INFINITY,
+    count = 0;
+  for (let i = 0; i < nums.length; i++) {
+    count += nums[i];
+    if (i + 1 >= k) {
+      let currAvg = count / k;
+      let currMax = Math.max(currAvg, max);
+      if (currMax > max) {
+        max = currMax;
+      }
+      count -= nums[i + 1 - k];
+    }
+  }
+  return max
+};
+
+console.log(findMaxAverage([1, 12, -5, -6, 50, 3], 4));
+console.log(findMaxAverage([5], 1));
