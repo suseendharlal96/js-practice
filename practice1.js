@@ -1,21 +1,55 @@
-// APPLE
 const productExceptSelf = (arr) => {
-  const copy = [...arr];
-  for (let i = 0; i < arr.length; i++) {
-    arr[i] =
-      copy.slice(0, i).reduce((total, curr) => {
-        return total * curr;
-      }, 1) *
-      copy.slice(i + 1, copy.length).reduce((total, curr) => {
-        return total * curr;
-      }, 1);
+  // const copy = [...arr];
+  // for (let i = 0; i < arr.length; i++) {
+  //   arr[i] =
+  //     copy.slice(0, i).reduce((total, curr) => {
+  //       return total * curr;
+  //     }, 1) *
+  //     copy.slice(i + 1, copy.length).reduce((total, curr) => {
+  //       return total * curr;
+  //     }, 1);
+  // }
+  // return arr;
+
+  // let n = arr.length,
+  //   leftProd = [],
+  //   rightProd = [],
+  //   res = [];
+
+  // leftProd[0] = 1;
+  // rightProd[n - 1] = 1;
+
+  // for (let i = 1; i < n; i++) {
+  //   leftProd[i] = arr[i - 1] * leftProd[i - 1];
+  // }
+  // for (let i = n - 2; i >= 0; i--) {
+  //   rightProd[i] = arr[i + 1] * rightProd[i + 1];
+  // }
+  // for (let i = 0; i < n; i++) {
+  //   res[i] = leftProd[i] * rightProd[i];
+  // }
+  // return res
+
+  let n = arr.length,
+    res = [];
+
+  res[0] = 1;
+
+  for (let i = 1; i < n; i++) {
+    res[i] = arr[i - 1] * res[i - 1];
   }
-  return arr;
+  console.log(res);
+  let rightCount = 1;
+  for (let i = n - 1; i >= 0; i--) {
+    res[i] = res[i] * rightCount;
+    rightCount = rightCount * arr[i];
+  }
+
+  return res;
 };
 
 // console.log(productExceptSelf([1, 2, 3, 4]));
 
-//   AMAZON
 const rotateImage = (arr) => {
   // Transpose:
   for (let i = 0; i < arr.length; i++) {
@@ -45,8 +79,6 @@ const rotateImage = (arr) => {
 //     [7, 8, 9],
 //   ])
 // );
-
-// GOOGLE
 
 // Brute force(not optimal solution)
 // const sumOfTwo = (arr1, arr2, t) => {
@@ -167,7 +199,6 @@ const smallestSubArrayGreaterThanBySum = (arr, t) => {
 // );
 
 //4. Longest subarray by Sum(Exactly equal to given target)
-// FACEBOOK
 const longestSubArrayEqBySum = (arr, t) => {
   // let right = 0,
   //   left = 0,
@@ -440,19 +471,21 @@ const numSquares = (n) => {
 
 // console.log(numSquares(12));
 
+// 74
 var searchMatrix = function (matrix, target) {
-  const rows = matrix.length;
-  let col = matrix[0].length - 1;
-  let row = 0;
-  while (row < rows) {
-    if (matrix[row][col] === target) {
+  let rows = matrix.length,
+    cols = matrix[0].length,
+    left = 0,
+    right = rows * cols - 1;
+  while (left <= right) {
+    let midIndex = Math.floor((left + right) / 2);
+    let midElement = matrix[Math.floor(midIndex / cols)][midIndex % cols]; // matrix[row][col]
+    if (midElement === target) {
       return true;
-    }
-    console.log(matrix[row][col]);
-    if (matrix[row][col] < target) {
-      row++;
+    } else if (target < midElement) {
+      right = midIndex - 1;
     } else {
-      col--;
+      left = midIndex + 1;
     }
   }
   return false;
@@ -461,12 +494,45 @@ var searchMatrix = function (matrix, target) {
 // console.log(
 //   searchMatrix(
 //     [
-//       [1, 4, 7, 11, 15],
+//       [1, 3, 5, 7],
+//       [10, 11, 16, 18],
+//       [23, 30, 34, 60],
+//     ],
+//     23
+//   )
+// );
+
+// 240
+
+var searchMatrix2 = function (matrix, target) {
+  let row = 0,
+    col = matrix[0].length - 1;
+  while (row < matrix.length) {
+    if (matrix[row][col] === target) {
+      return true;
+    }
+    if (matrix[row][col] < target) {
+      row++;
+    } else {
+      col--;
+      if (col === 0) {
+        row++;
+      }
+    }
+  }
+  return false;
+};
+
+// console.log(
+//   searchMatrix2(
+//     [
+//       ([1, 4, 7, 11, 15],
 //       [2, 5, 8, 12, 19],
 //       [3, 6, 9, 16, 22],
 //       [10, 13, 14, 17, 24],
-//       [18, 21, 23, 26, 30],
+//       [18, 21, 23, 26, 30]),
 //     ],
+//     3
 //   )
 // );
 
@@ -1077,24 +1143,55 @@ var minSubarray = function (arr, p) {
 
 // console.log(minSubarray([3, 1, 4, 2], 6));
 
+// 54
 var spiralOrder = function (matrix) {
-  let res = [];
-  while (matrix.length > 0) {
-    let top = [],
-      bottom = [],
-      right = [],
-      left = [];
-    top = matrix.shift();
-    bottom = matrix.length > 0 ? matrix.pop().reverse() : [];
-    console.log({ top, bottom });
-    for (let i = 0; i < matrix.length; i++) {
-      matrix[i].length > 0 ? right.push(matrix[i].pop()) : [];
-      matrix[i].length > 0 ? left.push(matrix[i].shift()) : [];
-      console.log(matrix.length);
-    }
-    res.push(...top, ...right, ...bottom, ...left.reverse());
-  }
+  // Sol 1-Modifying the original matrix
+  // let res = [];
+  // while (matrix.length > 0) {
+  //   let top = [],
+  //     bottom = [],
+  //     right = [],
+  //     left = [];
+  //   top = matrix.shift();
+  //   bottom = matrix.length > 0 ? matrix.pop().reverse() : [];
+  //   console.log({ top, bottom });
+  //   for (let i = 0; i < matrix.length; i++) {
+  //     matrix[i].length > 0 ? right.push(matrix[i].pop()) : [];
+  //     matrix[i].length > 0 ? left.push(matrix[i].shift()) : [];
+  //     console.log(matrix.length);
+  //   }
+  //   res.push(...top, ...right, ...bottom, ...left.reverse());
+  // }
 
+  // return res;
+  // Sol 2
+  let rowStart = 0,
+    rowEnd = mat.length - 1,
+    colStart = 0,
+    colEnd = mat[0].length - 1,
+    res = [];
+  while (rowStart <= rowEnd && colStart <= colEnd) {
+    for (let i = colStart; i <= colEnd; i++) {
+      res.push(mat[rowStart][i]);
+    }
+    rowStart++;
+    for (let i = rowStart; i <= rowEnd; i++) {
+      res.push(mat[i][colEnd]);
+    }
+    colEnd--;
+    if (rowStart <= rowEnd) {
+      for (let i = colEnd; i >= colStart; i--) {
+        res.push(mat[rowEnd][i]);
+      }
+    }
+    rowEnd--;
+    if (colStart <= colEnd) {
+      for (let i = rowEnd; i >= rowStart; i--) {
+        res.push(mat[i][colStart]);
+      }
+    }
+    colStart++;
+  }
   return res;
 };
 
@@ -1121,6 +1218,51 @@ var spiralOrder = function (matrix) {
 //     [17, 18, 19, 20],
 //   ])
 // );
+// console.log(
+//   spiralOrder([
+//    [1, 2, 3, 4],
+//    [5, 6, 7, 8],
+//    [9, 10, 11, 12],
+//   ])
+// );
+
+// 59
+var generateSpiralMatrix = function (n) {
+  let rowBegin = 0,
+    rowEnd = n - 1,
+    colBegin = 0,
+    colEnd = n - 1,
+    count = 1,
+    mat = new Array(n);
+  for (let i = 0; i < n; i++) {
+    mat[i] = [];
+  }
+
+  while (rowBegin <= rowEnd && colBegin <= colEnd) {
+    for (let i = colBegin; i <= colEnd; i++) {
+      mat[colBegin][i] = count++;
+    }
+    rowBegin++;
+    for (let i = rowBegin; i <= rowEnd; i++) {
+      mat[i][colEnd] = count++;
+    }
+    colEnd--;
+    if (rowBegin <= rowEnd) {
+      for (let i = colEnd; i >= colBegin; i--) {
+        mat[rowEnd][i] = count++;
+      }
+    }
+    rowEnd--;
+    if (colBegin <= colEnd) {
+      for (let i = rowEnd; i >= rowBegin; i--) {
+        mat[i][colBegin] = count++;
+      }
+    }
+    colBegin++;
+  }
+};
+
+// console.log(generateSpiralMatrix(3));
 
 var sortArrayByParity = function (A) {
   let even = [],
@@ -1623,41 +1765,6 @@ var numberOfArithmeticSlices = function (A) {
 };
 
 // console.log(numberOfArithmeticSlices([1, 2, 3, 8, 9, 10]));
-
-var searchMatrix2 = function (matrix, target) {
-  const flat = matrix.flat();
-  for (let i = 0; i < flat.length; i++) {
-    if (flat[i] == target) return true;
-  }
-  return false;
-  // let row = 0,
-  //   col = matrix[0].length - 1;
-  // while (row < matrix.length) {
-  //   if (matrix[row][col] === target) {
-  //     return true;
-  //   }
-  //   if (matrix[row][col] < target) {
-  //     row++;
-  //   } else {
-  //     col--;
-  //     if (col === 0) {
-  //       row++;
-  //     }
-  //   }
-  // }
-  // return false;
-};
-
-// console.log(
-//   searchMatrix2(
-//     [
-//       [1, 3, 5, 7],
-//       [10, 11, 16, 20],
-//       [23, 30, 34, 60],
-//     ],
-//     3
-//   )
-// );
 
 var findLongestWord = function (chars, words) {
   let a = "";
@@ -2545,23 +2652,70 @@ var countMatches = function (items, ruleKey, ruleValue) {
 
 // 34
 var searchRange = function (nums, target) {
-  let s = [-1, -1];
+  // Sol 1
+
+  // let s = [-1, -1];
   // s[0] = nums.indexOf(target);
   // s[1] = nums.lastIndexOf(target);
   // return s;
-  for (let i = 0; i < nums.length; i++) {
-    if (nums[i] === target) {
-      s[0] = i;
-      break;
+
+  // Sol 2
+  // let s = [-1, -1];
+  // for (let i = 0; i < nums.length; i++) {
+  //   if (nums[i] === target) {
+  //     s[0] = i;
+  //     break;
+  //   }
+  // }
+  // for (let i = nums.length - 1; i >= 0; i--) {
+  //   if (nums[i] === target) {
+  //     s[1] = i;
+  //     break;
+  //   }
+  // }
+
+  // Sol 3
+  let s = [];
+  const findfirstIndex = (nums, target) => {
+    let start = 0,
+      end = nums.length - 1,
+      index = -1;
+    // console.log(nums[midIndex]);
+    while (start <= end) {
+      let midIndex = Math.floor(start + (end - start) / 2);
+      if (nums[midIndex] >= target) {
+        end = midIndex - 1;
+      } else {
+        start = midIndex + 1;
+      }
+      if (nums[midIndex] === target) {
+        index = midIndex;
+      }
     }
-  }
-  for (let i = nums.length - 1; i >= 0; i--) {
-    if (nums[i] === target) {
-      s[1] = i;
-      break;
+    return index;
+  };
+  const findlastIndex = (nums, target) => {
+    let start = 0,
+      end = nums.length - 1,
+      index = -1;
+    while (start <= end) {
+      let midIndex = Math.floor(start + (end - start) / 2);
+      if (nums[midIndex] <= target) {
+        start = midIndex + 1;
+      } else {
+        end = midIndex - 1;
+      }
+      if (nums[midIndex] === target) {
+        index = midIndex;
+      }
     }
-  }
-  console.log(s);
+    return index;
+  };
+
+  s[0] = findfirstIndex(nums, target);
+  s[1] = findlastIndex(nums, target);
+
+  // console.log(s);
 };
 
 // console.log(searchRange([5, 7, 7, 8, 8, 10], 8));
@@ -2598,8 +2752,170 @@ var findMaxAverage = function (nums, k) {
       count -= nums[i + 1 - k];
     }
   }
-  return max
+  return max;
 };
 
-console.log(findMaxAverage([1, 12, -5, -6, 50, 3], 4));
-console.log(findMaxAverage([5], 1));
+// console.log(findMaxAverage([1, 12, -5, -6, 50, 3], 4));
+// console.log(findMaxAverage([5], 1));
+
+// 442
+var findDuplicates = function (nums) {
+  // let set = new Set(),
+  //   arr = [];
+  // for (let i = 0; i < nums.length; i++) {
+  //   if (set.has(nums[i])) {
+  //     arr.push(nums[i]);
+  //   }
+  //   set.add(nums[i]);
+  // }
+  // return arr;
+
+  let res = [];
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[Math.abs(nums[i]) - 1] < 0) {
+      res.push(Math.abs(nums[i]));
+    }
+    // if first duplicate
+    // if (res.length > 0) {
+    //   break;
+    // }
+    nums[Math.abs(nums[i]) - 1] = -1 * nums[Math.abs(nums[i]) - 1];
+  }
+  console.log(res);
+  // console.log(nums);
+};
+
+console.log(findDuplicates([4, 3, 2, 7, 8, 2, 3, 1, 4]));
+console.log(findDuplicates([1]));
+
+// 75
+var sortColors = function (nums) {
+  const k = [...new Set([1, 8, 6, 2, 5, 4, 8, 3, 7].sort((a, b) => a - b))];
+  console.log(k);
+  let a = nums.length,
+    arr = [];
+  for (let i = 0; i < a; i++) {
+    // console.log(i);
+    if (nums[i] === 2) {
+      console.log(2);
+      nums.push(nums[i]);
+    } else if (nums[i] === 0) {
+      console.log(0);
+      nums.splice(0, 0, 0);
+    } else {
+      nums.splice(nums[i], 0, nums[i]);
+    }
+    nums.splice(nums.indexOf(nums[i]), 1);
+  }
+  // console.log(nums[nums.length-1]);
+  // console.log(arr);
+  console.log(nums);
+};
+
+// console.log(sortColors([2, 0, 2, 1, 1, 0]));
+// console.log(sortColors([0]));
+// console.log(sortColors([1]));
+
+// 128
+
+var longestConsecutive = function (nums) {
+  let m = new Set(nums),
+    maxLen = 0;
+  // nums.forEach((num) => {
+  //   m.add(num);
+  // });
+  for (let i = 0; i < nums.length; i++) {
+    let currLen = 1,
+      currNum = nums[i];
+    if (!m.has(nums[i] - 1)) {
+      while (m.has(currNum + 1)) {
+        currLen += 1;
+        currNum += 1;
+      }
+    }
+    maxLen = Math.max(currLen, maxLen);
+  }
+  console.log(maxLen);
+};
+
+console.log(longestConsecutive([100, 4, 200, 1, 3, 2]));
+
+// 1
+var twoSum = function (nums, target) {
+  let map = new Map();
+  for (let i = 0; i < nums.length; i++) {
+    if (map.has(target - nums[i])) {
+      return [map.get(target - nums[i]), i];
+    } else {
+      map.set(nums[i], i);
+    }
+  }
+  return [];
+};
+
+// console.log(twoSum([2, 7, 11, 15], 9));
+console.log(twoSum([2, 3, 4], 6));
+
+// 15
+var threeSum = function (nums) {
+  let res = [];
+  let sorted = [...nums].sort((a, b) => a - b);
+  console.log(sorted);
+  if (sorted.length <= 1) return res;
+  for (let i = 0; i < sorted.length - 2; i++) {
+    if (i == 0 || (i > 0 && sorted[i] !== sorted[i - 1])) {
+      let start = i + 1,
+        end = sorted.length - 1,
+        sum = 0 - sorted[i];
+      while (start < end) {
+        if (sorted[start] + sorted[end] === sum) {
+          res.push([sorted[i], sorted[start], sorted[end]]);
+          while (start < end && sorted[start] === sorted[start + 1]) start++;
+          while (start < end && sorted[end] === sorted[end - 1]) end--;
+          start++;
+          end--;
+        } else if (sorted[start] + sorted[end] < sum) {
+          start++;
+        } else {
+          end--;
+        }
+      }
+    }
+  }
+  return res;
+};
+// console.log(threeSum([-1, 0, 1, 2, -1, -4]));
+// console.log(threeSum([]));
+
+// 5
+var longestPalindrome = function (s) {
+  const expandAroundCenter = (s, left, right) => {
+    let L = left,
+      R = right;
+    console.log({ s, left, right });
+    console.log(s.charAt(L));
+    console.log(s.charAt(R));
+    while (L >= 0 && R < s.length && s.charAt(L) == s.charAt(R)) {
+      L--;
+      R++;
+    }
+    return R - 1 - (L - 1) + 1;
+  };
+
+  if (s == null || s.length < 1) return "";
+  let start = 0,
+    end = 0;
+  for (let i = 0; i < s.length; i++) {
+    let len1 = expandAroundCenter(s, i, i);
+    let len2 = expandAroundCenter(s, i, i + 1);
+    console.log({ len1, len2 });
+    let len = Math.max(len1, len2);
+    if (len > end - start) {
+      start = i - (len - 1) / 2;
+      end = i + len / 2;
+    }
+  }
+  return s.substring(start, end + 1);
+};
+
+console.log(longestPalindrome("aba"));

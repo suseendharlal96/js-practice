@@ -1,15 +1,15 @@
 const smallestSubArrayGreaterOrEqBySum2 = (arr, t) => {
   let curr = 0,
     left = 0,
-    subArr = [...arr];
+    subArr = new Array(arr.length);
   for (let i = 0; i < arr.length; i++) {
     curr += arr[i];
-    while (curr === t) {
+    while (curr > t) {
       if (i - left + 1 === 1) {
         subArr = arr.slice(left, i + 1);
         return { min: subArr.length, subArr };
       } else {
-        if (i - left + 1 < subArr.length) {
+        if (i - left + 1 <= subArr.length) {
           subArr = arr.slice(left, i + 1);
         }
         curr -= arr[left];
@@ -20,9 +20,9 @@ const smallestSubArrayGreaterOrEqBySum2 = (arr, t) => {
   return { min: subArr.length, subArr };
 };
 
-// console.log(
-//   smallestSubArrayGreaterOrEqBySum2([4, 2, 2, 7, 4, 1, 2, 4, 1, 0], 8)
-// );
+console.log(
+  smallestSubArrayGreaterOrEqBySum2([4, 2, -2, 7, -4, 1, 2, 4, 1, 0], 8)
+);
 
 const longestSubArrayEqBySum2 = (arr, t) => {
   let curr = 0,
@@ -45,34 +45,36 @@ const longestSubArrayEqBySum2 = (arr, t) => {
   return { subArr, boundary };
 };
 
-// console.log(longestSubArrayEqBySum2([1, 2, 3, 5, 1, 12], 12));
-// console.log(
-//   longestSubArrayEqBySum2([1, 2, 3, 4, 5, 0, 0, 0,
-//      0, 8, 7, 8, 19, 20], 15)
-// );
+console.log(longestSubArrayEqBySum2([1, 2, 3, 5, 1, 12], 12));
+console.log(
+  longestSubArrayEqBySum2([1, 2, 3, 4, 5, 0, 0, 0, 0, 8, 7, 8, 19, 20], 15)
+);
 
 const maxSumOfSubArray2 = (arr) => {
-  let max = arr[0],
-    curr = arr[0],
-    sub = [];
+  // let max = arr[0],
+  //   curr = arr[0],
+  //   sub = [];
   //   for (let i = 1; i < arr.length; i++) {
   //     curr = Math.max(arr[i], curr + arr[i]);
   //     console.log(curr);
   //     max = Math.max(max, curr);
   //   }
   //   return max;
+
+  let max = Number.NEGATIVE_INFINITY;
   for (let i = 0; i < arr.length; i++) {
     if (sub.length === 0) {
-      sub.push(arr[i]);
+      max = Math.max(arr[i], max);
     } else {
-      let total = sub.reduce((prev, curr) => prev + curr, 0);
-      //   console.log(total);
-      //   if (arr[i] > 0) {
-      if (total + arr[i] > arr[i]) {
-        sub.push(arr[i]);
+      // let total = sub.reduce((prev, curr) => prev + curr, 0);
+      // console.log(total);
+      // if (arr[i] > 0) {
+      if (max + arr[i] > max) {
+        sub = [arr[i]];
+        max = arr[i];
         // console.log(sub);
       } else {
-        sub = [arr[i]];
+        sub.push(arr[i]);
       }
       //   }
       //   sub.forEach((item) => {
@@ -87,7 +89,7 @@ const maxSumOfSubArray2 = (arr) => {
   return sub;
 };
 
-// console.log(maxSumOfSubArray2([-2, 2, 5, 6, -11, 23, 12]));
+// console.log(maxSumOfSubArray2([-2, 2, 5, -11, 6]));
 
 var luckyNumbers = function (matrix) {
   let data = [];
@@ -117,25 +119,37 @@ var luckyNumbers = function (matrix) {
 //   ])
 // );
 
-// This rotation is for matrix whose rows and cols dont match
+// This rotation is for matrix whose rows and cols dont match or match
 var rotate90 = (arr) => {
   let a = [];
+  // transpose
   for (let i = 0; i < arr[0].length; i++) {
     const temp = [];
-    for (let j = arr.length - 1; j >= 0; j--) {
+    for (let j = 0; j < arr.length; j++) {
       temp.push(arr[j][i]);
-      // rotate
-      // for (let i = 0; i <= Math.floor(temp.length / 2); i++) {
-      //   const t = temp[i];
-      //   temp[i] = temp[temp.length - 1];
-      //   temp[temp.length - 1] = t;
-      // }
     }
-    a[i] = temp;
+    // to rotate
+    a[i] = temp.reverse();
   }
+  // swap horizondal to rotate without reverse
+  // for (let i = 0; i < a.length; i++) {
+  //   for (let j = 0; j < a[i].length / 2; j++) {
+  //     const temp = a[i][j];
+  //     a[i][j] = a[i][a[i].length - 1];
+  //     a[i][a[i].length - 1] = temp;
+  //   }
+  // }
   return a;
 };
 
+// console.log(
+//   rotate90([
+//     [1, 2, 3, 4, 13],
+//     [5, 6, 7, 8, 14],
+//     [9, 10, 11, 12, 15],
+//     [16, 17, 18, 19, 20],
+//   ])
+// );
 // console.log(
 //   rotate90([
 //     [1, 2, 3],
@@ -154,22 +168,23 @@ var rotate90Match = (arr) => {
     }
   }
   for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr.length / 2; j++) {
-      const temp = arr[i][j];
-      arr[i][j] = arr[i][arr.length - 1 - j];
-      arr[i][arr.length - 1 - j] = temp;
-    }
+    arr[i] = arr[i].reverse();
+    // for (let j = 0; j < arr.length / 2; j++) {
+    //   const temp = arr[i][j];
+    //   arr[i][j] = arr[i][arr.length - 1 - j];
+    //   arr[i][arr.length - 1 - j] = temp;
+    // }
   }
-  console.log(arr);
+  return arr;
 };
 
-console.log(
-  rotate90Match([
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-  ])
-);
+// console.log(
+//   rotate90Match([
+//     [1, 2, 3],
+//     [4, 5, 6],
+//     [7, 8, 9],
+//   ])
+// );
 
 var reshape = (nums, r, c) => {
   if (nums.length * nums[0].length !== r * c) return nums;
@@ -247,19 +262,22 @@ const smallestSubArrayGreaterOrEqBySum3 = (arr, t) => {
 
 const pascal = (rows) => {
   let arr = [];
+  for (let i = 0; i < rows; i++) {
+    arr[i] = [];
+  }
   if (rows <= 0) return arr;
-  arr.push([1]);
+  arr[0].push(1);
   for (let i = 1; i < rows; i++) {
     arr[i] = [];
     arr[i].push(1);
-    for (let j = 1; j < arr.length - 1; j++) {
-      arr[i][j] = arr[i - 1][j - 1] + arr[i - 1][j];
+    for (let j = 1; j < i; j++) {
+      arr[i].push(arr[i - 1][j - 1] + arr[i - 1][j]);
     }
     arr[i].push(1);
   }
-  console.log(arr);
+  return arr;
 };
-// console.log(pascal(5));
+console.log(pascal(6));
 
 const shift = (arr, k) => {
   let a = arr.flat();
@@ -267,7 +285,7 @@ const shift = (arr, k) => {
     a.unshift(a.pop());
   }
   let temp = [];
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < arr.length; i++) {
     temp.push(a.splice(0, arr[i].length));
   }
 };
@@ -304,29 +322,184 @@ const reshape2 = (nums, r, c) => {
 //   )
 // );
 
-const numspl2 = (mat) => {
-  let rowArr = new Array(mat[0].length).fill(0),
-    colArr = new Array(mat[0].length).fill(0),
-    a = new Array(),
-    count = 0;
+const spiralMatrix2 = (mat) => {
+  let rowStart = 0,
+    rowEnd = mat.length - 1,
+    colStart = 0,
+    colEnd = mat[0].length - 1,
+    res = [];
+  while (rowStart <= rowEnd && colStart <= colEnd) {
+    for (let i = colStart; i <= colEnd; i++) {
+      res.push(mat[rowStart][i]);
+    }
+    console.log(1, res);
+    console.log(rowStart, rowEnd);
+    rowStart++;
+    for (let i = rowStart; i <= rowEnd; i++) {
+      res.push(mat[i][colEnd]);
+    }
+    console.log(2, res);
+    colEnd--;
+    if (rowStart <= rowEnd) {
+      for (let i = colEnd; i >= colStart; i--) {
+        res.push(mat[rowEnd][i]);
+      }
+    }
+    console.log(3, res);
+    rowEnd--;
+    if (colStart <= colEnd) {
+      for (let i = rowEnd; i >= rowStart; i--) {
+        res.push(mat[i][colStart]);
+      }
+    }
+    console.log(4, res);
+    colStart++;
+  }
+  return res;
+};
+// console.log(
+//   spiralMatrix2([
+//     [1, 11],
+//     [2, 12],
+//     [3, 13],
+//     [4, 14],
+//     [5, 15],
+//     [6, 16],
+//     [7, 17],
+//     [8, 18],
+//     [9, 19],
+//     [10, 20],
+//   ])
+// );
+
+// console.log(
+//   spiralMatrix2([
+//     [1, 2, 3, 4],
+//     [5, 6, 7, 8],
+//     [9, 10, 11, 12],
+//     [13, 14, 15, 16],
+//     [17, 18, 19, 20],
+//   ])
+// );
+// console.log(
+//   spiralMatrix2([
+//     [1, 2, 3, 4],
+//     [5, 6, 7, 8],
+//     [9, 10, 11, 12],
+//   ])
+// );
+
+const generateSpiralMatrix2 = (r, c) => {
+  let rowStart = 0,
+    rowEnd = r - 1,
+    colStart = 0,
+    colEnd = c - 1,
+    mat = [],
+    count = 1;
+  for (let i = 0; i < r; i++) {
+    mat[i] = [];
+  }
+
+  while (rowStart <= rowEnd && colStart <= colEnd) {
+    for (let i = colStart; i <= colEnd; i++) {
+      mat[rowStart][i] = count++;
+    }
+    rowStart++;
+    for (let i = rowStart; i <= rowEnd; i++) {
+      mat[i][colEnd] = count++;
+    }
+    colEnd--;
+    if (rowStart <= rowEnd) {
+      for (let i = colEnd; i >= colStart; i--) {
+        mat[rowEnd][i] = count++;
+      }
+    }
+    rowEnd--;
+    if (colStart <= colEnd) {
+      for (let i = rowEnd; i >= rowStart; i--) {
+        mat[i][colStart] = count++;
+      }
+    }
+    colStart++;
+  }
+  console.log(mat);
+};
+
+// console.log(generateSpiralMatrix2(5, 5));
+
+var doBinarySearch = function (array, targetValue) {
+  let start = 0,
+    end = array.length - 1;
+  for (let i = 0; i < array.length; i++) {
+    let midPoint = Math.floor(start + (end - start) / 2);
+    if (array[midPoint] === targetValue) {
+      return midPoint;
+    } else if (targetValue > array[midPoint]) {
+      start = midPoint + 1;
+    } else if (targetValue < array[midPoint]) {
+      end = midPoint - 1;
+    }
+  }
+  return -1;
+};
+
+// console.log(doBinarySearch([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97],5))
+
+const productExceptSelf2 = (arr) => {
+  let res = [],
+    leftProd = [],
+    rightProd = [];
+  leftProd[0] = 1;
+  rightProd[arr.length - 1] = 1;
+  for (let i = 1; i < arr.length; i++) {
+    leftProd[i] = arr[i - 1] * leftProd[i - 1];
+  }
+  for (let i = arr.length - 2; i >= 0; i--) {
+    rightProd[i] = arr[i + 1] * rightProd[i + 1];
+  }
+  for (let i = 0; i < arr.length; i++) {
+    res[i] = leftProd[i] * rightProd[i];
+  }
+  // let res = [];
+  // res[0] = 1;
+
+  // for (let i = 1; i < arr.length; i++) {
+  //   res[i] = arr[i - 1] * res[i - 1];
+  // }
+  // let rightCount = 1;
+
+  // for (let i = arr.length - 1; i >= 0; i--) {
+  //   res[i] = res[i] * rightCount;
+  //   rightCount = rightCount * arr[i];
+  // }
+  console.log(res);
+};
+
+// console.log(productExceptSelf2([1, 2, 3, 4, 5]));
+
+const numSpl2 = (mat) => {
+  let arr = [],
+    count = 0,
+    row = new Array(mat.length).fill(0),
+    col = new Array(mat[0].length).fill(0);
   for (let i = 0; i < mat.length; i++) {
     for (let j = 0; j < mat[i].length; j++) {
-      if (mat[i][j]) {
-        a.push([i, j]);
-        rowArr[i]++;
-        colArr[j]++;
+      if (mat[i][j] === 1) {
+        arr.push([i, j]);
+        row[i]++;
+        col[j]++;
       }
     }
   }
-  console.log({ a, rowArr, colArr });
-  for (let [r, c] of a) {
-    if (rowArr[r] === 1 && colArr[c] === 1) count++;
+  for (let [r, c] of arr) {
+    if (row[r] === 1 && col[c] === 1) {
+      count++;
+    }
   }
-  return count;
+  console.log(count);
 };
-
 // console.log(
-//   numspl2([
+//   numSpl2([
 //     [0, 0, 0, 0, 0],
 //     [1, 0, 0, 0, 0],
 //     [0, 1, 0, 0, 0],
@@ -335,21 +508,66 @@ const numspl2 = (mat) => {
 //   ])
 // );
 
-const spiralMatrix2 = (mat) => {
-  let res = [],
-    arr = mat.flat();
-  while (mat.length > 0) {
-    let top = mat.length > 0 ? mat.shift() : [];
-    let bottom = mat.length > 0 ? mat.pop() : [];
-    let right = [],
-      left = [];
-    for (let i = 0; i < mat.length; i++) {
-      right.push(mat[i].pop());
-      mat[i].length > 0 ? left.push(mat[i].shift()) : [];
+const bubSort = (arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length - i; j++) {
+      if (arr[j] > arr[j + 1]) {
+        const temp = arr[j];
+        arr[j] = arr[j + 1];
+        arr[j + 1] = temp;
+      }
     }
-    res.push(...top, ...right, ...bottom.reverse(), ...left.reverse());
-    if (arr.length === res.length) break;
   }
-  return res;
+  return arr;
 };
-// console.log(spiralMatrix2([[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]]));
+
+// console.log(bubSort([7, 3, 1, 4, 6, 2, 3]));
+
+const insSort = (arr) => {
+  for (let i = 1; i < arr.length; i++) {
+    let current = arr[i];
+    let j = i - 1;
+    console.log(j);
+    while (j >= 0 && arr[j] > current) {
+      arr[j + 1] = arr[j];
+      j--;
+    }
+    console.log(j);
+    arr[j + 1] = current;
+    console.log(arr);
+  }
+};
+
+// console.log(insSort([7, 3, 1, 4, 6, 2, 3]));
+console.log(insSort([8, 2, 4, 1, 3]));
+
+const lucky2 = (mat) => {
+  let lucky = [];
+  mat.forEach((item) => {
+    const min = Math.min(...item);
+    const minIndex = item.indexOf(min);
+    let max = Number.NEGATIVE_INFINITY;
+    for (let i = 0; i < mat.length; i++) {
+      max = Math.max(mat[i][minIndex], max);
+    }
+    if (min === max) {
+      lucky.push(min);
+    }
+  });
+  return lucky;
+};
+
+console.log(
+  lucky2([
+    [1, 10, 4, 2],
+    [9, 3, 8, 7],
+    [15, 16, 17, 12],
+  ])
+);
+console.log(
+  lucky2([
+    [3, 7, 8],
+    [9, 11, 13],
+    [15, 16, 17],
+  ])
+);
