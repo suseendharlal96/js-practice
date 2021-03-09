@@ -473,34 +473,66 @@ const numSquares = (n) => {
 
 // 74
 var searchMatrix = function (matrix, target) {
-  let rows = matrix.length,
-    cols = matrix[0].length,
-    left = 0,
-    right = rows * cols - 1;
-  while (left <= right) {
-    let midIndex = Math.floor((left + right) / 2);
-    let midElement = matrix[Math.floor(midIndex / cols)][midIndex % cols]; // matrix[row][col]
-    if (midElement === target) {
+  let bottles = 15,
+    exchange = 4,
+    drank = bottles,
+    remain = 0;
+  while (bottles >= exchange) {
+    remain = bottles % exchange;
+    bottles = Math.floor(bottles / exchange);
+    drank += bottles;
+    bottles += remain;
+  }
+  return drank;
+
+  // console.log(sum);
+
+  // let rows = matrix.length,
+  //   cols = matrix[0].length,
+  //   left = 0,
+  //   right = rows * cols - 1;
+  // while (left <= right) {
+  //   let midIndex = Math.floor(left + (right - left) / 2);
+  //   let midElement = matrix[Math.floor(midIndex / cols)][midIndex % cols]; // matrix[row][col]
+  //   if (midElement === target) {
+  //     return true;
+  //   } else if (target < midElement) {
+  //     right = midIndex - 1;
+  //   } else {
+  //     left = midIndex + 1;
+  //   }
+  // }
+  // return false;
+
+  let row = 0,
+    col = matrix[0].length - 1;
+  while (row < matrix.length) {
+    if (matrix[row][col] === target) {
       return true;
-    } else if (target < midElement) {
-      right = midIndex - 1;
-    } else {
-      left = midIndex + 1;
     }
+    if (matrix[row][col] < target) {
+      row++;
+    } else {
+      col--;
+      if (col < 0) {
+        row++;
+      }
+    }
+    // console.log({ row, col });
   }
   return false;
 };
 
-// console.log(
-//   searchMatrix(
-//     [
-//       [1, 3, 5, 7],
-//       [10, 11, 16, 18],
-//       [23, 30, 34, 60],
-//     ],
-//     23
-//   )
-// );
+console.log(
+  searchMatrix(
+    [
+      [1, 3, 5, 7],
+      [10, 11, 16, 18],
+      [23, 30, 34, 60],
+    ],
+    23
+  )
+);
 
 // 240
 
@@ -519,22 +551,37 @@ var searchMatrix2 = function (matrix, target) {
         row++;
       }
     }
+    console.log({ row, col });
   }
   return false;
+
+  // let row = 0,
+  //   col = matrix[0].length - 1;
+  // while (row < matrix.length && col >= 0) {
+  //   if (matrix[row][col] === target) {
+  //     return true;
+  //   }
+  //   if (matrix[row][col] < target) {
+  //     row++;
+  //   } else {
+  //     col--;
+  //   }
+  // }
+  // return false;
 };
 
-// console.log(
-//   searchMatrix2(
-//     [
-//       ([1, 4, 7, 11, 15],
-//       [2, 5, 8, 12, 19],
-//       [3, 6, 9, 16, 22],
-//       [10, 13, 14, 17, 24],
-//       [18, 21, 23, 26, 30]),
-//     ],
-//     3
-//   )
-// );
+console.log(
+  searchMatrix2(
+    [
+      [1, 4, 7, 11, 15],
+      [2, 5, 8, 12, 19],
+      [3, 6, 9, 16, 22],
+      [10, 13, 14, 17, 24],
+      [18, 21, 23, 26, 30],
+    ],
+    3
+  )
+);
 
 var findEvenDigitNumbers = function (nums) {
   let count = 0;
@@ -1998,40 +2045,41 @@ var containsNearbyDuplicate = function (nums, k) {
 
 // 1329
 var diagonalSort = function (mat) {
-  let obj = {};
-  for (let i = 0; i < mat.length; i++) {
-    for (let j = 0; j < mat[0].length; j++) {
-      console.log({ i, j });
-      let d = i - j;
-      if (!obj[d]) {
-        obj[d] = [];
+  let rows = mat.length - 1,
+    cols = mat[0].length;
+
+  const sort = (i, j) => {
+    i++;
+    j++;
+    while (i <= rows && j <= cols) {
+      while (i > 0 && j > 0 && mat[i][j] < mat[i - 1][j - 1]) {
+        [mat[i][j], mat[i - 1][j - 1]] = [mat[i - 1][j - 1], mat[i][j]];
+        i--;
+        j--;
       }
-      obj[d].push(mat[i][j]);
+      i++;
+      j++;
     }
+  };
+
+  // traverse the rows
+  for (let i = 0; i <= rows; i++) {
+    sort(i, 0);
   }
-  console.log(obj);
-  for (let key in obj) {
-    obj[key].sort((a, b) => {
-      return a - b;
-    });
-  }
-  console.log(obj);
-  for (let i = 0; i < mat.length; i++) {
-    for (let j = 0; j < mat[0].length; j++) {
-      let d = i - j;
-      mat[i][j] = obj[d].shift();
-    }
+  // traverse the cols
+  for (let i = 1; i <= cols; i++) {
+    sort(0, i);
   }
   return mat;
 };
 
-// console.log(
-//   diagonalSort([
-//     [3, 3, 1, 1],
-//     [2, 2, 1, 2],
-//     [1, 1, 1, 2],
-//   ])
-// );
+console.log(
+  diagonalSort([
+    [3, 3, 1, 1],
+    [2, 2, 1, 2],
+    [1, 1, 1, 2],
+  ])
+);
 
 // console.log(
 //   diagonalSort([
@@ -2785,8 +2833,8 @@ var findDuplicates = function (nums) {
   // console.log(nums);
 };
 
-console.log(findDuplicates([4, 3, 2, 7, 8, 2, 3, 1, 4]));
-console.log(findDuplicates([1]));
+// console.log(findDuplicates([4, 3, 2, 7, 8, 2, 3, 1, 4]));
+// console.log(findDuplicates([1]));
 
 // 75
 var sortColors = function (nums) {
@@ -2887,6 +2935,31 @@ var threeSum = function (nums) {
 // console.log(threeSum([-1, 0, 1, 2, -1, -4]));
 // console.log(threeSum([]));
 
+// 16
+var threeSumClosest = function (nums, target) {
+  let result = nums[0] + nums[1] + nums[2];
+  const sorted = nums.sort((a, b) => a - b);
+  for (let i = 0; i < sorted.length - 2; i++) {
+    let start = i + 1,
+      end = sorted.length - 1;
+    while (start < end) {
+      let currSum = sorted[i] + sorted[start] + sorted[end];
+      if (currSum > target) {
+        end--;
+      } else {
+        start++;
+      }
+      console.log(currSum);
+      if (Math.abs(currSum - target) < Math.abs(result - target)) {
+        result = currSum;
+      }
+    }
+  }
+  console.log(result);
+};
+
+// console.log(threeSumClosest([-1, 2, 1, -4], 1));
+
 // 5
 var longestPalindrome = function (s) {
   const expandAroundCenter = (s, left, right) => {
@@ -2918,4 +2991,138 @@ var longestPalindrome = function (s) {
   return s.substring(start, end + 1);
 };
 
-console.log(longestPalindrome("aba"));
+// console.log(longestPalindrome("aba"));
+
+var findTheDistanceValue = function (arr1, arr2, d) {
+  // let ans = arr1.length;
+  // console.log(ans);
+  // for (let i = 0; i < arr1.length; i++) {
+  //   for (let j = 0; j < arr2.length; j++) {
+  //     if (Math.abs(arr1[i] - arr2[j]) <= d) {
+  //       console.log(i,j)
+  //       console.log(arr1[i],arr2[i])
+  //       ans--;
+  //       break;
+  //     }
+  //   }
+  // }
+  // return ans;
+
+  let res = 0;
+  for (let x of arr1) {
+    let bool = true;
+    for (let y of arr2) {
+      if (Math.abs(x - y) <= d) {
+        console.log(x, y);
+        bool = false;
+        break;
+      }
+    }
+    if (bool) res++;
+  }
+  return res;
+};
+// console.log(findTheDistanceValue([4, 5, 8], [10, 9, 1, 8], 2));
+
+// 1399
+var countLargestGroup = function (n) {
+  const sumDigit02 = (n) => {
+    console.log(n);
+    let sum = 0;
+    while (n) {
+      sum += n % 10;
+      n = Math.floor(n / 10);
+    }
+
+    return sum;
+  };
+
+  const map = new Map();
+  let max = 0;
+  for (let i = 1; i <= n; i++) {
+    const sum = sumDigit02(i);
+    console.log(sum);
+
+    map.set(sum, map.get(sum) + 1 || 1);
+
+    max = Math.max(map.get(sum), max);
+  }
+
+  console.log(map);
+
+  let count = 0;
+  for (let value of map.values()) {
+    if (max === value) count++;
+  }
+
+  return count;
+};
+
+// console.log(countLargestGroup(24));
+
+// 9
+var isPalindrome = function (x) {
+  let numStr = x.toString();
+  return numStr === numStr.split("").reverse().join("");
+};
+
+console.log(isPalindrome(-121));
+
+// 709
+var toLowerCase = function (str) {
+  let res = "";
+  for (let i = 0; i < str.length; i++) {
+    let charCode = str.charCodeAt(i);
+    console.log(charCode);
+    if (65 <= charCode && charCode <= 90 && str[i] === str[i].toUpperCase()) {
+      console.log(str[i]);
+      res = res + String.fromCharCode(str.charCodeAt(i) + 32);
+    } else {
+      console.log(str[i]);
+      res = res + str[i];
+    }
+  }
+  return res;
+};
+
+// console.log(toLowerCase("He&LLo"));
+
+// 21
+var mergeTwoLists = function (l1, l2) {
+  let res = [];
+  for (let i = 0; i < l1.length; i++) {
+    res.push(...l1.slice(i, i + 1), ...l2.slice(i, i + 1));
+  }
+  return res;
+};
+
+// console.log(mergeTwoLists([1, 2, 4], [1, 3, 4]));
+
+// 1002
+var commonChars = function (A) {
+  let m = new Map(),
+    res = [];
+  A.forEach((word) => {
+    for (let i = 0; i < word.length; i++) {
+      m.set(word[i], m.get(word[i]) + 1 || 1);
+    }
+  });
+  console.log(m);
+  m.forEach((value, key) => {
+    // if (value % A.length === 0) {
+    let a = Math.floor(value / A.length);
+    for (let i = 0; i < a; i++) {
+      res.push(key);
+    }
+    // } else {
+    //   let a = Math.floor(value / A.length);
+    //   for (let i = 0; i < a; i++) {
+    //     res.push(key);
+    //   }
+    // }
+  });
+  console.log(res);
+};
+
+// console.log(commonChars(["cl", "lock", "cook"]));
+// console.log(commonChars(["bella", "label", "roller"]));
