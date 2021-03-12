@@ -29,7 +29,7 @@ const printStars = (N) => {
   document.write("</br>");
   document.write("</br>");
 };
-// printStars(10);
+printStars(10);
 
 // var num, p, q, m, n;
 // num = 10;
@@ -84,7 +84,7 @@ const startPattern = (n) => {
   }
 };
 
-console.log(startPattern(5));
+// console.log(startPattern(5));
 
 const printNum2 = (num) => {
   let a = 1;
@@ -135,6 +135,18 @@ const printWithZero = (num) => {
 };
 
 // printWithZero(10);
+
+const numPattern = (num) => {
+  for (let i = 1; i <= num; i++) {
+    for (let j = 1; j <= i; j++) {
+      document.write(j);
+      document.write("&nbsp&nbsp");
+    }
+    document.write("</br>");
+  }
+};
+
+console.log(numPattern(2));
 
 const mulPattern = (num) => {
   let a = 2;

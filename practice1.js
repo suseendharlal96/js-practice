@@ -616,6 +616,7 @@ var maxSubArray = function (nums) {
 
 // console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]));
 
+// 66
 var plusOne = function (digits) {
   let isNinePresent = true;
   for (let i = digits.length - 1; i >= 0; i--) {
@@ -627,11 +628,13 @@ var plusOne = function (digits) {
       break;
     }
   }
-  if (isNinePresent) digits.unshift(1);
+  if (isNinePresent) digits.splice(0, 0, 1);
   return digits;
 };
 
-// console.log(plusOne([9, 9, 9]));
+console.log(plusOne([1, 2, 3]));
+console.log(plusOne([8, 9, 9]));
+// console.log(plusOne([6, 1, 4, 5, 3, 9, 0, 1, 9, 5, 1, 8, 6, 7, 0, 5, 5, 4, 3]));
 
 var merge = function (nums1, m, nums2, n) {
   if (n === 0) return nums1;
@@ -1521,7 +1524,7 @@ var pascalTriangle = function (numRows) {
   }
   return triangle;
 };
-// console.log(pascalTriangle(5));
+console.log(pascalTriangle(5));
 
 // 119
 var pascalTriangle2 = function (rowIndex) {
@@ -2937,28 +2940,32 @@ var threeSum = function (nums) {
 
 // 16
 var threeSumClosest = function (nums, target) {
-  let result = nums[0] + nums[1] + nums[2];
-  const sorted = nums.sort((a, b) => a - b);
-  for (let i = 0; i < sorted.length - 2; i++) {
+  let minDiff = Number.MAX_VALUE,
+    res = 0;
+  nums.sort((a, b) => a - b);
+  for (let i = 0; i < nums.length - 2; i++) {
+    if (nums[i] === nums[i - 1]) continue; //avoid duplicate
     let start = i + 1,
-      end = sorted.length - 1;
+      end = nums.length - 1;
     while (start < end) {
-      let currSum = sorted[i] + sorted[start] + sorted[end];
-      if (currSum > target) {
+      const sum = nums[i] + nums[start] + nums[end];
+      if (sum === target) return sum;
+      if (sum > target) {
         end--;
-      } else {
+      } else if (sum < target) {
         start++;
       }
-      console.log(currSum);
-      if (Math.abs(currSum - target) < Math.abs(result - target)) {
-        result = currSum;
+      let currDiff = Math.abs(target - sum);
+      if (currDiff < minDiff) {
+        minDiff = currDiff;
+        res = sum;
       }
     }
   }
-  console.log(result);
+  return res;
 };
 
-// console.log(threeSumClosest([-1, 2, 1, -4], 1));
+console.log(threeSumClosest([-1, 2, 1, -4], 1));
 
 // 5
 var longestPalindrome = function (s) {
@@ -3126,3 +3133,101 @@ var commonChars = function (A) {
 
 // console.log(commonChars(["cl", "lock", "cook"]));
 // console.log(commonChars(["bella", "label", "roller"]));
+
+// 73
+var setZeroes = function (mat) {
+  let rows = mat.length,
+    cols = mat[0].length,
+    rowIndex = new Array(rows).fill(-1),
+    colIndex = new Array(cols).fill(-1);
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if (mat[i][j] === 0) {
+        rowIndex[i] = 0;
+        colIndex[j] = 0;
+      }
+    }
+  }
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+      if ((rowIndex[i] === 0 || colIndex[j] === 0) && mat[i][j] !== 0) {
+        mat[i][j] = 0;
+      }
+    }
+  }
+  console.log(mat);
+};
+// console.log(
+//   setZeroes([
+//     [1, 1, 1],
+//     [1, 0, 1],
+//     [1, 1, 1],
+//   ])
+// );
+// console.log(
+//   setZeroes([
+//     [0, 1, 2, 0],
+//     [3, 4, 5, 2],
+//     [1, 3, 1, 5],
+//   ])
+// );
+
+// 75
+var sortColors = function (nums) {
+  let start = 0,
+    end = nums.length - 1;
+  for (let i = 0; i <= end; i++) {
+    if (nums[i] == 0) {
+      [nums[start], nums[i]] = [nums[i], nums[start]];
+      start++;
+    } else if (nums[i] == 2) {
+      [nums[end], nums[i]] = [nums[i], nums[end]];
+      end--;
+      i--;
+    }
+  }
+  return nums;
+};
+
+// console.log(sortColors([2, 0, 2, 1, 1, 0]));
+// console.log(sortColors([2, 0, 1]));
+// console.log(sortColors([1, 2, 0]));
+
+// 121
+var maxProfit = function (prices) {
+  let res = 0,
+    min = Number.MAX_VALUE;
+  for (let i = 0; i < prices.length - 1; i++) {
+    min = Math.min(min, prices[i]);
+    res = Math.max(res, prices[i + 1] - min);
+  }
+  return res;
+};
+
+// console.log(maxProfit([7, 1, 5, 3, 6, 4]));
+// console.log(maxProfit([7, 6, 4, 3, 1]));
+// console.log(maxProfit([2, 4, 1]));
+
+// 122
+var maxProfit2 = function (prices) {
+  let max = 0;
+  for (let i = 1; i < prices.length; i++)
+    if (prices[i] - prices[i - 1] > 0) max += prices[i] - prices[i - 1];
+  return max;
+};
+// console.log(maxProfit2([7, 1, 5, 3, 6, 4]));
+
+// 771
+var numJewelsInStones = function (jewels, stones) {
+  let sum = 0;
+  for (let i = 0; i < stones.length; i++) {
+    if (jewels.search(stones[i]) !== -1) {
+      sum += 1;
+    }
+  }
+  console.log(sum);
+};
+
+// console.log(numJewelsInStones("z", "ZZ"));

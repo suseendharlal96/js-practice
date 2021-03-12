@@ -335,31 +335,36 @@ const spiralMatrix2 = (mat) => {
     for (let i = colStart; i <= colEnd; i++) {
       res.push(mat[rowStart][i]);
     }
-    console.log(1, res);
-    console.log(rowStart, rowEnd);
     rowStart++;
     for (let i = rowStart; i <= rowEnd; i++) {
       res.push(mat[i][colEnd]);
     }
-    console.log(2, res);
     colEnd--;
     if (rowStart <= rowEnd) {
       for (let i = colEnd; i >= colStart; i--) {
         res.push(mat[rowEnd][i]);
       }
     }
-    console.log(3, res);
     rowEnd--;
     if (colStart <= colEnd) {
       for (let i = rowEnd; i >= rowStart; i--) {
         res.push(mat[i][colStart]);
       }
     }
-    console.log(4, res);
     colStart++;
   }
   return res;
 };
+// console.log(
+//   spiralMatrix2([
+//     [1, 2, 3, 4],
+//     [5, 6, 7, 8],
+//     [9, 10, 11, 12],
+//     [13, 14, 15, 16],
+//     [17, 18, 19, 20],
+//   ])
+// );
+
 // console.log(
 //   spiralMatrix2([
 //     [1, 11],
@@ -375,15 +380,6 @@ const spiralMatrix2 = (mat) => {
 //   ])
 // );
 
-// console.log(
-//   spiralMatrix2([
-//     [1, 2, 3, 4],
-//     [5, 6, 7, 8],
-//     [9, 10, 11, 12],
-//     [13, 14, 15, 16],
-//     [17, 18, 19, 20],
-//   ])
-// );
 // console.log(
 //   spiralMatrix2([
 //     [1, 2, 3, 4],
@@ -428,7 +424,7 @@ const generateSpiralMatrix2 = (r, c) => {
   console.log(mat);
 };
 
-// console.log(generateSpiralMatrix2(5, 5));
+console.log(generateSpiralMatrix2(5, 4));
 
 var doBinarySearch = function (array, targetValue) {
   let start = 0,
@@ -453,20 +449,6 @@ var doBinarySearch = function (array, targetValue) {
 // );
 
 const productExceptSelf2 = (arr) => {
-  let res = [],
-    leftProd = [],
-    rightProd = [];
-  leftProd[0] = 1;
-  rightProd[arr.length - 1] = 1;
-  for (let i = 1; i < arr.length; i++) {
-    leftProd[i] = arr[i - 1] * leftProd[i - 1];
-  }
-  for (let i = arr.length - 2; i >= 0; i--) {
-    rightProd[i] = arr[i + 1] * rightProd[i + 1];
-  }
-  for (let i = 0; i < arr.length; i++) {
-    res[i] = leftProd[i] * rightProd[i];
-  }
   // let res = [];
   // res[0] = 1;
 
@@ -479,10 +461,28 @@ const productExceptSelf2 = (arr) => {
   //   res[i] = res[i] * rightCount;
   //   rightCount = rightCount * arr[i];
   // }
-  console.log(res);
+
+  let res = [],
+    leftProd = [],
+    rightProd = [];
+  leftProd[0] = 1;
+  rightProd[arr.length - 1] = 1;
+
+  // left products
+  for (let i = 1; i < arr.length; i++) {
+    leftProd[i] = leftProd[i - 1] * arr[i - 1];
+  }
+  // right products
+  for (let i = arr.length - 2; i >= 0; i--) {
+    rightProd[i] = rightProd[i + 1] * arr[i + 1];
+  }
+  for (let i = 0; i < arr.length; i++) {
+    res[i] = leftProd[i] * rightProd[i];
+  }
+  return res;
 };
 
-// console.log(productExceptSelf2([1, 2, 3, 4, 5]));
+console.log(productExceptSelf2([1, 2, 3, 4, 5]));
 
 const numSpl2 = (mat) => {
   let arr = [],
@@ -519,16 +519,17 @@ const bubSort = (arr) => {
   for (let i = 0; i < arr.length; i++) {
     for (let j = 0; j < arr.length - i; j++) {
       if (arr[j] > arr[j + 1]) {
-        const temp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j + 1] = temp;
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+        // const temp = arr[j];
+        // arr[j] = arr[j + 1];
+        // arr[j + 1] = temp;
       }
     }
   }
   return arr;
 };
 
-// console.log(bubSort([7, 3, 1, 4, 6, 2, 3]));
+console.log(bubSort([7, 3, 1, 4, 6, 2, 3]));
 
 const insSort = (arr) => {
   for (let i = 1; i < arr.length; i++) {
@@ -580,32 +581,31 @@ const lucky2 = (mat) => {
 // );
 
 const printDiagMat1 = (mat) => {
-  // top left to bottom right
-  let row = mat.length - 1;
-  let col = mat[0].length - 1;
-  let res = [];
+  // top left to bottom right(upward direction)
+  let rows = mat.length - 1,
+    cols = mat[0].length - 1,
+    res = [];
   // traverse rows
-  for (let i = 0; i <= row; i++) {
+  for (let i = 0; i <= rows; i++) {
     let j = 0,
       k = i;
-    while (k >= 0) {
+    while (j <= i) {
       res.push(mat[k][j]);
       k -= 1;
       j += 1;
     }
   }
-
   // traverse cols
-  for (let i = 1; i <= col; i++) {
-    let j = i,
-      k = row;
-    while (j <= col) {
-      res.push(mat[k][j]);
-      k -= 1;
-      j += 1;
+  for (let i = 1; i <= cols; i++) {
+    let j = rows,
+      k = i;
+    while (j >= 0 && k <= cols) {
+      res.push(mat[j][k]);
+      j -= 1;
+      k += 1;
     }
   }
-  return res;
+  console.log(res);
 };
 
 // console.log(
@@ -624,44 +624,113 @@ const printDiagMat1 = (mat) => {
 // );
 
 const printDiagMat2 = (mat) => {
-  // bottom left top right
-  let row = mat.length - 1,
-    col = mat[0].length - 1,
+  // bottom left top right(downward direction)
+  let rows = mat.length - 1,
+    cols = mat[0].length - 1,
     res = [];
+
   // traverse rows
-  for (let i = row; i >= 0; i--) {
+  for (let i = rows; i >= 0; i--) {
     let j = i,
       k = 0;
-    while (k <= row && j <= row) {
+    while (j <= rows) {
       res.push(mat[j][k]);
-      k += 1;
       j += 1;
+      k += 1;
     }
   }
-
   // traverse cols
-  for (let i = 1; i <= col; i++) {
-    let j = 0,
-      k = i;
-    while (j <= row && k <= col) {
-      res.push(mat[j][k]);
-      j += 1;
+  for (let i = 1; i <= cols; i++) {
+    let j = i,
+      k = 0;
+    while (k <= rows && j <= cols) {
+      res.push(mat[k][j]);
       k += 1;
+      j += 1;
     }
   }
-  return res;
+  console.log(res);
 };
-console.log(
-  printDiagMat2([
-    [3, 3, 1, 1, 7],
-    [2, 2, 1, 2, 5],
-    [1, 1, 1, 2, 4],
-  ])
-);
-console.log(
-  printDiagMat2([
-    [3, 7, 8],
-    [9, 11, 13],
-    [15, 16, 17],
-  ])
-);
+// console.log(
+//   printDiagMat2([
+//     [3, 3, 1, 1, 7],
+//     [2, 2, 1, 2, 5],
+//     [1, 1, 1, 2, 4],
+//   ])
+// );
+// console.log(
+//   printDiagMat2([
+//     [3, 7, 8],
+//     [9, 11, 13],
+//     [15, 16, 17],
+//   ])
+// );
+
+const twoSum2 = (arr, target) => {
+  let m = new Map();
+  for (let i = 0; i < arr.length; i++) {
+    if (m.has(target - arr[i])) {
+      return [m.get(target - arr[i]), i];
+    }
+    m.set(arr[i], i);
+  }
+};
+// console.log(twoSum2([2, 7, 11, 15], 9));
+
+const diagonalSort2 = (mat) => {
+  // top-left to bottom-right(downward direction)
+
+  let rows = mat.length - 1,
+    cols = mat[0].length - 1;
+
+  const sortDiag = (i, j) => {
+    i++;
+    j++;
+    while (i <= rows && j <= cols) {
+      while (i > 0 && j > 0 && mat[i - 1][j - 1] > mat[i][j]) {
+        [mat[i][j], mat[i - 1][j - 1]] = [mat[i - 1][j - 1], mat[i][j]];
+        i--;
+        j--;
+      }
+      i++;
+      j++;
+    }
+  };
+
+  // traverse rows
+  for (let i = 0; i <= rows; i++) {
+    sortDiag(i, 0);
+  }
+  // traverse cols
+  for (let i = 1; i <= cols; i++) {
+    sortDiag(0, i);
+  }
+  return mat;
+};
+
+// console.log(
+//   diagonalSort2([
+//     [11, 25, 66, 1, 69, 7],
+//     [23, 55, 17, 45, 15, 52],
+//     [75, 31, 36, 44, 58, 8],
+//     [22, 27, 33, 25, 68, 4],
+//     [84, 28, 14, 11, 5, 50],
+//   ])
+// );
+
+const maxProdSubArray = (arr) => {
+  let max = arr[0],
+    min = arr[0],
+    result = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    const num = arr[i];
+    const minProd = num * min;
+    const maxProd = num * max;
+    max = Math.max(num, maxProd, minProd);
+    min = Math.min(num, maxProd, minProd);
+    result = Math.max(max, result);
+  }
+  return result;
+};
+console.log(maxProdSubArray([2, 3, -2, 4]));
+console.log(maxProdSubArray([-2, 0, -1]));
