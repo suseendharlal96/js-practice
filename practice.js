@@ -20,9 +20,9 @@ const smallestSubArrayGreaterOrEqBySum2 = (arr, t) => {
   return { min: subArr.length, subArr };
 };
 
-console.log(
-  smallestSubArrayGreaterOrEqBySum2([4, 2, -2, 7, -4, 1, 2, 4, 1, 0], 8)
-);
+// console.log(
+//   smallestSubArrayGreaterOrEqBySum2([4, 2, -2, 7, -4, 1, 2, 4, 1, 0], 8)
+// );
 
 const longestSubArrayEqBySum2 = (arr, t) => {
   let curr = 0,
@@ -45,51 +45,24 @@ const longestSubArrayEqBySum2 = (arr, t) => {
   return { subArr, boundary };
 };
 
-console.log(longestSubArrayEqBySum2([1, 2, 3, 5, 1, 12], 12));
-console.log(
-  longestSubArrayEqBySum2([1, 2, 3, 4, 5, 0, 0, 0, 0, 8, 7, 8, 19, 20], 15)
-);
+// console.log(longestSubArrayEqBySum2([1, 2, 3, 5, 1, 12], 12));
+// console.log(
+//   longestSubArrayEqBySum2([1, 2, 3, 4, 5, 0, 0, 0, 0, 8, 7, 8, 19, 20], 15)
+// );
 
 const maxSumOfSubArray2 = (arr) => {
-  // let max = arr[0],
-  //   curr = arr[0],
-  //   sub = [];
-  //   for (let i = 1; i < arr.length; i++) {
-  //     curr = Math.max(arr[i], curr + arr[i]);
-  //     console.log(curr);
-  //     max = Math.max(max, curr);
-  //   }
-  //   return max;
-
-  let max = Number.NEGATIVE_INFINITY;
-  for (let i = 0; i < arr.length; i++) {
-    if (sub.length === 0) {
-      max = Math.max(arr[i], max);
-    } else {
-      // let total = sub.reduce((prev, curr) => prev + curr, 0);
-      // console.log(total);
-      // if (arr[i] > 0) {
-      if (max + arr[i] > max) {
-        sub = [arr[i]];
-        max = arr[i];
-        // console.log(sub);
-      } else {
-        sub.push(arr[i]);
-      }
-      //   }
-      //   sub.forEach((item) => {
-      //       sub.splice(sub.indexOf(item), 1);
-      //       sub = [arr[i]];
-      //     } else {
-      //       console.log(sub);
-      //     }
-      //   });
-    }
+  let max = arr[0],
+    curr = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    curr = Math.max(arr[i], curr + arr[i]);
+    console.log(curr);
+    max = Math.max(max, curr);
   }
-  return sub;
+  return max;
 };
 
-// console.log(maxSumOfSubArray2([-2, 2, 5, -11, 6]));
+console.log(maxSumOfSubArray2([-2, 2, 5, -11, 6]));
+console.log(maxSumOfSubArray2([5, 4, -1, 7, 8]));
 
 var luckyNumbers = function (matrix) {
   let data = [];
@@ -122,23 +95,13 @@ var luckyNumbers = function (matrix) {
 // This rotation is for matrix whose rows and cols dont match or match
 var rotate90 = (arr) => {
   let a = [];
-  // transpose
   for (let i = 0; i < arr[0].length; i++) {
     const temp = [];
-    for (let j = 0; j < arr.length; j++) {
+    for (let j = arr.length; j >= 0; j--) {
       temp.push(arr[j][i]);
     }
-    // to rotate
-    a[i] = temp.reverse();
+    a[i] = temp;
   }
-  // swap horizondal to rotate without reverse
-  // for (let i = 0; i < a.length; i++) {
-  //   for (let j = 0; j < a[i].length / 2; j++) {
-  //     const temp = a[i][j];
-  //     a[i][j] = a[i][a[i].length - 1];
-  //     a[i][a[i].length - 1] = temp;
-  //   }
-  // }
   return a;
 };
 
@@ -148,6 +111,15 @@ var rotate90 = (arr) => {
 //     [5, 6, 7, 8, 14],
 //     [9, 10, 11, 12, 15],
 //     [16, 17, 18, 19, 20],
+//   ])
+// );
+// console.log(
+//   rotate90Two([
+//     [1, 2, 3],
+//     [4, 5, 6],
+//     [7, 8, 9],
+//     [10, 11, 12],
+//     [13, 14, 15],
 //   ])
 // );
 // console.log(
@@ -280,7 +252,7 @@ const pascal = (rows) => {
   }
   return arr;
 };
-console.log(pascal(6));
+// console.log(pascal(6));
 
 const shift = (arr, k) => {
   let a = arr.flat();
@@ -319,9 +291,10 @@ const reshape2 = (nums, r, c) => {
 //     [
 //       [1, 2],
 //       [3, 4],
+//       [5, 6],
 //     ],
-//     1,
-//     4
+//     2,
+//     3
 //   )
 // );
 
@@ -424,7 +397,7 @@ const generateSpiralMatrix2 = (r, c) => {
   console.log(mat);
 };
 
-console.log(generateSpiralMatrix2(5, 4));
+// console.log(generateSpiralMatrix2(5, 4));
 
 var doBinarySearch = function (array, targetValue) {
   let start = 0,
@@ -482,7 +455,7 @@ const productExceptSelf2 = (arr) => {
   return res;
 };
 
-console.log(productExceptSelf2([1, 2, 3, 4, 5]));
+// console.log(productExceptSelf2([1, 2, 3, 4, 5]));
 
 const numSpl2 = (mat) => {
   let arr = [],
@@ -529,7 +502,7 @@ const bubSort = (arr) => {
   return arr;
 };
 
-console.log(bubSort([7, 3, 1, 4, 6, 2, 3]));
+// console.log(bubSort([7, 3, 1, 4, 6, 2, 3]));
 
 const insSort = (arr) => {
   for (let i = 1; i < arr.length; i++) {
@@ -718,7 +691,7 @@ const diagonalSort2 = (mat) => {
 //   ])
 // );
 
-const maxProdSubArray = (arr) => {
+const maxProdSubArray2 = (arr) => {
   let max = arr[0],
     min = arr[0],
     result = arr[0];
@@ -732,5 +705,7 @@ const maxProdSubArray = (arr) => {
   }
   return result;
 };
-console.log(maxProdSubArray([2, 3, -2, 4]));
-console.log(maxProdSubArray([-2, 0, -1]));
+// console.log(maxProdSubArray2([2, 3, -2, 4]));
+// console.log(maxProdSubArray2([-2, 0, -1]));
+
+
