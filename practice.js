@@ -522,6 +522,84 @@ const insSort = (arr) => {
 // console.log(insSort([7, 3, 1, 4, 6, 2, 3]));
 // console.log(insSort([8, 2, 4, 1, 3]));
 
+// const mergeSort = (arr) => {
+//   const compare = (left, right, arr) => {
+//     let i, j, k;
+//     i = j = k = 0;
+//     while (i < left.length && j < right.length) {
+//       if (left[i] < right[j]) {
+//         arr[k++] = left[i++];
+//       } else {
+//         arr[k++] = right[j++];
+//       }
+//     }
+//     while (i < left.length) {
+//       arr[k++] = left[i++];
+//     }
+//     while (j < right.length) {
+//       arr[k++] = right[j++];
+//     }
+//   };
+
+//   if (arr.length <= 1) return;
+
+//   let mid = Math.floor(arr.length / 2),
+//     left = [],
+//     right = [];
+
+//   for (let i = 0; i < mid; i++) {
+//     left.push(arr[i]);
+//   }
+//   for (let i = 0; i < arr.length - mid; i++) {
+//     right.push(arr[mid + i]);
+//   }
+
+//   mergeSort(left);
+//   mergeSort(right);
+//   compare(left, right, arr);
+//   return arr;
+// };
+const mergeSort = (arr) => {
+  const compare = (left, right, a) => {
+    let i = 0,
+      j = 0,
+      k = 0;
+    while (i < left.length && j < right.length) {
+      if (left[i] < right[j]) {
+        a[k++] = left[i++];
+      } else {
+        a[k++] = right[j++];
+      }
+    }
+    while (i < left.length) {
+      a[k++] = left[i++];
+    }
+    while (j < right.length) {
+      a[k++] = right[j++];
+    }
+  };
+
+  if (arr.length <= 1) return;
+
+  let mid = Math.floor(arr.length / 2),
+    left = [],
+    right = [];
+
+  for (let i = 0; i < mid; i++) {
+    left.push(arr[i]);
+  }
+  for (let i = 0; i < arr.length - mid; i++) {
+    console.log(i);
+    right.push(arr[mid + i]);
+  }
+
+  mergeSort(left);
+  mergeSort(right);
+  compare(left, right, arr);
+  return arr;
+};
+console.log(mergeSort([5, 4, 3, 2, 1]));
+
 const lucky2 = (mat) => {
   let lucky = [];
   mat.forEach((item) => {
@@ -708,4 +786,280 @@ const maxProdSubArray2 = (arr) => {
 // console.log(maxProdSubArray2([2, 3, -2, 4]));
 // console.log(maxProdSubArray2([-2, 0, -1]));
 
+const recur = (n) => {
+  if (n > 0) {
+    console.log(n);
+    recur(n - 1);
+  }
+  console.log(n);
+};
 
+// recur(3);
+
+const searchRange2 = (nums, target) => {
+  const firstIndex2 = () => {
+    let left = 0,
+      right = nums.length - 1,
+      index = -1;
+    while (left <= right) {
+      let mid = Math.floor(left + (right - left) / 2);
+      if (nums[mid] >= target) {
+        right = mid - 1;
+      } else {
+        left = mid + 1;
+      }
+      if (nums[mid] === target) {
+        index = mid;
+      }
+    }
+    return index;
+  };
+  const lastIndex2 = () => {
+    let left = 0,
+      right = nums.length - 1,
+      index = -1;
+    while (left <= right) {
+      let mid = Math.floor(left + (right - left) / 2);
+      if (nums[mid] <= target) {
+        left = mid + 1;
+      } else {
+        right = mid - 1;
+      }
+      if (nums[mid] === target) {
+        index = mid;
+      }
+    }
+    return index;
+  };
+  let res = [];
+
+  res[0] = firstIndex2();
+  res[1] = lastIndex2();
+  return res;
+};
+console.log(searchRange2([5, 7, 7, 8, 8, 10], 8));
+
+const sortParity = (A) => {
+  // let i = 0;
+  // for (let _ of arr) {
+  //   if (arr[i] % 2 !== 0) {
+  //     arr.push(arr[i]);
+  //     arr.splice(i, 1);
+  //   } else {
+  //     i++;
+  //   }
+  // }
+
+  // let evenP = 0,
+  //   oddP = arr.length - 1,
+  //   res = [];
+  // for (let i = 0; i < arr.length; i++) {
+  //   if (arr[i] % 2 === 0) {
+  //     res[evenP++] = arr[i];
+  //   } else {
+  //     res[oddP--] = arr[i];
+  //   }
+  // }
+
+  let i = 0,
+    j = A.length - 1;
+  while (i < j) {
+    if (A[i] % 2 > A[j] % 2) {
+      [A[i], A[j]] = [A[j], A[i]];
+    }
+    if (A[i] % 2 == 0) i++;
+    if (A[j] % 2 !== 0) j--;
+  }
+
+  return A;
+
+  // console.log(res);
+};
+// console.log(sortParity([3, 1, 2, 4]));
+
+const sortParity2 = (arr) => {
+  // let eP = 0,
+  //   oP = arr.length - 1;
+  // while (eP < oP) {
+  //   if (arr[eP] % 2 > arr[oP] % 2) {
+  //     [arr[eP], arr[oP]] = [arr[oP], arr[eP]];
+  //   }
+  //   if (arr[eP] % 2 == 0) eP++;
+  //   if (arr[oP] % 2 != 0) oP--;
+  // }
+  // console.log(arr);
+  // let res = [];
+  // for (let i = 0; i < Math.floor(arr.length / 2); i++) {
+  //   res.push(arr[i], arr[arr.length - (i + 1)]);
+  // }
+
+  let eP = 0,
+    oP = 1,
+    res = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] % 2 === 0) {
+      res[eP] = arr[i];
+      eP += 2;
+    } else {
+      res[oP] = arr[i];
+      oP += 2;
+    }
+  }
+
+  console.log(res);
+};
+// console.log(sortParity2([4, 2, 5, 7]));
+
+var validMountainArray = function (arr) {
+  if (arr.length < 3) return false;
+  let l = 0,
+    r = arr.length - 1;
+  while (arr[l] < arr[l + 1]) l++;
+  while (arr[r] < arr[r - 1]) r--;
+  // Check if we have left slope
+  const hasLeft = arr[l] > arr[0];
+  // Check if we have right slope
+  const hasRight = arr[r] > arr[arr.length - 1];
+  // Check that there is a peak with left and right slopes (just like a real mountain, wow!)
+  return l === r && hasLeft && hasRight;
+};
+
+// console.log(validMountainArray([0,3,2,1]))
+
+const sortDiagMat = (mat) => {
+  const sort = (row, col) => {
+    row++;
+    col++;
+    while (row < mat.length && col < mat[0].length) {
+      console.log({ row, col });
+      while (row > 0 && col > 0 && mat[row][col] < mat[row - 1][col - 1]) {
+        [mat[row][col], mat[row - 1][col - 1]] = [
+          mat[row - 1][col - 1],
+          mat[row][col],
+        ];
+        row--;
+        col--;
+      }
+      row++;
+      col++;
+    }
+  };
+
+  // traverse rows
+  for (let i = 0; i < mat.length; i++) {
+    sort(i, 0);
+  }
+  // traverse cols
+  for (let i = 1; i < mat[0].length; i++) {
+    sort(0, i);
+  }
+  return mat;
+};
+// console.log(
+//   sortDiagMat([
+//     [3, 3, 1, 1],
+//     [2, 2, 1, 2],
+//     [1, 1, 1, 2],
+//   ])
+// );
+
+const sampleMerge = (nums) => {
+  for (let i = 0; i < nums.length; i++) {
+    nums[i] = nums[i] * nums[i];
+  }
+
+  const mergeSort2 = (arr) => {
+    const compare = (left, right, arr) => {
+      let i = 0,
+        j = 0,
+        k = 0;
+      while (i < left.length && j < right.length) {
+        if (left[i] < right[j]) {
+          arr[k++] = left[i++];
+        } else {
+          arr[k++] = right[j++];
+        }
+      }
+      while (i < left.length) {
+        arr[k++] = left[i++];
+      }
+      while (j < right.length) {
+        arr[k++] = right[j++];
+      }
+    };
+
+    if (arr.length < 2) return;
+
+    let left = [],
+      right = [],
+      mid = Math.floor(arr.length / 2);
+
+    for (let i = 0; i < mid; i++) {
+      left.push(arr[i]);
+    }
+    for (let i = 0; i < arr.length - mid; i++) {
+      console.log(i);
+      right.push(arr[mid + i]);
+    }
+
+    mergeSort2(left);
+    mergeSort2(right);
+    compare(left, right, arr);
+    return arr;
+  };
+
+  return mergeSort2(nums);
+};
+// console.log(sampleMerge([-4, -1, 0, 3, 10]));
+
+const oddCells2 = (row, col, indices) => {
+  let mat = new Array(row).fill(0);
+  for (let i = 0; i < row; i++) {
+    mat[i] = new Array(col).fill(0);
+  }
+  // console.log(mat);
+  const flatIndices = indices.flat();
+
+  const incRow = (rowNum) => {
+    for (let i = 0; i < mat[rowNum].length; i++) {
+      mat[rowNum][i] += 1;
+    }
+  };
+
+  const incCol = (colNum) => {
+    for (let i = 0; i < mat.length; i++) {
+      mat[i][colNum] += 1;
+    }
+  };
+
+  for (let i = 0; i < flatIndices.length; i++) {
+    if (i % 2 == 0) {
+      incRow(flatIndices[i]);
+    } else {
+      incCol(flatIndices[i]);
+    }
+  }
+  
+  console.log(mat)
+  let odd = 0;
+  const flatMat = mat.flat();
+  for (let i = 0; i < flatMat.length; i++) {
+    if (flatMat[i] % 2 !== 0) {
+      odd += 1;
+    }
+  }
+
+  return odd;
+};
+console.log(
+  oddCells2(2, 2, [
+    [1, 1],
+    [0, 0],
+  ])
+);
+// console.log(
+//   oddCells2(2, 3, [
+//     [0, 1],
+//     [1, 1],
+//   ])
+// );
