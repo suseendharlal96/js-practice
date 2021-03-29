@@ -284,44 +284,36 @@ const longestSubArrayOfKDistinctChar = (arr, t) => {
 // AMAZON
 
 const maxSumOfSubArray = (arr) => {
-  let max = arr[0],
-    currentSum = max;
-  for (let i = 1; i < arr.length; i++) {
-    currentSum = Math.max(currentSum + arr[i], arr[i]);
-    max = Math.max(currentSum, max);
-    // console.log({ currentSum, max });
-  }
-  return max;
-
-  // let maxArr = [],
-  //   ar = [];
-
-  // for (let i = 0; i < arr.length; i++) {
-  //   // currentSum += arr[i];
-  //   console.log(maxArr.length);
-  //   if (maxArr.length > 0) {
-  //     console.log(maxArr);
-  //     ar.forEach((a) => {
-  //       if (a + arr[i] > a) {
-  //         console.log(arr[i]);
-  //         maxArr = [arr[i]];
-  //       } else {
-  //         maxArr.push(arr[i]);
-  //       }
-  //     });
-  //   } else {
-  //     maxArr.push(arr[i]);
-  //     // console.log(maxArr)
-  //     ar.push(arr[i]);
-  //   }
-  //   // while (currentSum > max) {
-  //   //   max = currentSum;
-  //   // }
+  // let max = arr[0],
+  //   currentSum = max;
+  // for (let i = 1; i < arr.length - 1; i++) {
+  //   currentSum = Math.max(currentSum + arr[i], arr[i]);
+  //   max = Math.max(currentSum, max);
+  //   console.log({ currentSum, max });
   // }
-  // return maxArr;
+  // return max;
+
+  let max = arr[0],
+    currMax = 0,
+    start = 0,
+    end = 0,
+    searchIndex = 0;
+  for (let i = 0; i < arr.length; i++) {
+    currMax = currMax + arr[i];
+    if (currMax > max) {
+      max = currMax;
+      start = searchIndex;
+      end = i;
+    }
+    if (currMax < 0) {
+      currMax = 0;
+      searchIndex = i + 1;
+    }
+  }
+  return { max, subArr: arr.slice(start, end + 1) };
 };
 
-// console.log(maxSumOfSubArray([-2, 2, 5, 6, -11]));
+console.log(maxSumOfSubArray([-2, 2, 5, 6, -11]));
 
 // 1572
 
@@ -1074,31 +1066,62 @@ var shiftGrid = function (grid, k) {
 
   var res = [];
   for (let i = 0; i < grid.length; i++) {
-    res.push(arr.splice(0, grid.length));
+    res[i] = [];
   }
+  let start = 0;
+  for (let i = 0; i < arr.length; i++) {
+    res[start].push(arr[i]);
+    if ((i + 1) % grid[0].length == 0) {
+      start++;
+    }
+  }
+  // for (let i = 0; i < grid.length; i++) {
+  //   res.push(arr.splice(0, grid[0].length));
+  // }
 
   return res;
 };
 
-// console.log(
-//   shiftGrid(
-//     [
-//       [1, 2, 3],
-//       [4, 5, 6],
-//       [7, 8, 9],
-//     ],
-//     4
-//   )
-// );
+console.log(
+  shiftGrid(
+    [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+      [10, 11, 12],
+    ],
+    4
+  )
+);
 
 var matrixReshape = function (nums, r, c) {
-  if (nums[0].length * nums.length !== r * c) return nums;
-  let arr = nums.flat(),
-    a = [];
+  // if (nums[0].length * nums.length !== r * c) return nums;
+  // let arr = nums.flat(),
+  //   a = [];
+  // for (let i = 0; i < r; i++) {
+  //   a.push(arr.splice(0, c));
+  // }
+
+  if (r * c !== nums.length * nums[0].length) return nums;
+  let row = 0,
+    col = 0,
+    res = [],
+    rLen = nums.length,
+    cLen = nums[0].length;
   for (let i = 0; i < r; i++) {
-    a.push(arr.splice(0, c));
+    res[i] = [];
   }
-  console.log(a);
+  for (let i = 0; i < rLen; i++) {
+    for (let j = 0; j < cLen; j++) {
+      res[row][col] = nums[i][j];
+      col++;
+      if (col === c) {
+        col = 0;
+        row++;
+      }
+    }
+  }
+  return res;
 };
 
 // console.log(
@@ -1144,15 +1167,12 @@ var maximumProductOf3 = function (nums) {
 var maxProdSubArray = function (nums) {
   let min = nums[0],
     max = nums[0],
-    currMin = 0,
-    currMax = 0,
     result = nums[0];
   for (let i = 1; i < nums.length; i++) {
-    currMax = Math.max(min * nums[i], nums[i], max * nums[i]);
-    currMin = Math.min(max * nums[i], nums[i], min * nums[i]);
-    console.log({ currMin, currMax });
-    max = currMax;
-    min = currMin;
+    const minProd = min * nums[i];
+    const maxProd = max * nums[i];
+    max = Math.max(minProd, nums[i], maxProd);
+    min = Math.min(maxProd, nums[i], minProd);
     result = Math.max(max, result);
   }
   return result;
@@ -1201,6 +1221,7 @@ var arrayPairSum = function (arr) {
 
 // console.log(arrayPairSum([6, 2, 6, 5, 1, 2]));
 
+// 907
 var sumSubarrayMins = function (arr) {
   let count = 0;
   for (let i = 0; i < arr.length; i++) {
@@ -1213,19 +1234,25 @@ var sumSubarrayMins = function (arr) {
       right++;
     }
   }
-  return (count % 1e9) + 7;
+  return (count % 10 ** 9) + 7;
 };
 
-// console.log(sumSubarrayMins([11, 81, 94, 43, 3]));
+console.log(sumSubarrayMins([3, 1, 2, 4]));
 
 var rotate = function (nums, k) {
-  while (k--) {
-    nums.unshift(nums.pop());
-  }
+  // while (k--) {
+  //   nums.unshift(nums.pop());
+  // }
+  //[5,6,7,1,2,3,4]
+
+  // while (k--) {
+  //   nums.push(nums.shift());
+  // }
+  //[4,5,6,7,1,2,3]
   return nums;
 };
 
-// console.log(rotate([1, 2, 3, 4, 5, 6, 7], 3));
+console.log(rotate([1, 2, 3, 4, 5, 6, 7], 3));
 
 var minSubarray = function (arr, p) {
   // let count = 0;
@@ -3373,33 +3400,17 @@ var minSubArrayLen = function (target, nums) {
   for (let i = 0; i < nums.length; i++) {
     curr += nums[i];
     while (curr >= target) {
-      res = Math.min(res, i - left + 1);
+      if (i - left + 1 < res) {
+        res = i - left + 1;
+      }
       curr -= nums[left];
       left++;
     }
   }
-  console.log(res);
-  // nums.sort((a, b) => a - b);
-  // console.log(nums);
-  // let start = 0,
-  //   end = nums.length - 1,
-  //   minSubArr = nums.length,
-  //   minLength = 0;
-  // while (start < end) {
-  //   let sum = nums[start] + nums[end];
-  //   while (sum >= target) {
-  //     if (end - start + 1 <= minSubArr) {
-  //       minSubArr = nums.slice(start, end + 1).length;
-  //       minLength = end - start + 1;
-  //       sum -= nums[start];
-  //     }
-  //   }
-  //   start++;
-  // }
-  // return minLength;
+  return res;
 };
-// console.log(minSubArrayLen(7, [2, 3, 1, 2, 4, 3]));
-// console.log(minSubArrayLen(4, [1, 4, 4]));
+console.log(minSubArrayLen(7, [2, 3, 1, 2, 4, 3]));
+console.log(minSubArrayLen(4, [1, 4, 4]));
 
 // 713
 var numSubarrayProductLessThanK = function (nums, k) {
@@ -3452,13 +3463,13 @@ var findMaxLength = function (nums) {
       count += 1;
     }
     if (m.has(count)) {
-      console.log(i);
       maxlen = Math.max(maxlen, i - m.get(count));
       console.log(maxlen);
     } else {
       m.set(count, i);
     }
   }
+  return maxlen;
 };
 // console.log(findMaxLength([0, 0, 1, 0, 0, 0, 1, 1]));
 
@@ -3867,7 +3878,7 @@ var relativeSortArray = function (arr1, arr2) {
       ...arr2[i]
         .toString()
         .repeat(map.get(arr2[i]))
-        .split("" + new Array(arr2[i].toString().length - 1 + 1).join(" "))
+        .split(" ".repeat(arr2[i].toString().length - 1) + "")
     );
     map.delete(arr2[i]);
   }
@@ -3888,4 +3899,355 @@ var relativeSortArray = function (arr1, arr2) {
 // console.log(
 //   relativeSortArray([2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19], [2, 1, 4, 3, 9, 6])
 // );
-// console.log(relativeSortArray([28, 6, 22, 8, 44, 17], [22, 28, 8, 6]));
+console.log(relativeSortArray([28, 6, 22, 8, 44, 17], [22, 28, 8, 6]));
+
+// 49
+var groupAnagrams = function (strs) {
+  let map = new Map();
+  for (let i = 0; i < strs.length; i++) {
+    const sortedStr = strs[i].split("").sort().join("");
+    map.set(
+      sortedStr,
+      map.get(sortedStr)
+        ? [...map.get(sortedStr)].concat(strs[i])
+        : new Array(strs[i])
+    );
+  }
+  let res = [];
+  map.forEach((value) => {
+    res.push(value);
+  });
+
+  return res;
+};
+
+// console.log(groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]));
+
+// 56
+var merge = function (intervals) {
+  const sortedIntervels = intervals.sort((a, b) => a[0] - b[0]);
+
+  for (let i = 0; i < sortedIntervels.length - 1; i++) {
+    const first = sortedIntervels[i][0],
+      second = sortedIntervels[i][1],
+      third = sortedIntervels[i + 1][0],
+      fourth = sortedIntervels[i + 1][1];
+
+    if (third <= second) {
+      const mergedInterval = [first, Math.max(second, fourth)];
+      sortedIntervels.splice(i, 2, mergedInterval);
+      i--;
+    }
+  }
+  return sortedIntervels;
+};
+
+// console.log(
+//   merge([
+//     [1, 4],
+//     [2, 3],
+//   ])
+// );
+
+// console.log(
+//   merge([
+//     [1, 3],
+//     [2, 6],
+//     [8, 10],
+//     [15, 18],
+//   ])
+// );
+
+// 57
+
+var insert = function (intervals, newInterval) {};
+
+// console.log(
+//   insert(
+//     [
+//       [1, 2],
+//       [3, 5],
+//       [6, 7],
+//       [8, 10],
+//       [12, 16],
+//     ],
+//     [4, 8]
+//   )
+// );
+
+// 581
+var findUnsortedSubarray = function (nums) {
+  const sorted = [...nums].sort((a, b) => a - b);
+
+  let unsorted = [];
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] !== sorted[i]) {
+      unsorted.push(nums[i]);
+    }
+  }
+
+  let start = nums.indexOf(unsorted[0]),
+    end = nums.lastIndexOf(unsorted[unsorted.length - 1]);
+
+  const slicedLen = nums.slice(start, end + 1).length;
+
+  const numOfRemainingElements = slicedLen - unsorted.length;
+
+  return numOfRemainingElements + unsorted.length;
+};
+
+// console.log([2, 6, 4, 8, 10, 9, 15]);
+
+// 674
+var findLengthOfLCIS = function (mat) {
+  const find = (nums) => {
+    let count = 1,
+      max = 0;
+    for (let i = 1; i < nums.length; i++) {
+      if (nums[i] > nums[i - 1]) {
+        count++;
+        max = Math.max(max, count);
+      } else {
+        count = 1;
+      }
+    }
+    return nums.length >= 1 ? (max > 0 ? max : count) : 0;
+  };
+
+  let res = [];
+  mat.forEach((arr) => {
+    res.push(find(arr));
+  });
+
+  console.log(res); // [3,3]
+};
+
+console.log(
+  findLengthOfLCIS([
+    [1, 3, 5, 4, 7],
+    [1, 3, 5, 4, 7],
+  ])
+);
+
+// 1424
+var findDiagonalOrder = function (mat) {
+  let res = [],
+    max = 0;
+  for (let i = 0; i < mat.length; i++) {
+    max = Math.max(max, mat[i].length);
+    let j = i,
+      k = 0;
+    while (j >= 0 && k >= 0) {
+      mat[j][k] && res.push(mat[j][k]);
+      j--;
+      k++;
+    }
+  }
+
+  for (let i = 1; i < max; i++) {
+    let j = mat.length - 1,
+      k = i;
+    while (j >= 0 && k < max) {
+      mat[j][k] && res.push(mat[j][k]);
+      j--;
+      k++;
+    }
+  }
+
+  console.log(res);
+};
+
+// console.log(
+//   findDiagonalOrder([
+//     [20, 17, 13, 14],
+//     [12, 6],
+//     [3, 4],
+//   ])
+// );
+
+// console.log(
+//   findDiagonalOrder([
+//     [1, 2, 3, 4, 5],
+//     [6, 7],
+//     [8],
+//     [9, 10, 11],
+//     [12, 13, 14, 15, 16],
+//   ])
+// );
+
+// 682
+var calPoints = function (ops) {
+  let count = 0,
+    res = [];
+  for (let i = 0; i < ops.length; i++) {
+    if (ops[i] == "C") {
+      res.splice(res.indexOf(res[res.length - 1]), 1);
+    } else if (ops[i] == "D") {
+      const doubleLast = res[res.length - 1] * 2;
+      res.push(doubleLast);
+    } else if (ops[i] == "+") {
+      const sumOfTwoPrev = res[res.length - 1] + res[res.length - 2];
+      res.push(sumOfTwoPrev);
+    } else {
+      res.push(+ops[i]);
+    }
+  }
+
+  console.log(res);
+
+  for (let i = 0; i < res.length; i++) {
+    count += res[i];
+  }
+  return count;
+};
+
+// console.log(calPoints(["1"]));
+// console.log(calPoints(["5", "2", "C", "D", "+"]));
+// console.log(calPoints(["5", "-2", "4", "C", "D", "9", "+", "+"]));
+
+// 1716
+var totalMoney = function (n) {
+  let start = 1;
+  let days = 7;
+  let total = 0;
+  let inc = 1;
+  for (let i = 0; i < n; i++) {
+    if (days > 0) {
+      total += start;
+      start++;
+      days--;
+    } else {
+      inc++;
+      start = inc;
+      days = 7;
+      i--;
+    }
+  }
+  return total;
+};
+
+// console.log(totalMoney(10));
+// console.log(totalMoney(59));
+
+// 1784
+var checkOnesSegment = function (s) {
+  let map = new Map();
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === "1") {
+      map.set(s[i], map.get(s[i]) + 1 || 1);
+    }
+  }
+  for (let i = 0; i < s.length; i++) {
+    if (map.has(s[i])) {
+      map.set("1", map.get("1") - 1);
+    } else {
+      if (map.get("1") >= 1) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+// console.log(checkOnesSegment("1001"));
+
+// 888
+var fairCandySwap = function (A, B) {
+  let aSum = 0,
+    bSum = 0,
+    aMap = new Map(),
+    bMap = new Map();
+
+  A.forEach((a) => {
+    aSum += a;
+    aMap.set(a, aMap.get(a) + 1 || 1);
+  });
+
+  B.forEach((b) => {
+    bSum += b;
+    bMap.set(b, bMap.get(b) + 1 || 1);
+  });
+
+  const avg = (aSum + bSum) / 2;
+  console.log({ aSum, bSum, avg, aMap, bMap });
+  for (let val of A) {
+    let diff = avg - aSum;
+    if (bMap.has(diff + val)) return [val, diff + val];
+  }
+};
+
+// console.log(fairCandySwap([1, 2, 5], [2, 4]));
+
+// 1313
+var decompressRLElist = function (nums) {
+  let res = [];
+
+  for (let i = 1; i < nums.length; i += 2) {
+    const freq = nums[i - 1],
+      numTobeRepeated = nums[i];
+    res.push(...new Array(freq).fill(numTobeRepeated));
+  }
+
+  return res;
+};
+
+// console.log(decompressRLElist([2, 1, 3, 1]));
+// console.log(decompressRLElist([2, 10, 3, 15]));
+
+// 1539
+
+var findKthPositive = function (arr, k) {
+  let max = arr[arr.length - 1],
+    missing = [],
+    set = new Set(arr);
+
+  for (let i = 1; i <= max; i++) {
+    if (!set.has(i)) missing.push(i);
+  }
+  console.log(missing);
+  return missing[k - 1] ? missing[k - 1] : max + k - missing.length;
+};
+
+// console.log(findKthPositive([2, 3, 4, 7, 11], 5));
+// console.log(findKthPositive([1, 2, 3, 4], 2));
+// console.log(findKthPositive([5, 6, 7, 8, 9], 9));
+
+// 1700
+var countStudents = function (students, sandwiches) {
+  while (students.length > 0 && students.includes(sandwiches[0])) {
+    if (students[0] == sandwiches[0]) {
+      students.splice(0, 1);
+      sandwiches.splice(0, 1);
+    } else students.push(students.shift());
+  }
+  return students.length;
+};
+
+// console.log(countStudents([1, 1, 0, 0], [0, 1, 0, 1]));
+// console.log(countStudents([1, 1, 1, 0, 0, 1], [1, 0, 0, 0, 1, 1]));
+
+// 1629
+var slowestKey = function (releaseTimes, keysPressed) {
+  let durationArr = [];
+  durationArr.push(releaseTimes[0]);
+
+  for (let i = 1; i < releaseTimes.length; i++) {
+    durationArr.push(releaseTimes[i] - releaseTimes[i - 1]);
+  }
+
+  let maxPressedDuration = Math.max(...durationArr),
+    keysPressedArr = keysPressed.split(""),
+    maxPressedCharacters = [];
+
+  for (let i = 0; i < durationArr.length; i++) {
+    if (durationArr[i] === maxPressedDuration) {
+      maxPressedCharacters.push(keysPressedArr[i]);
+    }
+  }
+
+  if (maxPressedCharacters.length === 1) return maxPressedCharacters[0];
+
+  return maxPressedCharacters.sort()[maxPressedCharacters.length - 1];
+};
+console.log(slowestKey([3, 7, 20, 23, 32, 36, 38, 39, 64], "pvngusney"));
+console.log(slowestKey([9, 29, 49, 50], "cbcd"));

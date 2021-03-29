@@ -1039,8 +1039,8 @@ const oddCells2 = (row, col, indices) => {
       incCol(flatIndices[i]);
     }
   }
-  
-  console.log(mat)
+
+  console.log(mat);
   let odd = 0;
   const flatMat = mat.flat();
   for (let i = 0; i < flatMat.length; i++) {
@@ -1051,15 +1051,63 @@ const oddCells2 = (row, col, indices) => {
 
   return odd;
 };
-console.log(
-  oddCells2(2, 2, [
-    [1, 1],
-    [0, 0],
-  ])
-);
+// console.log(
+//   oddCells2(2, 2, [
+//     [1, 1],
+//     [0, 0],
+//   ])
+// );
 // console.log(
 //   oddCells2(2, 3, [
 //     [0, 1],
 //     [1, 1],
 //   ])
 // );
+
+const genSpiral = (r, c) => {
+  let rowStart = 0,
+    rowEnd = r - 1,
+    colStart = 0,
+    colEnd = c - 1,
+    res = new Array(r),
+    count = 1;
+
+  for (let i = 0; i < r; i++) {
+    res[i] = new Array(c);
+  }
+
+  while (rowStart <= rowEnd && colStart <= colEnd) {
+    if (colStart <= colEnd) {
+      for (let i = colStart; i <= colEnd; i++) {
+        res[rowStart][i] = count;
+        count++;
+      }
+    }
+    rowStart++;
+    if (rowStart <= rowEnd) {
+      for (let i = rowStart; i <= rowEnd; i++) {
+        res[i][colEnd] = count;
+        count++;
+      }
+    }
+    colEnd--;
+    if (colStart <= colEnd) {
+      for (let i = colEnd; i >= colStart; i--) {
+        res[rowEnd][i] = count;
+        console.log(count);
+        count++;
+      }
+    }
+    rowEnd--;
+    if (rowStart <= rowEnd) {
+      for (let i = rowEnd; i >= rowStart; i--) {
+        res[i][colStart] = count;
+        console.log(count);
+        count++;
+      }
+    }
+    colStart++;
+  }
+  console.log(res);
+};
+console.log(genSpiral(4, 2));
