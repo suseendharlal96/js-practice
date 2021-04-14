@@ -489,16 +489,16 @@ const numSpl2 = (mat) => {
 // );
 
 const bubSort = (arr) => {
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr.length - i; j++) {
-      if (arr[j] > arr[j + 1]) {
-        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-        // const temp = arr[j];
-        // arr[j] = arr[j + 1];
-        // arr[j + 1] = temp;
-      }
-    }
-  }
+  // for (let i = 0; i < arr.length; i++) {
+  //   for (let j = 0; j < arr.length - i; j++) {
+  //     if (arr[j] > arr[j + 1]) {
+  //       [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+  //       // const temp = arr[j];
+  //       // arr[j] = arr[j + 1];
+  //       // arr[j + 1] = temp;
+  //     }
+  //   }
+  // }
   return arr;
 };
 
@@ -1110,4 +1110,10 @@ const genSpiral = (r, c) => {
   }
   console.log(res);
 };
-console.log(genSpiral(4, 2));
+// console.log(genSpiral(4, 2));
+
+const swap = (a, b) => {
+  [a, b] = [b, a];
+  console.log({ a, b });
+};
+console.log(swap("10", "20"));

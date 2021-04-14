@@ -2960,32 +2960,36 @@ var twoSum = function (nums, target) {
 console.log(twoSum([2, 3, 4], 6));
 
 // 15
-const threeSum = (arr) => {
-  arr.sort((a, b) => a - b);
+const threeSum = (nums) => {
   let res = [];
-  for (let i = 0; i < arr.length - 2; i++) {
-    if (i == 0 || (i > 0 && arr[i] !== arr[i - 1])) {
-      let start = i + 1,
-        end = arr.length - 1,
-        sum = 0 - arr[i];
-      while (start < end) {
-        if (arr[start] + arr[end] === sum) {
-          res.push([arr[i], arr[start], arr[end]]);
-          while (arr[start] === arr[start + 1]) start++;
-          while (arr[end] === arr[end - 1]) end--;
+  if (nums.length <= 1) return res;
+  nums.sort((a, b) => a - b);
+  for (let i = 0; i < nums.length - 2; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) continue;
+    let start = i + 1,
+      end = nums.length - 1,
+      sum = 0 - nums[i];
+    while (start < end) {
+      if (nums[start] + nums[end] === sum) {
+        res.push([nums[i], nums[start], nums[end]]);
+        while (nums[start] === nums[start + 1]) {
           start++;
-          end--;
-        } else if (arr[start] + arr[end] < sum) {
-          start++;
-        } else {
-          end--;
         }
+        // while (nums[end] === nums[end - 1]) {
+        //   end--;
+        // }
+        // start++;
+        // end--;
+      } else if (nums[start] + nums[end] < sum) {
+        start++;
+      } else {
+        end--;
       }
     }
   }
   return res;
 };
-// console.log(threeSum([-1, 0, 1, 2, -1, -4]));
+console.log(threeSum([-1, 0]));
 // console.log(threeSum([-2, 0, 0, 0, 2, 2, 2]));
 
 // 16
@@ -4249,5 +4253,94 @@ var slowestKey = function (releaseTimes, keysPressed) {
 
   return maxPressedCharacters.sort()[maxPressedCharacters.length - 1];
 };
-console.log(slowestKey([3, 7, 20, 23, 32, 36, 38, 39, 64], "pvngusney"));
-console.log(slowestKey([9, 29, 49, 50], "cbcd"));
+// console.log(slowestKey([3, 7, 20, 23, 32, 36, 38, 39, 64], "pvngusney"));
+// console.log(slowestKey([9, 29, 49, 50], "cbcd"));
+
+function staircase(n) {
+  for (let i = 0; i < n; i++) {
+    let line = "";
+    let space = n - i - 1;
+    line += " ".repeat(space);
+    for (let j = 0; j < i + 1; j++) {
+      line += "#";
+    }
+    console.log(line);
+  }
+}
+
+// console.log(staircase(6));
+
+// 69
+var mySqrt = function (x) {
+  let start = 0,
+    end = x;
+
+  while (start <= end) {
+    let mid = Math.floor(start + (end - start) / 2);
+    if (mid * mid === x) {
+      return mid;
+    } else if (mid * mid > x) {
+      end = mid - 1;
+    } else {
+      start = mid + 1;
+    }
+  }
+  return end;
+};
+// console.log(mySqrt(8));
+
+// 540
+var singleNonDuplicate = function (nums) {
+  let start = 0,
+    end = nums.length - 1;
+
+  if (end == 0) {
+    return nums[0];
+  } else if (nums[start] !== nums[start + 1]) {
+    return nums[start];
+  } else if (nums[end] !== nums[end - 1]) {
+    return nums[end];
+  }
+
+  while (start <= end) {
+    let mid = Math.floor(start + (end - start) / 2);
+    if (nums[mid] !== nums[mid - 1] && nums[mid] !== nums[mid + 1]) {
+      return nums[mid];
+    }
+    if (
+      (mid % 2 == 0 && nums[mid] === nums[mid + 1]) ||
+      (mid % 2 !== 0 && nums[mid] === nums[mid - 1])
+    ) {
+      start = mid + 1;
+    } else {
+      end = mid - 1;
+    }
+  }
+};
+// console.log(singleNonDuplicate([1, 1, 2, 3, 3, 4, 4, 8, 8]));
+
+const removeEvenOccuring = (str) => {
+  let map = new Map();
+  for (let i = 0; i < str.length; i++) {
+    map.set(str[i], map.get(str[i]) + 1 || 1);
+    if (i > 0 && str[i] !== str[i - 1]) {
+      if (map.get(str[i - 1]) % 2 === 0) {
+        map.delete(str[i - 1]);
+      }
+    }
+    if (i === str.length - 1) {
+      if (map.get(str[i]) % 2 === 0) {
+        map.delete(str[i]);
+      }
+    }
+  }
+  let concat = "";
+  for (let [key, val] of map) {
+    while (val) {
+      concat += key;
+      val--;
+    }
+  }
+  return concat;
+};
+console.log(removeEvenOccuring("abbbbbcccczzxxxxzzzzz"));
