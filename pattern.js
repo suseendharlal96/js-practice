@@ -29,7 +29,7 @@ const printStars = (N) => {
   document.write("</br>");
   document.write("</br>");
 };
-printStars(10);
+// printStars(10);
 
 // var num, p, q, m, n;
 // num = 10;
@@ -146,7 +146,7 @@ const numPattern = (num) => {
   }
 };
 
-console.log(numPattern(2));
+// console.log(numPattern(2));
 
 const mulPattern = (num) => {
   let a = 2;
@@ -491,3 +491,43 @@ var largestAltitude = function (gain) {
 };
 
 // console.log(largestAltitude([-4, -3, -2, -1, 4, 3, 2]));
+
+const printStars2 = (n) => {
+  let m = 3;
+  for (let i = 0; i < n * 2 - 1; i++) {
+    let content = "";
+
+    for (let k = 0; k < n - 1 - i; k++) {
+      content += " ";
+    }
+
+    if (i > 0) {
+      if (i > 4) {
+        content += " ".repeat((i % 5) + 1) + "*".repeat(n * 2 - m);
+        m += 2;
+      } else {
+        content +=  "*".repeat(i * 2 + 1);
+      }
+    } else {
+      content += "*";
+    }
+    console.log(" " + content + " ");
+  }
+};
+printStars2(5);
+
+const printNumber = (n) => {
+  for (let i = 0; i < n; i++) {
+    let content = "";
+
+    for (let j = 0; j <= i; j++) {
+      if ((i + j) % 2 === 0) {
+        content += "1 ";
+      } else {
+        content += "0 ";
+      }
+    }
+    console.log(content);
+  }
+};
+printNumber(5);

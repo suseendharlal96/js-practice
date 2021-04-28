@@ -430,6 +430,7 @@ var removeDuplicates = function (nums) {
       p1++;
       nums[p1] = nums[p2];
     }
+    console.log(nums);
   }
   return p1 + 1;
 };
@@ -620,3 +621,231 @@ var slowestKey = function (releaseTimes, keysPressed) {
 // console.log(slowestKey([19, 22, 28, 29, 66, 81, 93, 97], "fnfaaxha"));
 // console.log(slowestKey([12, 23, 36, 46, 62], "spuda"));
 // console.log(slowestKey([9, 29, 49, 50], "cbcd"));
+
+var minOperations = function (s) {
+  let a = ["0", "1"],
+    count = 0;
+  for (let i = 0; i < s.length; i++) {
+    console.log(a[i % 2], s[i]);
+    if (a[i % 2] === s[i]) {
+      count++;
+    }
+  }
+  console.log(count);
+  return Math.min(count, s.length - count);
+};
+// console.log(minOperations("0100"));
+
+var findDisappearedNumbers = function (nums) {
+  for (let i = 0; i < nums.length; i++) {
+    console.log(nums[Math.abs(nums[i]) - 1]);
+    nums[Math.abs(nums[i]) - 1] = -1 * Math.abs(nums[Math.abs(nums[i]) - 1]);
+  }
+  let res = [];
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] > 0) {
+      res.push(i + 1);
+    }
+  }
+  return res;
+};
+
+// console.log(findDisappearedNumbers([4, 3, 2, 7, 8, 2, 3, 1]));
+
+var generate2 = function (rows) {
+  let arr = [];
+  arr.push([1]);
+  for (let i = 1; i < rows.length; i++) {
+    console.log("in");
+    const temp = [];
+    temp.push(1);
+    for (let j = 1; j < i; j++) {
+      temp.push(arr[j - 1][j - 1], arr[j - 1][j]);
+    }
+    temp.push(1);
+    arr.push([...temp]);
+  }
+  return arr;
+};
+
+// console.log(generate2(5))
+
+var largeGroupPositions = function (s) {
+  let count = 0,
+    set = new Set(),
+    left = 0;
+  for (let i = 0; i < s.length; i++) {
+    count++;
+    if (s[i] !== s[i + 1]) {
+      if (count >= 3) {
+        set.add([left, i]);
+      }
+      left = i + 1;
+      count = 0;
+    }
+  }
+  if (set.size === 0) {
+    return [];
+  } else {
+    const res = [];
+    for (let value of set) {
+      res.push(value);
+    }
+    return res;
+  }
+};
+
+// console.log(largeGroupPositions("abcdddeeeeaabbbcdddddd"));
+// console.log(largeGroupPositions("abbxxxxzzy"));
+// console.log(largeGroupPositions("abc"));
+// console.log(largeGroupPositions("aba"));
+// console.log(largeGroupPositions("nnnhaaannnm"));
+
+var findDuplicate = function (nums) {
+  for (let i = 0; i < nums.length; i++) {
+    console.log(nums[Math.abs(nums[i])]);
+    if (nums[Math.abs(nums[i])] < 0) {
+      return Math.abs(nums[i]);
+    }
+
+    nums[Math.abs(nums[i])] = -1 * nums[Math.abs(nums[i])];
+  }
+  console.log(nums);
+};
+
+// console.log(findDuplicate([1, 2, 2]));
+
+// 950
+var deckRevealedIncreasing = function (deck) {
+  const sorted = [...deck].sort((a, b) => a - b);
+  const mid = Math.floor(deck.length / 2);
+  console.log(deck);
+  let low = [],
+    res = [];
+  for (let i = 0; i <= mid; i++) {
+    low.push(sorted[i]);
+  }
+  for (let i = 0; i < low.length; i++) {
+    const index = deck.indexOf(low[i]);
+    deck.splice(index, 1);
+  }
+  // deck = deck.slice(mid + 1);
+  // deck.sort((a,b)=>b-a)
+  let i = 0,
+    j = 0;
+  while (i < deck.length && j < low.length) {
+    res.push(low[j], deck[i]);
+    i++;
+    j++;
+  }
+  while (j < low.length) {
+    res.push(low[j]);
+    j++;
+  }
+  while (i < deck.length) {
+    res.push(deck[i]);
+    i++;
+  }
+  return { deck, res };
+};
+
+// console.log(deckRevealedIncreasing([17, 13, 11, 2, 3, 5, 7]));
+
+// 1395
+var numTeams = function (rating) {
+  const len = rating.length;
+  let sum = 0;
+  for (let i = 1; i < len - 1; i++) {
+    const l = [0, 0];
+    const r = [0, 0];
+    for (let j = 0; j < len; j++) {
+      if (rating[j] < rating[i]) {
+        j < i ? l[0]++ : r[0]++;
+      }
+
+      if (rating[j] > rating[i]) {
+        j < i ? l[1]++ : r[1]++;
+      }
+    }
+
+    console.log({ l, r });
+    sum += l[0] * r[1] + l[1] * r[0];
+  }
+  return sum;
+};
+
+// console.log(numTeams([2, 5, 3, 4, 1]));
+
+// 1277
+var countSquares = function (matrix) {
+  let count = 0;
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[0].length; j++) {
+      if (matrix[i][j] === 0) continue;
+      console.log({ i, j });
+      if (i > 0 && j > 0) {
+        matrix[i][j] += Math.min(
+          matrix[i - 1][j],
+          matrix[i - 1][j - 1],
+          matrix[i][j - 1]
+        );
+      }
+      console.log(matrix[i][j]);
+      count += matrix[i][j];
+    }
+  }
+  return count;
+};
+
+// console.log(
+//   countSquares([
+//     [0, 1, 1, 1],
+//     [1, 1, 1, 1],
+//     [0, 1, 1, 1],
+//   ])
+// );
+
+var sumSubarrayMins = function (A) {
+  let stack1 = [],
+    stack2 = [],
+    prevSmaller = new Array(A.length),
+    nextSmaller = new Array(A.length);
+  for (let i = 0; i < A.length; i++) {
+    nextSmaller[i] = A.length - i - 1;
+    prevSmaller[i] = i;
+  }
+  console.log({ prevSmaller, nextSmaller });
+  // [2, 13, 13, 13, 13, 13, 13, 13, 1]
+  for (let i = 0; i < A.length; i++) {
+    while (stack1.length !== 0 && A[stack1[stack1.length - 1]] > A[i]) {
+      nextSmaller[stack1[stack1.length - 1]] =
+        i - stack1[stack1.length - 1] - 1;
+      stack1.pop();
+    }
+    stack1.push(i);
+    // console.log(stack1);
+  }
+  for (let i = A.length - 1; i >= 0; i--) {
+    if (stack2.length !== 0) {
+      console.log(i, A[stack2[stack2.length - 1]]);
+    }
+    while (stack2.length !== 0 && A[stack2[stack2.length - 1]] >= A[i]) {
+      prevSmaller[stack2[stack2.length - 1]] =
+        stack2[stack2.length - 1] - i - 1;
+      stack2.pop();
+    }
+    stack2.push(i);
+    // console.log(stack2);
+  }
+
+  let res = 0;
+  for (let i = 0; i < A.length; i++) {
+    res += A[i] * (prevSmaller[i] + 1) * (nextSmaller[i] + 1);
+  }
+  return res % (10 ** 9 + 7);
+};
+
+// console.log(sumSubarrayMins([3,3,6,2,5,6,7,8]));
+console.log(sumSubarrayMins([2, 13, 13, 13, 13, 13, 13, 13, 1]));
+// console.log(sumSubarrayMins([3, 1, 2, 4]));
+// console.log(sumSubarrayMins([2, 9, 7, 8, 3, 4, 6, 1]));
