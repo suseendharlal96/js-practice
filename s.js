@@ -846,6 +846,210 @@ var sumSubarrayMins = function (A) {
 };
 
 // console.log(sumSubarrayMins([3,3,6,2,5,6,7,8]));
-console.log(sumSubarrayMins([2, 13, 13, 13, 13, 13, 13, 13, 1]));
+// console.log(sumSubarrayMins([2, 13, 13, 13, 13, 13, 13, 13, 1]));
 // console.log(sumSubarrayMins([3, 1, 2, 4]));
 // console.log(sumSubarrayMins([2, 9, 7, 8, 3, 4, 6, 1]));
+
+// 1046
+var lastStoneWeight = function (stones) {
+  stones.sort((a, b) => b - a);
+  function recurse(stones) {
+    console.log(stones);
+    for (let i = 0; i < stones.length; i++) {
+      if (stones[i] >= 0 && stones[i + 1] >= 0) {
+        if (stones[i] >= stones[i + 1]) {
+          stones[i] = stones[i] - stones[i + 1];
+          stones.splice(i + 1, 1);
+        } else {
+          stones[i + 1] = stones[i + 1] - stones[i];
+          stones.splice(i, 1);
+          // stones.sort((a, b) => b - a);
+          // recurse(stones);
+        }
+        stones.sort((a, b) => b - a);
+        recurse(stones);
+      }
+      return stones;
+    }
+  }
+  return recurse(stones).length === 0 ? 0 : recurse(stones)[0];
+};
+
+// console.log(lastStoneWeight([7, 6, 7, 6, 9]));
+var reverseList = function (head) {
+  let start = 0,
+    end = head.length - 1;
+  while (start < end) {
+    [head[start], head[end]] = [head[end], head[start]];
+    start++;
+    end--;
+  }
+  return head;
+};
+
+console.log(reverseList([1, 2]));
+
+var deckRevealedIncreasing = function (deck) {
+  deck.sort((a, b) => a - b);
+  const res = [];
+  function recursive(cards) {
+    console.log(cards);
+    res.push(cards.shift());
+    console.log(res);
+    cards.push(cards.shift());
+    if (cards.length !== 0 && cards[0]) {
+      recursive(cards);
+    } else {
+      return;
+    }
+  }
+  recursive(deck);
+  return res;
+};
+
+// console.log(deckRevealedIncreasing([17, 13, 11, 2, 3, 5, 7]));
+
+var makeGood = function (s) {
+  function recursive(s) {
+    for (let i = 0; i < s.length - 1; i++) {
+      if (
+        (s[i] !== s[i].toUpperCase() && s[i].toUpperCase() === s[i + 1]) ||
+        (s[i + 1].toUpperCase() !== s[i + 1] && s[i] === s[i + 1].toUpperCase())
+      ) {
+        s.splice(i, 2);
+        recursive(s);
+      }
+    }
+    return s;
+  }
+  return recursive(s.split("")).join("");
+};
+
+// console.log(makeGood("Pp"));
+
+// 0 1 1 2 3 5
+
+const fiboSeries = (n) => {
+  if (n <= 1) {
+    return n;
+  }
+  return fiboSeries(n - 1) + fiboSeries(n - 2);
+};
+console.log(fiboSeries(5));
+
+const sort0 = (arr) => {
+  let start = 0;
+  let end = arr.length - 1;
+  for (let i = 0; i <= end; i++) {
+    console.log(arr);
+    if (arr[i] === 0) {
+      [arr[start], arr[i]] = [arr[i], arr[start]];
+      start++;
+    } else if (arr[i] === 2) {
+      [arr[i], arr[end]] = [arr[end], arr[i]];
+      end--;
+      i--;
+    }
+  }
+  return arr;
+};
+// console.log(sort0([0, 2, 1, 2, 0]));
+
+const rev = (str) => {
+  console.log(str[0]);
+  let start = 0,
+    end = str.length - 1,
+    strArr = str.split("");
+  while (start <= end) {
+    // console.log(str)
+    [strArr[start], strArr[end]] = [strArr[end], strArr[start]];
+    start++;
+    end--;
+  }
+  return strArr.join("");
+};
+// console.log(rev('Acecademy'))
+
+const sortStack = (arr, order) => {
+  for (let i = 1; i < arr.length; i++) {
+    if (order === "desc") {
+      while (arr[i - 1] < arr[i] && i >= 0) {
+        [arr[i], arr[i - 1]] = [arr[i - 1], arr[i]];
+        i--;
+      }
+    } else {
+      while (arr[i] < arr[i - 1] && i >= 0) {
+        [arr[i], arr[i - 1]] = [arr[i - 1], arr[i]];
+        i--;
+      }
+    }
+  }
+  return arr;
+};
+// console.log(sortStack([11, 2, 32, 3, 41], "desc"));
+// console.log(sortStack([7, 3, 1, 4, 6, 2, 3], "asc"));
+// console.log(sortStack([0, 2, 1, 2, 0], "asc"));
+
+const arr = [];
+const printSubsequence = (input, output) => {
+  if (input.length === 0) {
+    console.log(output);
+    arr.push(output);
+    return;
+  }
+
+  // output is passed with including
+  // the Ist characther of
+  // Input string
+  printSubsequence(input.substr(1), output + input[0]);
+  // output is passed without
+  // including the Ist character
+  // of Input string
+  printSubsequence(input.substr(1), output);
+};
+// console.log(printSubsequence("abcd", ""));
+
+var findLength = function (nums1, nums2) {
+  const set = new Set();
+  let setCount = 0;
+  for (let i = 0; i < nums1.length; i++) {
+    set.add(nums1[i]);
+  }
+
+  for (let i = 0; i < nums2.length; i++) {
+    if (set.has(nums2[i])) {
+      count += 1;
+    }
+  }
+
+  let start = 0;
+  const arr = [];
+  while (start <= nums1.length) {
+    if (nums1.toString().includes(nums2.slice(start).toString())) {
+      console.log("sds", nums2.slice(start).length);
+      arr.push(nums2.slice(start).length);
+      // break;
+    }
+    start++;
+  }
+  let end = nums2.length;
+  while (end >= 0) {
+    if (nums1.toString().includes(nums2.slice(0, end).toString())) {
+      arr.push(nums2.slice(0, end).length);
+      // break;
+    }
+    end--;
+  }
+  console.log(arr);
+  let res;
+  if (arr.length > 1) {
+    res = Math.max(...arr, 0);
+  } else {
+    res = arr[0];
+  }
+  return res > 0 ? res : setCount;
+};
+
+// console.log(findLength([5, 14, 53, 80, 48], [50, 47, 3, 80, 83]));
+// console.log(findLength([0, 0, 0, 0, 1], [1, 0, 0, 0, 0]));
+// console.log(findLength([1, 2, 3, 2, 1], [3, 2, 1, 4, 7]));

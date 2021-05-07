@@ -786,16 +786,6 @@ const maxProdSubArray2 = (arr) => {
 // console.log(maxProdSubArray2([2, 3, -2, 4]));
 // console.log(maxProdSubArray2([-2, 0, -1]));
 
-const recur = (n) => {
-  if (n > 0) {
-    console.log(n);
-    recur(n - 1);
-  }
-  console.log(n);
-};
-
-// recur(3);
-
 const searchRange2 = (nums, target) => {
   const firstIndex2 = () => {
     let left = 0,
@@ -1117,3 +1107,58 @@ const swap = (a, b) => {
   console.log({ a, b });
 };
 console.log(swap("10", "20"));
+
+var findDiagonalOrder = function (mat) {
+  if (mat.length <= 1) return mat.flat();
+  let res = [],
+    rows = mat.length - 1,
+    cols = mat[0].length - 1,
+    directionUp = true;
+
+  const changeDirection = (tempArr) => {
+    if (directionUp) {
+      res.push(...tempArr);
+      directionUp = !directionUp;
+    } else {
+      res.push(...tempArr.reverse());
+      directionUp = !directionUp;
+    }
+  };
+
+  for (let i = 0; i <= rows; i++) {
+    let j = 0,
+      k = i;
+    const temp = [];
+    while (j <= cols && k >= 0) {
+      if (k >= 0 && j >= 0 && mat[k][j] !== undefined) {
+        temp.push(mat[k][j]);
+      }
+      k -= 1;
+      j += 1;
+    }
+    changeDirection(temp);
+  }
+
+  for (let i = 1; i <= cols; i++) {
+    let j = rows,
+      k = i;
+    const temp = [];
+    while (j >= 0 && k <= cols) {
+      if (k >= 0 && j >= 0 && mat[j][k] !== undefined) {
+        temp.push(mat[j][k]);
+      }
+      j -= 1;
+      k += 1;
+    }
+    changeDirection(temp);
+  }
+  return res;
+};
+
+console.log(
+  findDiagonalOrder([
+    [2, 5],
+    [8, 4],
+    [0, -1],
+  ])
+);

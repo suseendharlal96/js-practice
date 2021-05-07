@@ -506,7 +506,7 @@ const printStars2 = (n) => {
         content += " ".repeat((i % 5) + 1) + "*".repeat(n * 2 - m);
         m += 2;
       } else {
-        content +=  "*".repeat(i * 2 + 1);
+        content += "*".repeat(i * 2 + 1);
       }
     } else {
       content += "*";
@@ -515,6 +515,29 @@ const printStars2 = (n) => {
   }
 };
 printStars2(5);
+
+const printStarRecursive = (n) => {
+  let count = 0;
+  function recursive(space, limit = 5) {
+    let content = "";
+    for (let i = 0; i < space; i++) {
+      content += " ";
+    }
+    for (let i = 0; i < limit - space + count; i++) {
+      content += "*";
+    }
+    count++;
+    console.log(content);
+    if (space >= 1) {
+      recursive(space - 1);
+      console.log(content);
+    }
+  }
+
+  recursive(n - 1);
+};
+
+printStarRecursive(5);
 
 const printNumber = (n) => {
   for (let i = 0; i < n; i++) {
@@ -531,3 +554,4 @@ const printNumber = (n) => {
   }
 };
 printNumber(5);
+
