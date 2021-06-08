@@ -1053,3 +1053,352 @@ var findLength = function (nums1, nums2) {
 // console.log(findLength([5, 14, 53, 80, 48], [50, 47, 3, 80, 83]));
 // console.log(findLength([0, 0, 0, 0, 1], [1, 0, 0, 0, 0]));
 // console.log(findLength([1, 2, 3, 2, 1], [3, 2, 1, 4, 7]));
+
+var addStrings = function (num1, num2) {
+  let res = "";
+  let num1Start = num1.length - 1;
+  let num2Start = num2.length - 1;
+  let carryOver = 0;
+
+  while (num1Start >= 0 || num2Start >= 0) {
+    let total = carryOver;
+
+    if (num1Start >= 0) {
+      // console.log(+num1[num1Start])
+      total += +num1[num1Start--];
+    }
+    if (num2Start >= 0) {
+      // console.log(+num2[num2Start])
+      total += +num2[num2Start--];
+    }
+    console.log(total);
+    res += total % 10;
+    carryOver = Math.floor(total / 10);
+  }
+  if (carryOver !== 0) {
+    res += carryOver;
+  }
+
+  return res;
+};
+
+// console.log(addStrings("11", "123"));
+
+var exist = function (board, word) {
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[i].length; j++) {
+      console.log("inside forloop");
+      if (board[i][j] === word[0] && search(board, i, j, 0, word)) {
+        return true;
+      }
+    }
+  }
+  return false;
+
+  function search(b, row, col, wordIndex, w) {
+    console.log("start");
+    if (wordIndex === w.length) {
+      console.log("all words found");
+      return true;
+    }
+
+    if (
+      row < 0 ||
+      col < 0 ||
+      row >= b.length ||
+      col >= b[row].length ||
+      b[row][col] !== w[wordIndex]
+    ) {
+      console.log({ row, col });
+      return false;
+    } else {
+      console.log({ row, col, el: b[row][col] });
+    }
+
+    console.log(b);
+    const temp = b[row][col];
+    let isFound =
+      search(b, row - 1, col, wordIndex + 1, w) ||
+      search(b, row + 1, col, wordIndex + 1, w) ||
+      search(b, row, col + 1, wordIndex + 1, w) ||
+      search(b, row, col - 1, wordIndex + 1, w);
+    b[row][col] = temp;
+    if (true) {
+      console.log("last return", isFound);
+      return isFound;
+    }
+  }
+};
+// console.log(
+//   exist(
+//     [
+//       ["C", "A", "A"],
+//       ["A", "A", "A"],
+//       ["B", "C", "D"],
+//     ],
+//     "AAB"
+//   )
+// );
+
+// console.log(
+//   exist(
+//     [
+//       ["A", "B", "C", "E"],
+//       ["Z", "F", "C", "S"],
+//       ["P", "D", "E", "E"],
+//     ],
+//     "ABSED"
+//   )
+// );
+var uniquePaths2 = function (obstacleGrid) {
+  let m = obstacleGrid.length;
+  let n = obstacleGrid[0].length;
+  const dp = Array(m)
+    .fill(0)
+    .map((el) => Array(n).fill(0));
+  dp[0][0] = 1;
+  console.log(dp);
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (obstacleGrid[i][j] === 1 || (i === 0 && j === 0)) {
+        console.log(i, j);
+        console.log("cont");
+        continue;
+      } else {
+        console.log("else");
+        dp[i][j] = (i ? dp[i - 1][j] : 0) + (j ? dp[i][j - 1] : 0);
+      }
+    }
+  }
+  console.log(dp);
+  return dp[m - 1][n - 1];
+};
+
+// console.log(
+//   uniquePaths2([
+//     [0, 0, 0],
+//     [0, 1, 0],
+//     [0, 0, 0],
+//   ])
+// );
+
+var uniquePaths = function (m, n) {
+  const dp = Array(m)
+    .fill(0)
+    .map((row) => Array(n).fill(0));
+  dp[0][0] = 1;
+  // for (let i = 0; i < m; i++) {
+  //   dp[i][0] = 1;
+  // }
+  // for (let i = 0; i < n; i++) {
+  //   dp[0][i] = 1;
+  // }
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (i !== 0 || j !== 0) {
+        console.log(i, j);
+        dp[i][j] = (i ? dp[i - 1][j] : 0) + (j ? dp[i][j - 1] : 0);
+      }
+    }
+  }
+  console.log(dp);
+  return dp[m - 1][n - 1];
+};
+
+// console.log(uniquePaths(3, 7));
+
+var letterCombinations = function (digits) {
+  if (digits.length === 0) return [];
+
+  const L = [
+    "0",
+    "1",
+    "abc",
+    "def",
+    "ghi",
+    "jkl",
+    "mno",
+    "pqrs",
+    "tuv",
+    "wxyz",
+  ];
+
+  const res = [];
+  let combinationStr = "";
+  dfs(0, "");
+  return res;
+  function dfs(startIndex, str) {
+    console.log(startIndex);
+    if (startIndex === digits.length) {
+      res.push(str);
+    } else {
+      console.log(startIndex);
+      const letters = L[digits[startIndex]];
+      for (let i = 0; i < letters.length; i++) {
+        dfs(startIndex + 1, str + letters[i]);
+      }
+    }
+  }
+};
+
+// console.log(letterCombinations("23"));
+
+const gates = (grid) => {
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] === 0) {
+        dfs(grid, i, j, 0);
+      }
+    }
+  }
+  return grid;
+  function dfs(grid, row, col, current) {
+    if (
+      row < 0 ||
+      col < 0 ||
+      row >= grid.length ||
+      col >= grid[row].length ||
+      grid[row][col] < current
+    ) {
+      return false;
+    }
+
+    grid[row][col] = current;
+
+    dfs(grid, row + 1, col, current + 1);
+    dfs(grid, row - 1, col, current + 1);
+    dfs(grid, row, col + 1, current + 1);
+    dfs(grid, row, col - 1, current + 1);
+  }
+};
+console.log(
+  gates([
+    [Number.MAX_SAFE_INTEGER, -1, 0, Number.MAX_SAFE_INTEGER],
+    [
+      Number.MAX_SAFE_INTEGER,
+      Number.MAX_SAFE_INTEGER,
+      Number.MAX_SAFE_INTEGER,
+      -1,
+    ],
+    [Number.MAX_SAFE_INTEGER, -1, Number.MAX_SAFE_INTEGER, -1],
+    [0, -1, Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER],
+  ])
+);
+
+var countSquares = function (matrix) {
+  let count = 0;
+  for (let i = 0; i < matrix.length; i++) {
+    for (let j = 0; j < matrix[0].length; j++) {
+      if (matrix[i][j] === 0) continue;
+      if (i > 0 && j > 0) {
+        matrix[i][j] += Math.min(
+          matrix[i - 1][j],
+          matrix[i - 1][j - 1],
+          matrix[i][j - 1]
+        );
+        // console.log({ i, j });
+      }
+      // console.log({ i, j }, matrix[i][j]);
+      count += matrix[i][j];
+    }
+  }
+  return count;
+};
+
+// console.log(
+//   countSquares([
+//     [0, 1, 1, 1],
+//     [1, 1, 1, 1],
+//     [0, 1, 1, 1],
+//   ])
+// );
+var partitionLabels = function (s) {
+  const alphabetArr = new Array(26);
+  s.split("").forEach((letter, i) => {
+    alphabetArr[letter.charCodeAt() - 97] = i;
+  });
+  console.log(alphabetArr);
+};
+
+console.log(partitionLabels("ababcbacadefegdehijhklij"));
+
+const commonNum = (A, B, C) => {
+  let a = 0;
+  let b = 0;
+  let c = 0;
+  const res = [];
+  while (a < A.length && b < B.length && c < C.length) {
+    if (A[a] === B[b] && B[b] === C[c]) {
+      // console.log(a)
+      res.push(A[a]);
+      a++;
+      b++;
+      c++;
+    } else if (A[a] > B[b]) {
+      b++;
+    } else if (A[a] < B[b]) {
+      a++;
+    } else {
+      c++;
+    }
+  }
+  return res;
+};
+// console.log(
+//   commonNum(
+//     [1, 5, 10, 20, 40, 80],
+//     [6, 7, 20, 80, 100],
+//     [3, 4, 15, 20, 30, 70, 80, 120]
+//   )
+// );
+var shortSub = function (s, t) {
+  let count = 0;
+  let remaining = t;
+  while (remaining.length > 0) {
+    let subseq = "";
+    let i = 0;
+    let j = 0;
+    while (i < s.length && j < remaining.length) {
+      console.log(s[i], remaining[j]);
+      if (s[i++] === remaining[j]) {
+        subseq += remaining[j++];
+      }
+    }
+    if (subseq.length === 0) return -1;
+    count++;
+    remaining = remaining.substring(subseq.length);
+  }
+  return count;
+};
+
+// console.log(shortSub("abc", "acdbc"));
+// console.log(shortSub("xyz", "xzyxz"));
+
+// 1616
+var checkPalindromeFormation = function (a, b) {
+  return validate(a, b) || validate(b, a);
+
+  function validate(a, b) {
+    console.log(1, { a, b });
+    let l = 0,
+      r = a.length - 1;
+    while (l < r) {
+      if (a.charAt(l) != b.charAt(r)) break;
+      l++;
+      r--;
+    }
+    return validate2(a, l, r) || validate2(b, l, r);
+  }
+
+  function validate2(a, l, r) {
+    console.log({ l, r });
+    while (l < r) {
+      if (a.charAt(l) != a.charAt(r)) break;
+      l++;
+      r--;
+    }
+    return l >= r;
+  }
+};
+
+console.log(checkPalindromeFormation("ulacfd", "jizalu"));

@@ -250,35 +250,29 @@ const longestSubArrayEqBySum = (arr, t) => {
 // );
 
 //5. Longest subarray with K distinct characters
-const longestSubArrayOfKDistinctChar = (arr, t) => {
-  let maxArr = [],
-    a = [],
-    max = 0,
-    mySet = new Set(),
-    left = 0;
-
+const longestSubArrayOfKDistinctChar = (arr, k) => {
+  const map = new Map();
+  let start = 0,
+    windowSize = 1,
+    windowStart = 0;
   for (let i = 0; i < arr.length; i++) {
-    mySet.add(arr[i]);
-    console.log(mySet.size);
-    if (mySet.size <= t) {
-      a.push(arr[i]);
-      max = Math.max(a.length, max);
-      if (max > maxArr.length) {
-        maxArr = [...a];
-        console.log(maxArr);
-      }
-    } else {
-      a = arr.slice(left + 1 + 1, i + 1);
-      mySet.delete(arr[left]);
-      console.log(a);
-      left++;
+    map.set(arr[i], map.get(arr[i]) + 1 || 1);
+    while (map.size > k) {
+      const firstChar = arr[start];
+      map.set(firstChar, map.get(firstChar) - 1);
+      if (map.get(firstChar) === 0) map.delete(firstChar);
+      start++;
+    }
+    if (i - start + 1 > windowSize) {
+      windowSize = i - start + 1;
+      windowStart = start;
     }
   }
-  return maxArr;
+  return arr.slice(windowStart, windowStart + windowSize);
 };
-// console.log(
-//   longestSubArrayOfKDistinctChar(["A", "A", "A", "I", "H", "H", "B", "C"], 2)
-// );
+console.log(
+  longestSubArrayOfKDistinctChar(["A", "I", "A", "I", "H", "H", "B", "C"], 2)
+);
 
 // 6. Maximum Sum from a sub array(No target given)
 // AMAZON
@@ -349,7 +343,7 @@ var diagonalSum = function (mat) {
   return curr;
 };
 
-// cons ole.log(
+// console.log(
 //   diagonalSum([
 //     [1, 2, 3],
 //     [4, 5, 6],
@@ -381,7 +375,6 @@ var flipAndInvertImage = function (A) {
 //     [1, 0, 1, 0],
 //   ])
 // );
-new String().replace();
 
 var maximum69Number = function (num) {
   let max = 0;
