@@ -83,31 +83,38 @@ function Counter() {
 // console.log("end");
 
 const obj = {
-  fName: "Luis",
-  lName: "tim",
+  fName: "LUIS",
+  lName: "TOM",
+};
+const obj1 = {
+  fName: "KAREN",
+  lName: "ELENA",
 };
 
-function fullName(args1) {
+function innerFn(args2) {
+  console.log(this, args2);
+  // console.log(this.fName, args2, a);
+}
+
+const fullName = function (args1, fn) {
   let a = args1;
   console.log(this, args1);
   // console.log(this.fName, args1);
-  return function sample(args2) {
-    console.log(this);
-    // console.log(this.fName, args2, a);
-  };
-  // sample(a);
-}
+  return fn;
 
-// fullName.call(obj, "madurai").call(obj, "chennai");
+  // sample(a);
+};
+
+// fullName.call(obj, "madurai", innerFn).call(obj1, "chennai");
 // fullName.apply(obj, ["madurai", "India"]);
-// fullName.bind(obj, "madurai")()();
+// fullName.bind(obj, "madurai", innerFn)().call(obj1, "chennai");
 
 // ********* //
 
-function customBindFn(params1, params2, params3) {
-  console.log(params1);
-  console.log(params2);
-  console.log(params3);
+function customBindFn(...params1) {
+  console.log(...params1.flat());
+  // console.log(params2);
+  // console.log(params3);
   return params1;
 }
 
@@ -125,12 +132,13 @@ Function.prototype.customBind = function (...arg) {
   console.log(arg);
   console.log(this);
   return (...arg2) => {
+    console.log(arg2);
     console.log(this);
-    return this.call(...arg, ...arg2);
+    return this.call(this, arg);
   };
 };
 
-console.log(customBindFn.customBind(obj, "dubai", "india")("america"));
+// console.log(customBindFn.customBind(obj, "dubai", "india")("america"));
 
 // var outerMost = 2;
 function one(a) {
@@ -453,12 +461,170 @@ const customObj = {
   age: "24",
 };
 
-let returnedCustomThrottle = customThrottle.call(
-  customObj,
-  myThrottleFunc,
-  1000
-);
+let returnedCustomThrottle = customThrottle.call(customObj, myThrottleFunc, 1000);
 
 document.getElementById("throttleSearch").addEventListener("keyup", (e) => {
   returnedCustomThrottle(e.target.value);
 });
+
+// var x = 4;
+// const obj = {
+//   x: 3,
+//   bar: function () {
+//     var x = 2;
+//     alert(this.x);
+//     setTimeout(() => {
+//       var x = 1;
+//       alert(this.x);
+//     }, 1000);
+//   },
+// };
+// obj.bar();
+
+// function bar() {
+//   return foo;
+//   var foo = 11;
+//   // foo = 10;
+//   function foo() {}
+// }
+
+// alert(typeof bar());
+
+// function testfn() {
+//   var test = [];
+//   for (let z = 0; z < 5; z++) {
+//     test[z] = () => z;
+//   }
+//   console.log(test);
+//   return test;
+// }
+// var test = testfn();
+// console.log(test[4]());
+
+// var result = (function (x){
+//   delete x;
+//   return x;
+
+// })(0)
+// console.log(result)
+
+function a() {
+  console.log(b);
+}
+var b = 10;
+a();
+
+var c = 100;
+function x() {
+  var c = 30;
+  console.log(window.c);
+  window.c = 20;
+}
+x();
+console.log(c);
+
+Array.prototype.print = function (dd) {
+  console.log(this, dd);
+  for (let elem of this) {
+    console.log(elem + dd);
+  }
+};
+
+[1, 2].print(132);
+
+const aa = function (x) {
+  this.x = x;
+};
+
+const bb = function (x, y) {
+  this.y = y + "y";
+  a.call(this, x);
+  this.getX = () => {
+    return console.log(this.x);
+  };
+  this.getY = () => {
+    // console.log(this)
+    return console.log(this.y);
+  };
+};
+
+const B = new bb("x", "y");
+B.getX();
+B.getY();
+
+// const obj3 = {
+//   x2: 1,
+//   getX() {
+//     console.log(this);
+//     function inner() {
+//       console.log(this);
+//       console.log(this.x2);
+//     }
+//     inner();
+//   },
+// };
+
+// obj3.getX();
+
+// function add(x, y=0) {
+//   if (y) {
+//     console.log(x + y);
+//   }
+//   return (y) => {
+//     console.log(x + y);
+//   };
+// }
+
+// add(1, 2);
+// add(1)(2);
+
+// const profile = {
+//   name: "a",
+//   age: 12,
+//   kids: [
+//     {
+//       name: "b",
+//       age: 20,
+//       kids: [
+//         { name: "c", age: 20 },
+//         { name: "d", age: 20 },
+//       ],
+//     },
+//   ],
+// };
+// let age = 0;
+// const calcAge = (profile) => {
+//   Object.keys(profile).forEach((key) => {
+//     if (key === "age") {
+//       age += profile[key];
+//     } else if (key === "kids") {
+//       profile[key].forEach((obj) => {
+//         calcAge(obj);
+//       });
+//     }
+//   });
+// };
+// calcAge(profile);
+// console.log(age);
+
+let limit = 10;
+
+for (let i = 1; i <= limit / 2; i++) {
+  for (let j = 1; j <= limit - i; j++) {
+    // console.log(`${i} + ${j} = `);
+  }
+}
+
+var i =1
+for (; i <= 5; i++) {
+  ((a) => {
+    // console.log(arguments);
+    setTimeout(
+      (e) => {
+        console.log(e, a);
+      },
+      i * 1000,
+      "a"
+    );
+  })(i);
+}

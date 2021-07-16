@@ -1387,12 +1387,13 @@ var checkPalindromeFormation = function (a, b) {
       l++;
       r--;
     }
-    return validate2(a, l, r) || validate2(b, l, r);
+    return isPalindrom(a, l, r) || isPalindrom(b, l, r);
   }
 
-  function validate2(a, l, r) {
-    console.log({ l, r });
+  function isPalindrom(a, l, r) {
+    console.log({ a, l, r });
     while (l < r) {
+      console.log("in");
       if (a.charAt(l) != a.charAt(r)) break;
       l++;
       r--;
@@ -1401,4 +1402,216 @@ var checkPalindromeFormation = function (a, b) {
   }
 };
 
-console.log(checkPalindromeFormation("ulacfd", "jizalu"));
+// console.log(
+//   checkPalindromeFormation("pvhmupgqeltozftlmfjjde", "yjgpzbezspnnpszebzmhvp")
+// );
+
+function isPalindrom(str) {
+  let l = 0;
+  r = str.length - 1;
+  while (l < r) {
+    if (str.charAt(l) !== str.charAt(r)) break;
+    l++;
+    r--;
+  }
+  return l >= r;
+}
+
+// console.log(isPalindrom("pvhmzbezspnnpszebzmhvp"));
+
+// 46
+const permutation = (nums) => {
+  // const res = [];
+  // if (arr.length === 1) return [[...arr]];
+  // for (let d of arr) {
+  //   const firstEl = arr.shift();
+  //   const perms = permutation(arr);
+  //   for (let perm of perms) {
+  //     perm.push(firstEl);
+  //   }
+  //   res.push(...perms);
+  //   arr.push(firstEl);
+  // }
+  // return res;
+  const len = nums.length;
+  const res = [];
+  recursive2(nums, 0, len - 1);
+  return res;
+  function recursive2(num, start, end) {
+    if (start === end) {
+      res.push([...num]);
+    } else {
+      for (let i = start; i <= end; i++) {
+        [nums[start], nums[i]] = [nums[i], nums[start]];
+        recursive2(num, start + 1, end);
+        [nums[start], nums[i]] = [nums[i], nums[start]];
+      }
+    }
+  }
+};
+// console.log(permutation([1, 2, 3]));
+
+// 994
+var orangesRotting = function (grid) {
+  let rotten = new Set();
+  const fresh = new Set();
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[i].length; j++) {
+      if (grid[i][j] === 2) {
+        rotten.add(i + "_" + j);
+      } else if (grid[i][j] === 1) {
+        fresh.add(i + "_" + j);
+      }
+    }
+  }
+
+  const directions = [
+    [0, 1],
+    [1, 0],
+    [-1, 0],
+    [0, -1],
+  ];
+  let minutes = 0;
+  while (fresh.size > 0) {
+    const newlyInfected = new Set();
+    rotten.forEach((r) => {
+      console.log(r);
+      const rottenRow = +r.split("_")[0];
+      const rottenCol = +r.split("_")[1];
+      directions.forEach((d) => {
+        const row = rottenRow + d[0];
+        const col = rottenCol + d[1];
+        console.log({ row, col });
+        if (fresh.has(row + "_" + col)) {
+          fresh.delete(row + "_" + col);
+          newlyInfected.add(row + "_" + col);
+        }
+      });
+    });
+    if (newlyInfected.size === 0) return -1;
+    rotten = new Set(newlyInfected);
+    minutes++;
+  }
+  return minutes;
+};
+
+// console.log(
+//   orangesRotting([
+//     [2, 1, 1],
+//     [1, 1, 0],
+//     [0, 1, 1],
+//   ])
+// );
+
+var reverseOnlyLetters = function (s) {
+  let i = 0,
+    j = s.length - 1;
+  let arr = s.split("");
+  while (i < j) {
+    const charCode1 = arr[i].toLowerCase().charCodeAt();
+    const charCode2 = arr[j].toLowerCase().charCodeAt();
+    if (97 > charCode1 || charCode1 > 122) {
+      console.log({ charCode1, charCode2 });
+      i++;
+    }
+    if (97 > charCode2 || charCode2 > 122) {
+      console.log({ charCode1, charCode2 });
+      j--;
+    }
+    console.log({ charCode1, charCode2 });
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+    i++;
+    j--;
+  }
+  return arr.join("");
+};
+
+// console.log(reverseOnlyLetters("a-bC-dEf-ghIj"));
+
+var characterReplacement = function (s, k) {
+  let left = 0;
+  let maxCharCount = 0;
+  const alphabetArr = new Array(26).fill(0);
+  let maxLen = 0;
+
+  for (let i = 0; i < s.length; i++) {
+    alphabetArr[s[i].charCodeAt() - 65] += 1;
+    console.log(alphabetArr);
+    maxCharCount = Math.max(maxCharCount, alphabetArr[s[i].charCodeAt() - 65]);
+    while (i - left + 1 - maxCharCount > k) {
+      alphabetArr[s[left++].charCodeAt() - 65] -= 1;
+    }
+    maxLen = Math.max(maxLen, i - left + 1);
+  }
+  return maxLen;
+};
+// console.log(characterReplacement("BAAA", 0));
+
+var minimumTotal = function (triangle) {
+  const dp = new Array(triangle.length + 1).fill(0);
+
+  for (let i = triangle.length - 1; i >= 0; i--) {
+    for (let j = 0; j < triangle[i].length; j++) {
+      dp[j] = triangle[i][j] + Math.min(dp[j] + dp[j + 1]);
+      console.log(dp);
+    }
+  }
+  console.log(dp);
+};
+
+console.log(minimumTotal([[2], [3, 4], [6, 5, 7], [4, 1, 8, 3]]));
+
+function maxElement(n, maxSum, k) {
+  // Write your code here
+  let sum = 0;
+  const res = new Array(n).fill(0);
+  res[k] = 1;
+  sum = 1;
+  let init = 1;
+  let endInit = 1;
+  while (sum < maxSum) {
+    let start = k - init;
+    let end = k + endInit;
+    if (start < 0) start = 0;
+    if (end >= n) end = n - 1;
+    for (let i = start; i <= end; i++) {
+      res[i] += 1;
+    }
+    sum += end - start + 1;
+    init++;
+    endInit++;
+    console.log(res, sum);
+  }
+  return res[k] - 1;
+}
+
+console.log(maxElement(4, 4, 3));
+
+const perm = (arr) => {
+  const set = [...new Set(arr)];
+  let min = Number.MAX_VALUE;
+  let max = Number.MAX_VALUE;
+  let sum = 0;
+  set.forEach((a) => {
+    min = Math.min(a, min);
+    max = Math.max(a, max);
+  });
+  const permutations = [];
+  helper(0);
+  console.log(permutations);
+
+  function helper(start) {
+    let end = set.length - 1;
+    if (start === end) {
+      permutations.push([...set]);
+    } else {
+      for (let i = start; i <= end; i++) {
+        [set[i], set[start]] = [set[start], set[i]];
+        helper(start + 1);
+        [set[i], set[start]] = [set[start], set[i]];
+      }
+    }
+  }
+};
+console.log(perm([2, 2, 4, 4, 6, 6]));
