@@ -150,7 +150,7 @@ function one(a) {
     };
   };
 }
-// console.log(one(1)(2)(3)(4));
+console.log(one(1)(2)(3)(4));
 
 let sum = (a) => (b) => b ? sum(a + b) : a;
 
@@ -243,19 +243,19 @@ console.log(add(3));
 //   console.log("clicked");
 // });
 
-const modifyObj = () => {
-  let finalObj = {};
-  return (recursive = (obj, parentName = "user") => {
-    for (let key in obj) {
-      if (typeof obj[key] === "object") {
-        recursive(obj[key], parentName + "_" + key);
-      } else {
-        finalObj[key] = obj[key];
-      }
-    }
-    return finalObj;
-  });
-};
+// const modifyObj = () => {
+//   let finalObj = {};
+//   return (recursive = (obj, parentName = "user") => {
+//     for (let key in obj) {
+//       if (typeof obj[key] === "object") {
+//         recursive(obj[key], parentName + "_" + key);
+//       } else {
+//         finalObj[parentName + "_" + key] = obj[key];
+//       }
+//     }
+//     return finalObj;
+//   });
+// };
 
 const user = {
   name: "Susee",
@@ -273,6 +273,27 @@ const user = {
     },
   },
 };
+
+
+const flattenObj=()=>{
+  const flattendObj={};
+  return innerFn=(obj,parentName='user')=>{
+    
+    Object.keys(obj).forEach(key=>{
+      if(obj[key]==='object'){
+        innerFn(obj[key],key);
+      }else{
+        flattendObj[parentName+'_'+key] = obj[key];    
+      }
+    })
+    
+    return flattendObj;
+  }
+}
+
+const helperObjFn = flattenObj();
+console.log(helperObjFn(user));
+
 // console.log(modifyObj()(user));
 
 const printChildren = (obj) => {
@@ -615,16 +636,145 @@ for (let i = 1; i <= limit / 2; i++) {
   }
 }
 
-var i =1
-for (; i <= 5; i++) {
-  ((a) => {
-    // console.log(arguments);
-    setTimeout(
-      (e) => {
-        console.log(e, a);
-      },
-      i * 1000,
-      "a"
-    );
-  })(i);
+// var i = 1;
+// for (; i <= 5; i++) {
+//   ((a) => {
+//     // console.log(arguments);
+//     setTimeout(
+//       (e) => {
+//         console.log(e, a);
+//       },
+//       i * 1000,
+//       "a"
+//     );
+//   })(i);
+// }
+
+// function sampleEvent() {
+var eventCount = 0;
+document.getElementById("button2").addEventListener("click", function x() {
+  console.log("clicked", ++eventCount);
+});
+// }
+// sampleEvent()
+
+// constructor()
+// static getDerivedStateFromProps(props,state)
+// render();
+// componentDidMount();
+
+// static getDerivedStateFromProps()
+// shouldComponentUpdate(nextProps,nextState)
+// render();
+// static getSnapshotBeforeUpdate(prevPRops,prevState)
+// componentDidUpdate(prevProps,prevState)
+
+// componentWillUnmount
+
+function sample2(fname, lname) {
+  console.log(this);
+  this.name = "sad";
+  console.log(fname, lname);
 }
+let fname = "sus";
+let lname = "lal";
+sample2`${fname} is  a  ${lname}`;
+
+[...fname].forEach((n) => {
+  console.log(n);
+});
+
+function car() {
+  console.log(this);
+  this.make = "Lamborghini";
+}
+
+car();
+const myCar = new car();
+console.log(myCar.make);
+console.log(make);
+
+const arr = [1, 2, 2, 3, 4, 5, 5];
+console.log([...new Set(arr)]);
+const person = { name: "Lydia" };
+
+Object.defineProperty(person, "age", { value: 21, enumerable: true });
+
+console.log(Object.keys(person));
+
+// JSON.stringify()
+const value = { number: 10 };
+
+const multiply = (x = { ...value }) => {
+  console.log((x.number *= 2));
+};
+
+multiply();
+multiply();
+multiply(value);
+multiply(value);
+
+const innerobj = {
+  sample() {
+    console.log(this);
+    function innerSamp() {
+      console.log(this);
+    }
+    innerSamp();
+  },
+};
+
+innerobj.sample();
+
+// console.log("start");
+// setTimeout(function cb() {
+//   console.log("cb");
+// }, 5000);
+// console.log("end");
+
+// const ab = [1, 2];
+// ab[100]=101;
+// delete ab[0];
+// ab.splice(0,1)
+// console.log(ab, ab[0], ab.length);
+
+Function.prototype.myCustBind = function (...args) {
+  const [thisContext, ...params] = args;
+  const that = this;
+  return function ab() {
+    that.call(thisContext, params);
+  };
+};
+
+function sampleFn(args) {
+  console.log(args);
+  args.forEach((ar) => {
+    console.log(`${this.fname} ${this.lname} ${ar}`);
+  });
+}
+
+const sampleObj = {
+  fname: "sus",
+  lname: "lal",
+};
+
+// sampleFn.myCustBind(sampleObj, "chennai", "madurai")();
+
+const sampleArr = [1, 2, 3];
+
+const newarr = sampleArr.map((d) => d * 2);
+
+Array.prototype.myCustMap = function () {
+  const tempArr = [];
+  this.forEach((a) => {
+    tempArr.push(a * 2);
+  });
+  return tempArr;
+};
+
+console.log(sampleArr.myCustMap());
+
+let myNumber = 100;
+let myString = "100";
+
+console.log(!typeof myNumber === "string");

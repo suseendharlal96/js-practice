@@ -270,9 +270,7 @@ const longestSubArrayOfKDistinctChar = (arr, k) => {
   }
   return arr.slice(windowStart, windowStart + windowSize);
 };
-console.log(
-  longestSubArrayOfKDistinctChar(["A", "I", "A", "I", "H", "H", "B", "C"], 2)
-);
+console.log(longestSubArrayOfKDistinctChar(["A", "I", "A", "I", "H", "H", "B", "C"], 2));
 
 // 6. Maximum Sum from a sub array(No target given)
 // AMAZON
@@ -380,9 +378,7 @@ var maximum69Number = function (num) {
   let max = 0;
   for (let i = 0; i < num.toString().length; i++) {
     max = Math.max(
-      num.toString()[i] === "6"
-        ? num.toString().replace(num.toString()[i], "9")
-        : num.toString().replace(num.toString()[i], "6"),
+      num.toString()[i] === "6" ? num.toString().replace(num.toString()[i], "9") : num.toString().replace(num.toString()[i], "6"),
       num > max ? num : max
     );
   }
@@ -885,12 +881,7 @@ var countNegatives = function (grid) {
 
 var busyStudent = function (startTime, endTime, queryTime) {
   let count = 0;
-  if (
-    startTime.length === 1 &&
-    startTime[0] === endTime[0] &&
-    (startTime[0] === queryTime || endTime[0] === queryTime)
-  )
-    return 1;
+  if (startTime.length === 1 && startTime[0] === endTime[0] && (startTime[0] === queryTime || endTime[0] === queryTime)) return 1;
   for (let i = 0; i < startTime.length; i++) {
     if (startTime[i] <= queryTime && queryTime <= endTime[i]) {
       count += 1;
@@ -926,10 +917,7 @@ var relativeSortArray = function (arr1, arr2) {
       if (arr.includes(arr1[i])) {
         console.log(arr1[i]);
         // console.log(arr.indexOf(arr1[i]));
-        const a = arr.splice(
-          arr.lastIndexOf(arr1[i]) + 1,
-          arr.slice(arr.lastIndexOf(arr1[i]) + 1, arr.length).length
-        );
+        const a = arr.splice(arr.lastIndexOf(arr1[i]) + 1, arr.slice(arr.lastIndexOf(arr1[i]) + 1, arr.length).length);
         console.log(a);
         // console.log(arr);
         arr[arr.lastIndexOf(arr1[i]) + 1] = arr1[i];
@@ -1010,9 +998,7 @@ var frequencySort = function (nums) {
     m.set(n, m.get(n) + 1 || 1);
   });
   // console.log(m);
-  return nums.sort((a, b) =>
-    m.get(a) === m.get(b) ? b - a : m.get(a) - m.get(b)
-  );
+  return nums.sort((a, b) => (m.get(a) === m.get(b) ? b - a : m.get(a) - m.get(b)));
 };
 
 // console.log(frequencySort([2, 3, 1, 3, 2]));
@@ -2344,9 +2330,7 @@ var uniqueMorseRepresentations = function (words) {
   let a = [];
   words.forEach((word, index) => {
     word.split("").forEach((letter) => {
-      a[index] = a[index]
-        ? a[index] + morse[letter.charCodeAt() - 97]
-        : morse[letter.charCodeAt() - 97];
+      a[index] = a[index] ? a[index] + morse[letter.charCodeAt() - 97] : morse[letter.charCodeAt() - 97];
     });
   });
   return [...new Set(a)].length;
@@ -2477,20 +2461,7 @@ var maxPower = function (s) {
 // 1507
 var reformatDate = function (date) {
   const arr = date.split(" "),
-    months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   const getDate = (date) => {
     let a = "";
     for (let i = 0; i < date.length; i++) {
@@ -2504,13 +2475,7 @@ var reformatDate = function (date) {
     return a;
   };
   const month = (months.indexOf(arr[1]) + 1).toString();
-  return (
-    arr[2] +
-    "-" +
-    (month.length === 1 ? "0" + month : month) +
-    "-" +
-    getDate(arr[0])
-  );
+  return arr[2] + "-" + (month.length === 1 ? "0" + month : month) + "-" + getDate(arr[0]);
 };
 
 // console.log(reformatDate("20th Oct 2052"));
@@ -2641,8 +2606,7 @@ var detectCapitalUse = function (word) {
   if (
     word === word.toUpperCase() ||
     word === word.toLowerCase() ||
-    (word[0] === word[0].toUpperCase() &&
-      word.substring(1) === word.substring(1).toLowerCase())
+    (word[0] === word[0].toUpperCase() && word.substring(1) === word.substring(1).toLowerCase())
   ) {
     return true;
   }
@@ -2665,10 +2629,7 @@ var mostCommonWord = function (paragraph, banned) {
     if (paraArr[i] !== "") {
       let charCode = paraArr[i].toLowerCase().charCodeAt();
       if (97 <= charCode && charCode <= 122) {
-        map.set(
-          paraArr[i].toLowerCase(),
-          map.get(paraArr[i].toLowerCase()) + 1 || 1
-        );
+        map.set(paraArr[i].toLowerCase(), map.get(paraArr[i].toLowerCase()) + 1 || 1);
       }
     }
   }
@@ -3260,8 +3221,7 @@ var maxProfit = function (prices) {
 // 122
 var maxProfit2 = function (prices) {
   let max = 0;
-  for (let i = 1; i < prices.length; i++)
-    if (prices[i] - prices[i - 1] > 0) max += prices[i] - prices[i - 1];
+  for (let i = 1; i < prices.length; i++) if (prices[i] - prices[i - 1] > 0) max += prices[i] - prices[i - 1];
   return max;
 };
 // console.log(maxProfit2([7, 1, 5, 3, 6, 4]));
@@ -3316,10 +3276,7 @@ var canPlaceFlowers = function (flowerbed, n) {
   let count = 0;
   for (let i = 0; i < flowerbed.length; i++) {
     console.log(flowerbed[i + 1]);
-    if (
-      (i == 0 && flowerbed[i] == 0 && flowerbed[i + 1] !== 1) ||
-      (flowerbed[i - 1] === 0 && flowerbed[i] === 0 && flowerbed[i + 1] !== 1)
-    ) {
+    if ((i == 0 && flowerbed[i] == 0 && flowerbed[i + 1] !== 1) || (flowerbed[i - 1] === 0 && flowerbed[i] === 0 && flowerbed[i + 1] !== 1)) {
       count += 1;
       flowerbed[i] = 1;
     }
@@ -3738,42 +3695,22 @@ var tictactoe = function (moves) {
     // console.log(row);
 
     // for (let i = 0; i <= 0; i++) {
-    if (
-      mat[row][0] &&
-      mat[row][1] &&
-      mat[row][2] &&
-      new Set([mat[row][0], mat[row][1], mat[row][2]]).size === 1
-    ) {
+    if (mat[row][0] && mat[row][1] && mat[row][2] && new Set([mat[row][0], mat[row][1], mat[row][2]]).size === 1) {
       console.log(1);
       return mat[row][0];
     }
     // }
     // for (let i = 0; i <= 0; i++) {
-    if (
-      mat[0][row] &&
-      mat[1][row] &&
-      mat[2][row] &&
-      new Set([mat[0][row], mat[1][row], mat[2][row]]).size === 1
-    ) {
+    if (mat[0][row] && mat[1][row] && mat[2][row] && new Set([mat[0][row], mat[1][row], mat[2][row]]).size === 1) {
       console.log(2);
       return mat[0][row];
     }
     // }
   };
-  if (
-    mat[0][0] &&
-    mat[1][1] &&
-    mat[2][2] &&
-    new Set([mat[0][0], mat[1][1], mat[2][2]]).size === 1
-  ) {
+  if (mat[0][0] && mat[1][1] && mat[2][2] && new Set([mat[0][0], mat[1][1], mat[2][2]]).size === 1) {
     return mat[0][0];
   }
-  if (
-    mat[0][2] &&
-    mat[1][1] &&
-    mat[2][0] &&
-    new Set([mat[0][2], mat[1][1], mat[2][0]]).size === 1
-  ) {
+  if (mat[0][2] && mat[1][1] && mat[2][0] && new Set([mat[0][2], mat[1][1], mat[2][0]]).size === 1) {
     return mat[0][2];
   }
 
@@ -3903,12 +3840,7 @@ var groupAnagrams = function (strs) {
   let map = new Map();
   for (let i = 0; i < strs.length; i++) {
     const sortedStr = strs[i].split("").sort().join("");
-    map.set(
-      sortedStr,
-      map.get(sortedStr)
-        ? [...map.get(sortedStr)].concat(strs[i])
-        : new Array(strs[i])
-    );
+    map.set(sortedStr, map.get(sortedStr) ? [...map.get(sortedStr)].concat(strs[i]) : new Array(strs[i]));
   }
   let res = [];
   map.forEach((value) => {
@@ -4300,10 +4232,7 @@ var singleNonDuplicate = function (nums) {
     if (nums[mid] !== nums[mid - 1] && nums[mid] !== nums[mid + 1]) {
       return nums[mid];
     }
-    if (
-      (mid % 2 == 0 && nums[mid] === nums[mid + 1]) ||
-      (mid % 2 !== 0 && nums[mid] === nums[mid - 1])
-    ) {
+    if ((mid % 2 == 0 && nums[mid] === nums[mid + 1]) || (mid % 2 !== 0 && nums[mid] === nums[mid - 1])) {
       start = mid + 1;
     } else {
       end = mid - 1;

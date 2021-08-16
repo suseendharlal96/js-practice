@@ -923,10 +923,7 @@ const sortDiagMat = (mat) => {
     while (row < mat.length && col < mat[0].length) {
       console.log({ row, col });
       while (row > 0 && col > 0 && mat[row][col] < mat[row - 1][col - 1]) {
-        [mat[row][col], mat[row - 1][col - 1]] = [
-          mat[row - 1][col - 1],
-          mat[row][col],
-        ];
+        [mat[row][col], mat[row - 1][col - 1]] = [mat[row - 1][col - 1], mat[row][col]];
         row--;
         col--;
       }

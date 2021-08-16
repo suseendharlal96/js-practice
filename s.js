@@ -61,12 +61,7 @@ function timeConversion(s) {
     isNight = sec.split("")[2] === "A";
 
   let hour = "";
-  hour =
-    isNight && hr === "12"
-      ? "00"
-      : !isNight && hr !== "12"
-      ? (+hr + 12).toString()
-      : hr;
+  hour = isNight && hr === "12" ? "00" : !isNight && hr !== "12" ? (+hr + 12).toString() : hr;
   return hour + ":" + min + ":" + actualSec;
 }
 
@@ -240,20 +235,8 @@ var maxNumberOfBalloons = function (text) {
     map.set(text[i], map.get(text[i]) + 1 || 1);
   }
 
-  if (
-    map.has("b") &&
-    map.has("a") &&
-    map.has("l") &&
-    map.has("o") &&
-    map.has("n")
-  ) {
-    return Math.min(
-      map.get("b"),
-      map.get("a"),
-      Math.floor(map.get("l") / 2),
-      Math.floor(map.get("o") / 2),
-      map.get("n")
-    );
+  if (map.has("b") && map.has("a") && map.has("l") && map.has("o") && map.has("n")) {
+    return Math.min(map.get("b"), map.get("a"), Math.floor(map.get("l") / 2), Math.floor(map.get("o") / 2), map.get("n"));
   }
   return 0;
 };
@@ -284,11 +267,7 @@ var removeKdigits = function (num, k) {
   if (num.length === k) return "0";
   let minStack = [];
   for (let i = 0; i < num.length; i++) {
-    while (
-      minStack.length !== 0 &&
-      minStack[minStack.length - 1] > num[i] &&
-      k > 0
-    ) {
+    while (minStack.length !== 0 && minStack[minStack.length - 1] > num[i] && k > 0) {
       minStack.pop();
       k--;
     }
@@ -592,19 +571,14 @@ var slowestKey = function (releaseTimes, keysPressed) {
     if (i === 0) {
       map.set(keysPressed[i], releaseTimes[i]);
     } else {
-      if (
-        map.has(keysPressed[i]) &&
-        map.get(keysPressed[i]) < releaseTimes[i] - releaseTimes[i - 1]
-      ) {
+      if (map.has(keysPressed[i]) && map.get(keysPressed[i]) < releaseTimes[i] - releaseTimes[i - 1]) {
         map.set(keysPressed[i], releaseTimes[i] - releaseTimes[i - 1]);
       } else if (!map.has(keysPressed[i])) {
         map.set(keysPressed[i], releaseTimes[i] - releaseTimes[i - 1]);
       }
     }
   }
-  const sortedMap = new Map(
-    [...map.entries()].sort((a, b) => +(a[0] > b[0]) || -(a[0] < b[0]))
-  );
+  const sortedMap = new Map([...map.entries()].sort((a, b) => +(a[0] > b[0]) || -(a[0] < b[0])));
 
   let max = -1,
     maxKey;
@@ -784,11 +758,7 @@ var countSquares = function (matrix) {
       if (matrix[i][j] === 0) continue;
       console.log({ i, j });
       if (i > 0 && j > 0) {
-        matrix[i][j] += Math.min(
-          matrix[i - 1][j],
-          matrix[i - 1][j - 1],
-          matrix[i][j - 1]
-        );
+        matrix[i][j] += Math.min(matrix[i - 1][j], matrix[i - 1][j - 1], matrix[i][j - 1]);
       }
       console.log(matrix[i][j]);
       count += matrix[i][j];
@@ -818,8 +788,7 @@ var sumSubarrayMins = function (A) {
   // [2, 13, 13, 13, 13, 13, 13, 13, 1]
   for (let i = 0; i < A.length; i++) {
     while (stack1.length !== 0 && A[stack1[stack1.length - 1]] > A[i]) {
-      nextSmaller[stack1[stack1.length - 1]] =
-        i - stack1[stack1.length - 1] - 1;
+      nextSmaller[stack1[stack1.length - 1]] = i - stack1[stack1.length - 1] - 1;
       stack1.pop();
     }
     stack1.push(i);
@@ -830,8 +799,7 @@ var sumSubarrayMins = function (A) {
       console.log(i, A[stack2[stack2.length - 1]]);
     }
     while (stack2.length !== 0 && A[stack2[stack2.length - 1]] >= A[i]) {
-      prevSmaller[stack2[stack2.length - 1]] =
-        stack2[stack2.length - 1] - i - 1;
+      prevSmaller[stack2[stack2.length - 1]] = stack2[stack2.length - 1] - i - 1;
       stack2.pop();
     }
     stack2.push(i);
@@ -1102,13 +1070,7 @@ var exist = function (board, word) {
       return true;
     }
 
-    if (
-      row < 0 ||
-      col < 0 ||
-      row >= b.length ||
-      col >= b[row].length ||
-      b[row][col] !== w[wordIndex]
-    ) {
+    if (row < 0 || col < 0 || row >= b.length || col >= b[row].length || b[row][col] !== w[wordIndex]) {
       console.log({ row, col });
       return false;
     } else {
@@ -1210,18 +1172,7 @@ var uniquePaths = function (m, n) {
 var letterCombinations = function (digits) {
   if (digits.length === 0) return [];
 
-  const L = [
-    "0",
-    "1",
-    "abc",
-    "def",
-    "ghi",
-    "jkl",
-    "mno",
-    "pqrs",
-    "tuv",
-    "wxyz",
-  ];
+  const L = ["0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"];
 
   const res = [];
   let combinationStr = "";
@@ -1253,13 +1204,7 @@ const gates = (grid) => {
   }
   return grid;
   function dfs(grid, row, col, current) {
-    if (
-      row < 0 ||
-      col < 0 ||
-      row >= grid.length ||
-      col >= grid[row].length ||
-      grid[row][col] < current
-    ) {
+    if (row < 0 || col < 0 || row >= grid.length || col >= grid[row].length || grid[row][col] < current) {
       return false;
     }
 
@@ -1274,12 +1219,7 @@ const gates = (grid) => {
 console.log(
   gates([
     [Number.MAX_SAFE_INTEGER, -1, 0, Number.MAX_SAFE_INTEGER],
-    [
-      Number.MAX_SAFE_INTEGER,
-      Number.MAX_SAFE_INTEGER,
-      Number.MAX_SAFE_INTEGER,
-      -1,
-    ],
+    [Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER, -1],
     [Number.MAX_SAFE_INTEGER, -1, Number.MAX_SAFE_INTEGER, -1],
     [0, -1, Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER],
   ])
@@ -1291,11 +1231,7 @@ var countSquares = function (matrix) {
     for (let j = 0; j < matrix[0].length; j++) {
       if (matrix[i][j] === 0) continue;
       if (i > 0 && j > 0) {
-        matrix[i][j] += Math.min(
-          matrix[i - 1][j],
-          matrix[i - 1][j - 1],
-          matrix[i][j - 1]
-        );
+        matrix[i][j] += Math.min(matrix[i - 1][j], matrix[i - 1][j - 1], matrix[i][j - 1]);
         // console.log({ i, j });
       }
       // console.log({ i, j }, matrix[i][j]);
@@ -1615,3 +1551,20 @@ const perm = (arr) => {
   }
 };
 console.log(perm([2, 2, 4, 4, 6, 6]));
+
+const minOperations2 = (freq) => {
+  const map = new Map()
+    for(let i=0;i<freq.length;i++){
+        map.set(i+1,freq[i])
+    }
+   const sortMap = new Map([...map.entries()].sort((a,b)=>a[0]-b[0])) 
+    const arr=[];
+    for(let [k,val] of sortMap){
+        for(let i=0;i<val;i++){
+            arr.push(k)
+        }
+    }
+    console.log(arr)
+};
+
+console.log(minOperations2([6,5,3]));
