@@ -87,3 +87,15 @@ Function.prototype.customBind = function (...args) {
 };
 
 console.log(printDetails.customBind(obj, "madurai", "chennai", "bangalore")());
+
+function sample() {}
+sample.a = 12;
+
+console.log(sample.a);
+
+function s() {
+  let a = (b = 10);
+  console.log(this);
+}
+console.log(typeof a);
+console.log(typeof b);

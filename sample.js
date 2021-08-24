@@ -274,22 +274,20 @@ const user = {
   },
 };
 
-
-const flattenObj=()=>{
-  const flattendObj={};
-  return innerFn=(obj,parentName='user')=>{
-    
-    Object.keys(obj).forEach(key=>{
-      if(obj[key]==='object'){
-        innerFn(obj[key],key);
-      }else{
-        flattendObj[parentName+'_'+key] = obj[key];    
+const flattenObj = () => {
+  const flattendObj = {};
+  return (innerFn = (obj, parentName = "user") => {
+    Object.keys(obj).forEach((key) => {
+      if (obj[key] === "object") {
+        innerFn(obj[key], key);
+      } else {
+        flattendObj[parentName + "_" + key] = obj[key];
       }
-    })
-    
+    });
+
     return flattendObj;
-  }
-}
+  });
+};
 
 const helperObjFn = flattenObj();
 console.log(helperObjFn(user));
@@ -778,3 +776,88 @@ let myNumber = 100;
 let myString = "100";
 
 console.log(!typeof myNumber === "string");
+
+const TweetCounts = function () {
+  console.log(this);
+  this.arr = ["s"];
+};
+
+// console.log(TweetCounts.prototype);
+
+// const record = function () {
+const recordTweet = () => {
+  console.log(this);
+  console.log(this.arr);
+};
+recordTweet();
+// };
+// TweetCounts();
+// record();
+// TweetCounts.prototype.recordTweet = function (tweetName, time) {
+//   console.log({ tweetName, time });
+//   console.log(this);
+// };
+
+// console.log(TweetCounts)
+
+// const tw = new TweetCounts();
+// tw.recordTweet("s", 2);
+// tw.recordTweet("sus", 12);
+// console.log(tw)
+
+class Parent {
+  constructor(name) {
+    console.log(this);
+    this.name = name;
+  }
+  getParentName() {
+    console.log(this.getChildName());
+    return this.name;
+  }
+}
+
+class Child extends Parent {
+  constructor(name) {
+    super(name);
+    console.log(this);
+  }
+  getName() {
+    return super.getParentName();
+  }
+  getChildName() {
+    return this.name;
+  }
+}
+
+console.log(new Child("sus").getName());
+
+class Rectangle {
+  static logNbSides() {
+    return "I have 4 sides";
+  }
+}
+
+class Square extends Rectangle {
+  constructor() {
+    super();
+  }
+  static logDescription() {
+    return super.logNbSides() + " which are all equal";
+  }
+}
+const sq = new Square();
+console.log(Square.logDescription());
+
+const f = (i, j) => (k, l) => (m, n) => i * k * m + j * l * n;
+
+console.log(f(1, 2)(1, 2)(1, 2));
+
+const mul = (...params) => {
+  let res = 1;
+  params.forEach((p) => {
+    p ? (res *= p) : (res += p);
+  });
+  return res;
+};
+
+console.log(mul(1, 2, 0, 5));
