@@ -777,60 +777,6 @@ let myString = "100";
 
 console.log(!typeof myNumber === "string");
 
-const TweetCounts = function () {
-  console.log(this);
-  this.arr = ["s"];
-};
-
-// console.log(TweetCounts.prototype);
-
-// const record = function () {
-const recordTweet = () => {
-  console.log(this);
-  console.log(this.arr);
-};
-recordTweet();
-// };
-// TweetCounts();
-// record();
-// TweetCounts.prototype.recordTweet = function (tweetName, time) {
-//   console.log({ tweetName, time });
-//   console.log(this);
-// };
-
-// console.log(TweetCounts)
-
-// const tw = new TweetCounts();
-// tw.recordTweet("s", 2);
-// tw.recordTweet("sus", 12);
-// console.log(tw)
-
-class Parent {
-  constructor(name) {
-    console.log(this);
-    this.name = name;
-  }
-  getParentName() {
-    console.log(this.getChildName());
-    return this.name;
-  }
-}
-
-class Child extends Parent {
-  constructor(name) {
-    super(name);
-    console.log(this);
-  }
-  getName() {
-    return super.getParentName();
-  }
-  getChildName() {
-    return this.name;
-  }
-}
-
-console.log(new Child("sus").getName());
-
 class Rectangle {
   static logNbSides() {
     return "I have 4 sides";
