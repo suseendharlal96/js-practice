@@ -134,7 +134,7 @@ Parent2.prototype = childProto;
 // parObj.setName("lal");
 // console.log(parObj.getName());
 // const chiObj = new Child2("suseendhar", 25);
-// parObj.setAge("30");
+// parObj.setAge(30);
 // console.log(parObj.getAge());
 
 class Parent {
