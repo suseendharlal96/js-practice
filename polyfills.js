@@ -93,29 +93,31 @@ sample.a = 12;
 
 console.log(sample.a);
 
-const Parent2 = function (name) {
+function Parent2(name) {
   console.log(this);
-  console.log(name);
   this.name = name;
-};
+  console.log(this.name);
+}
 
-Parent2.prototype.setName = function (name) {
-  console.log(this);
+Parent2.prototype.setName = (name) => {
+  console.log(this); // window(arrow func)
   this.name = name;
+  console.log(this.name);
 };
 
 Parent2.prototype.getName = function () {
+  console.log(this); // Parent2(normal func)
   return this.name;
 };
 
-const Child2 = function (name, age) {
+function Child2(name, age) {
   console.log(this);
   Parent2.call(this, name);
   this.age = age;
-};
+}
 
-const parProto = Object.create(Parent2.prototype);
-Child2.prototype = parProto;
+Child2.prototype = Object.create(Parent2.prototype);
+// Child2 = parProto;
 
 Child2.prototype.setAge = function (age) {
   console.log(this);
@@ -129,13 +131,15 @@ Child2.prototype.getAge = function () {
 
 const childProto = Object.create(Child2.prototype);
 Parent2.prototype = childProto;
+Child2.prototype.constructor=Child2;
 
-// const parObj = new Parent2("sus");
-// parObj.setName("lal");
-// console.log(parObj.getName());
-// const chiObj = new Child2("suseendhar", 25);
-// parObj.setAge(30);
-// console.log(parObj.getAge());
+const parObj = new Parent2("sus");
+parObj.setName("lal");
+console.log(parObj.getName());
+const chiObj = new Child2("suseendhar", 25);
+console.log(chiObj.getName());
+parObj.setAge(30);
+console.log(parObj.getAge());
 
 class Parent {
   constructor(name) {
@@ -148,8 +152,9 @@ class Parent {
 }
 
 class Child extends Parent {
-  constructor(name) {
+  constructor(name, age) {
     super(name);
+    this.age = age;
     console.log(this);
   }
   getName() {
@@ -160,4 +165,4 @@ class Child extends Parent {
   }
 }
 
-console.log(new Child("sus").getName());
+// console.log(new Child("sus",25).getName());

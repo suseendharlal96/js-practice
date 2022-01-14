@@ -807,3 +807,29 @@ const mul = (...params) => {
 };
 
 console.log(mul(1, 2, 0, 5));
+
+
+function sum(a, b, c) {
+  return a + b + c;
+}
+
+let curriedSum = curry(sum);
+console.log(curriedSum);
+let curriedSum1 = curriedSum(1);
+console.log(curriedSum1);
+let curriedSum2 = curriedSum1(2, 3);
+console.log(curriedSum2);
+
+function curry(fn) {
+  console.log(fn.length);
+  console.log(fn.name);
+  return function curried(...args) {
+    if (args.length >= fn.length) {
+      return fn.apply(null, args);
+    } else {
+      return function (...args2) {
+        return curried.apply(null, args.concat(args2));
+      };
+    }
+  };
+}
