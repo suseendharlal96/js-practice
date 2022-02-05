@@ -551,25 +551,25 @@ Array.prototype.print = function (dd) {
 
 [1, 2].print(132);
 
-const aa = function (x) {
-  this.x = x;
-};
+// const aa = function (x) {
+//   this.x = x;
+// };
 
-const bb = function (x, y) {
-  this.y = y + "y";
-  a.call(this, x);
-  this.getX = () => {
-    return console.log(this.x);
-  };
-  this.getY = () => {
-    // console.log(this)
-    return console.log(this.y);
-  };
-};
+// const bb = function (x, y) {
+//   this.y = y + "y";
+//   aa.call(this, x);
+//   this.getX = () => {
+//      console.log(this.x);
+//   };
+//   this.getY = () => {
+//     // console.log(this)
+//      console.log(this.y);
+//   };
+// };
 
-const B = new bb("x", "y");
-B.getX();
-B.getY();
+// const B = new bb("x", "y");
+// B.getX();
+// B.getY();
 
 // const obj3 = {
 //   x2: 1,
@@ -669,7 +669,7 @@ document.getElementById("button2").addEventListener("click", function x() {
 
 // componentWillUnmount
 
-function sample2(fname, lname) {
+function sample2(fname, ...lname) {
   console.log(this);
   this.name = "sad";
   console.log(fname, lname);
@@ -678,9 +678,9 @@ let fname = "sus";
 let lname = "lal";
 sample2`${fname} is  a  ${lname}`;
 
-[...fname].forEach((n) => {
-  console.log(n);
-});
+// [...fname].forEach((n) => {
+//   console.log(n);
+// });
 
 function car() {
   console.log(this);
@@ -696,7 +696,7 @@ const arr = [1, 2, 2, 3, 4, 5, 5];
 console.log([...new Set(arr)]);
 const person = { name: "Lydia" };
 
-Object.defineProperty(person, "age", { value: 21, enumerable: true });
+Object.defineProperty(person, "age", { value: 21 });
 
 console.log(Object.keys(person));
 
@@ -713,6 +713,7 @@ multiply(value);
 multiply(value);
 
 const innerobj = {
+  a: "",
   sample() {
     console.log(this);
     function innerSamp() {
@@ -808,12 +809,11 @@ const mul = (...params) => {
 
 console.log(mul(1, 2, 0, 5));
 
-
-function sum(a, b, c) {
+function sum2(a, b, c) {
   return a + b + c;
 }
 
-let curriedSum = curry(sum);
+let curriedSum = curry(sum2);
 console.log(curriedSum);
 let curriedSum1 = curriedSum(1);
 console.log(curriedSum1);
@@ -833,3 +833,27 @@ function curry(fn) {
     }
   };
 }
+
+let outerVar = 10;
+function outerMost(a) {
+  return function inner() {
+    console.log(a);
+    console.log(a + 5);
+  };
+}
+const returned1 = outerMost(outerVar);
+outerVar = 20;
+const returned2 = outerMost(outerVar);
+returned1();
+returned2();
+
+
+Math.printName=function(){
+  return 'name'
+}
+
+console.log(Math.random());
+
+console.log(Math.printName())
+// console.log(typeof Crypto.prototype.getRandomValues());
+console.log(window.crypto.getRandomValues([1,9]))
