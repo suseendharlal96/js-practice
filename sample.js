@@ -274,9 +274,9 @@ const user = {
   },
 };
 
-const flattenObj = () => {
+const flattenObj = (obj) => {
   const flattendObj = {};
-  return (innerFn = (obj, parentName = "user") => {
+  const innerFn = (obj, parentName = "user") => {
     Object.keys(obj).forEach((key) => {
       if (obj[key] === "object") {
         innerFn(obj[key], key);
@@ -284,13 +284,14 @@ const flattenObj = () => {
         flattendObj[parentName + "_" + key] = obj[key];
       }
     });
-
+    
     return flattendObj;
-  });
+  }
+  innerFn(obj)
 };
 
-const helperObjFn = flattenObj();
-console.log(helperObjFn(user));
+const helperObjFn = flattenObj(user);
+console.log(helperObjFn);
 
 // console.log(modifyObj()(user));
 
