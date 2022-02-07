@@ -5,12 +5,12 @@ const join = (a, b, c, d) => {
 
 const curriedJoin = curry(join);
 
-// console.log(curriedJoin(1, 2, 3)(4)); // '1_2_3'
+// console.log(curriedJoin(1, 2, 3)(4)); // '1_2_3_4'
 
-// console.log(curriedJoin(1)(2, 3, 4)); // '1_2_3'
+// console.log(curriedJoin(1)(2, 3, 4)); // '1_2_3_4'
 
-// console.log(curriedJoin(1, 2)(3, 4)); // '1_2_3'
-// console.log(curriedJoin(1)(2)(3)(4)); // '1_2_3'
+// console.log(curriedJoin(1, 2)(3, 4)); // '1_2_3_4'
+// console.log(curriedJoin(1)(2)(3)(4)); // '1_2_3_4'
 
 function curry(fn) {
   return function inner(...args) {
@@ -26,13 +26,13 @@ function curry(fn) {
 // ********************************** //
 
 // const sum1 = sum(1);
-// console.log(sum(1) == 1); // true
-// console.log(sum(1)(3) == 4); // true
-// console.log(sum(1)(2)(3) == 6); // true
-// console.log(sum(5)(-1)(2) == 6); // true
+// console.log(+sum(1) === 1); // true
+// console.log(+sum(1)(3) === 4); // true
+// console.log(+sum(1)(2)(3) === 6); // true
+// console.log(+sum(5)(-1)(2) === 6); // true
 
 function sum(args1) {
-//   console.log({ args1 });
+  //   console.log({ args1 });
   function inner(args2) {
     // console.log({ args1, args2 });
     return sum(args1 + args2);
@@ -87,6 +87,77 @@ function flattenObj(obj) {
         res[`${key}_${k}`] = value;
       }
     }
+  }
+  return res;
 }
-return res;
+
+const mixed = {
+  A: "12",
+  B: 23,
+  C: {
+    P: 23,
+    O: {
+      L: 56,
+    },
+    Q: [1, 2],
+  },
+};
+
+console.log(flatMixed(mixed));
+
+function flatMixed(obj) {
+  const res = {};
+  inner(obj);
+  function inner(obj, k = "") {
+    for (let key in obj) {
+      if (typeof obj[key] === "object") {
+        if (k.length > 0) {
+          inner(obj[key], `${k}.${key}`);
+        } else {
+          inner(obj[key], `${key}`);
+        }
+      } else {
+        if (k.length > 0) {
+          res[`${k}.${key}`] = obj[key];
+        } else {
+          res[key] = obj[key];
+        }
+      }
+    }
+  }
+  return res;
+}
+
+const stringObj = {
+  a: 1,
+  b: {
+    c: "Hello World",
+    d: 2,
+    e: {
+      f: {
+        g: -4,
+      },
+    },
+    h: "Good Night Moon",
+  },
+};
+
+console.log(filterStringObj(stringObj));
+
+function filterStringObj(obj) {
+  const clone = JSON.parse(JSON.stringify(obj));
+
+  filter(clone);
+  function filter(obj) {
+    for (let [k, value] of Object.entries(obj)) {
+      if (typeof value === "object") {
+        filter(value);
+      } else {
+        if (typeof value !== "string") {
+          delete obj[k];
+        }
+      }
+    }
+  }
+  return clone;
 }
