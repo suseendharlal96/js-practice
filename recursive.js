@@ -28,12 +28,13 @@ function curry(fn) {
 // const sum1 = sum(1);
 // console.log(+sum(1) === 1); // true
 // console.log(+sum(1)(3) === 4); // true
-// console.log(+sum(1)(2)(3) === 6); // true
-// console.log(+sum(5)(-1)(2) === 6); // true
+// console.log(+sum(1)(2)(3)() === 6); // true
+// console.log(+sum()(5)(-1)()(2) === 6); // true
+// console.log(+sum(1)(2)(-1)(2) === 4); // true
 
-function sum(args1) {
+function sum(args1 = 0) {
   //   console.log({ args1 });
-  function inner(args2) {
+  function inner(args2 = 0) {
     // console.log({ args1, args2 });
     return sum(args1 + args2);
   }
@@ -91,6 +92,8 @@ function flattenObj(obj) {
   return res;
 }
 
+// ********************************** //
+
 const mixed = {
   A: "12",
   B: 23,
@@ -128,6 +131,8 @@ function flatMixed(obj) {
   return res;
 }
 
+// ********************************** //
+
 const stringObj = {
   a: 1,
   b: {
@@ -156,6 +161,9 @@ function filterStringObj(obj) {
         if (typeof value !== "string") {
           delete obj[k];
         }
+      }
+      if (JSON.stringify(value) === "{}") {
+        delete obj[k];
       }
     }
   }
