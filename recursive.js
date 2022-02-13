@@ -31,6 +31,7 @@ function curry(fn) {
 // console.log(+sum(1)(2)(3)() === 6); // true
 // console.log(+sum()(5)(-1)()(2) === 6); // true
 // console.log(+sum(1)(2)(-1)(2) === 4); // true
+// console.log(+sum(1)(2)(3)()()()(1)); // 7
 
 function sum(args1 = 0) {
   //   console.log({ args1 });
@@ -39,7 +40,7 @@ function sum(args1 = 0) {
     return sum(args1 + args2);
   }
   inner.valueOf = () => {
-    console.log("valueOf");
+    // console.log("valueOf");
     return args1;
   };
   return inner;
