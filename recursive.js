@@ -170,3 +170,59 @@ function filterStringObj(obj) {
   }
   return clone;
 }
+
+// ********************************** //
+
+// const calc = {
+//   total: 0,
+//   add(val) {
+//     this.total += val;
+//     return this;
+//   },
+//   mul(val) {
+//     this.total *= val;
+//     return this;
+//   },
+//   sub(val) {
+//     this.total -= val;
+//     return this;
+//   },
+// };
+
+// class Calc {
+//   constructor(val) {
+//     this.total = val;
+//   }
+//   add(val) {
+//     this.total += val;
+//     return this;
+//   }
+//   mul(val) {
+//     this.total *= val;
+//     return this;
+//   }
+//   sub(val) {
+//     this.total -= val;
+//     return this;
+//   }
+// }
+
+function Calc(val) {
+  this.total = val;
+
+  this.add = function (val) {
+    this.total += val;
+    return this;
+  };
+  this.mul = function (val) {
+    this.total *= val;
+    return this;
+  };
+  this.sub = function (val) {
+    this.total -= val;
+    return this;
+  };
+}
+
+const result = new Calc(0).add(10).mul(5).sub(30).add(10);
+console.log(result.total);
