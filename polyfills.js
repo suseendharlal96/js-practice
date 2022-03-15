@@ -81,7 +81,7 @@ Function.prototype.customBind = function (...args) {
   let [object, ...params] = args;
   let that = this;
   function a(args2) {
-    return that.call(object, params, args2);
+    return that.apply(object, params.concat(args2));
   }
   return a;
 };
@@ -131,7 +131,7 @@ Child2.prototype.getAge = function () {
 
 const childProto = Object.create(Child2.prototype);
 Parent2.prototype = childProto;
-Child2.prototype.constructor=Child2;
+Child2.prototype.constructor = Child2;
 
 const parObj = new Parent2("sus");
 parObj.setName("lal");
@@ -166,3 +166,37 @@ class Child extends Parent {
 }
 
 // console.log(new Child("sus",25).getName());
+
+// Promise.all()
+
+// 1. Takes an array of promises
+// 2. Returns promise with array of resolved values in same order they sent
+// 3. Incase if any fails it stops and gives that result
+
+function customPromiseAll(arrPromise) {
+  const result = [];
+  let count = 0;
+  return new Promise((resolve, reject) => {
+    arrPromise.forEach((promise, i) => {
+      promise
+        .then((success) => {
+          result[i] = success;
+          count++;
+          if (count === arrPromise.length) resolve(result);
+        })
+        .catch((err) => reject(err));
+    });
+  });
+}
+
+function createPromise(ms, type) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => (type === "fail" ? reject(ms) : resolve(ms)), ms);
+  });
+}
+
+// customPromiseAll([createPromise(1000, "success"), createPromise(3000, "success"), createPromise(2000, "fail")])
+//   .then((success) => console.log("success", success))
+//   .catch((err) => console.log("err", err));
+
+// ***********************************//

@@ -81,3 +81,24 @@ function doFoo(fn) {
 
 // doFoo.call(obj, obj.foo);
 doFoo.call(obj, obj.foo.bind(obj));
+
+let Foo = function (a) {
+  this.a = a;
+  this.bar = function () {
+    return a;
+  };
+  this.baz = () => {
+    return a;
+  };
+};
+Foo.prototype = {
+  biz: function () {
+    return this.a;
+  },
+};
+
+let f = new Foo(7);
+console.log(f);
+console.log(f.bar());
+console.log(f.baz());
+console.log(f.biz());

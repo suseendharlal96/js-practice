@@ -107,7 +107,7 @@ const mixed = {
   },
 };
 
-console.log(flatMixed(mixed));
+console.log("flatmixed", flatMixed(mixed));
 
 function flatMixed(obj) {
   const res = {};
@@ -173,6 +173,99 @@ function filterStringObj(obj) {
 
 // ********************************** //
 
+const deepObj = {
+  a: 1,
+  b: {
+    c: 2,
+    d: -3,
+    e: {
+      f: {
+        g: -4,
+      },
+    },
+    h: {
+      i: 5,
+      j: 6,
+    },
+  },
+};
+
+const filter = (n) => n >= 0;
+
+function deepFilter(obj, fn) {
+  for (let [key, val] of Object.entries(obj)) {
+    if (typeof val === "object") {
+      deepFilter(val, fn);
+    } else if (typeof val === "number") {
+      if (!fn(val)) delete obj[key];
+    }
+    if (JSON.stringify(val) === "{}") delete obj[key];
+  }
+}
+
+console.log(deepFilter(deepObj, filter));
+
+// ********************************** //
+
+// Input:
+Array.prototype.multiFilter = function (filterCb) {
+  let originalArr = this;
+
+  function inner(arr, cb) {
+    const res = [];
+
+    console.log(1, { arr, res });
+    for (let a of arr) {
+      if (Array.isArray(a)) {
+        res.push(inner(a, cb));
+      } else {
+        if (cb(a)) res.push(a);
+      }
+    }
+    console.log(2, { arr, res });
+    return res;
+  }
+  return inner(originalArr, filterCb);
+};
+
+const filtered = [[1, [2, [3, "foo", { a: 1, b: 2 }]], "bar"]].multiFilter((e) => typeof e === "number");
+console.log(filtered);
+
+// Output:
+// [[[["foo"]],"bar"]]
+
+// ********************************** //
+
+function countInArray(arr, cb) {
+  let count = 0;
+  function inner(data, cb) {
+    console.log({ data });
+    for (let i = 0; i < data.length; i++) {
+      if (Array.isArray(data[i])) {
+        inner(data[i],cb);
+      } else {
+        if (cb(data[i])) {
+          // console.log("here",data[i]);
+          count++;
+        }
+      }
+    }
+    return count;
+  }
+
+  return inner(arr, cb);
+}
+
+//   Input:
+
+const count = countInArray([[1, [2, [3, 4, "foo", { a: 1, b: 2 }]], 5]], (e) => typeof e === "number");
+console.log(count);
+
+// Output:
+// 4
+
+// ********************************** //
+
 // const calc = {
 //   total: 0,
 //   add(val) {
@@ -225,4 +318,4 @@ function Calc(val) {
 }
 
 const result = new Calc(0).add(10).mul(5).sub(30).add(10);
-console.log(result.total);
+// console.log(result.total);
