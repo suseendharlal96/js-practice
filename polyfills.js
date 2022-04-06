@@ -17,7 +17,7 @@ arr.customForEach((el, index, ar) => {
 Array.prototype.customMap = function (cb) {
   const result = [];
   for (let i = 0; i < this.length; i++) {
-    result.push(cb(this[i], i, this));
+    result[i] = cb(this[i], i, this);
   }
   return result;
 };
@@ -53,22 +53,51 @@ console.log(arr.customFind((el) => el > 2));
 // reduce
 
 Array.prototype.customReduce = function (cb, initValue) {
-  let result = 0;
-  console.log(initValue);
-  let startValue = initValue ?? this[0];
-  for (let i = 0; i < this.length; i++) {
-    result += cb(startValue, this[i], i, this);
+  let callback = cb;
+  let result = initValue ?? this[0];
+  for (let i = initValue !== undefined ? 0 : 1; i < this.length; i++) {
+    result = callback(result, this[i], i, this);
   }
   return result;
 };
 
-console.log(arr.customReduce((acc, cur, i, ar) => acc + cur, 0));
+Array.prototype.myReduce = function (...args) {
+  if (!Array.isArray(this)) {
+    throw new Error("Not array");
+  }
+  let callback = args[0];
+
+  if (typeof callback !== "function") {
+    throw new Error("Callback is not a function");
+  }
+  if (this.length === 0 && args.length === 1) {
+    throw new Error("Array cannot be empty without initial value");
+  }
+
+  let result = args.length > 1 ? args[1] : this[0];
+
+  for (let i = args.length > 1 ? 0 : 1; i < this.length; i++) {
+    result = callback(result, this[i], i, this);
+  }
+
+  return result;
+};
+
+console.log([1, 2, 3, 4].customReduce((acc, cur, i, ar) => acc + cur, 0));
+console.log([1, 2, 3, 4].myReduce((acc, cur, i, ar) => acc + cur, 0));
 
 // bind
 
 const obj = {
   name: "sus",
   age: 25,
+};
+
+const deepObj = {
+  a: 1,
+  b(b, c) {
+    return [this.a, b, c];
+  },
 };
 
 function printDetails(args, args2) {
@@ -80,13 +109,14 @@ Function.prototype.customBind = function (...args) {
   console.log(args);
   let [object, ...params] = args;
   let that = this;
-  function a(args2) {
-    return that.apply(object, params.concat(args2));
+  function a(...args2) {
+    return that.apply(object, args2);
   }
   return a;
 };
 
-console.log(printDetails.customBind(obj, "madurai", "chennai", "bangalore")("america"));
+// console.log(printDetails.customBind(obj, "madurai", "chennai", "bangalore")("america"));
+console.log(deepObj.b.customBind(deepObj, "madurai", "chennai", "bangalore")("america","london"));
 
 function sample() {}
 sample.a = 12;

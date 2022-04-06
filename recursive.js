@@ -242,7 +242,7 @@ function countInArray(arr, cb) {
     console.log({ data });
     for (let i = 0; i < data.length; i++) {
       if (Array.isArray(data[i])) {
-        inner(data[i],cb);
+        inner(data[i], cb);
       } else {
         if (cb(data[i])) {
           // console.log("here",data[i]);
@@ -262,7 +262,7 @@ const count = countInArray([[1, [2, [3, 4, "foo", { a: 1, b: 2 }]], 5]], (e) => 
 console.log(count);
 
 // Output:
-// 4
+// 5
 
 // ********************************** //
 
@@ -319,3 +319,67 @@ function Calc(val) {
 
 const result = new Calc(0).add(10).mul(5).sub(30).add(10);
 // console.log(result.total);
+
+// ********************************** //
+
+const quesObj = {
+  a: 1,
+  b: () => 2,
+  c: {
+    d: () => 3,
+  },
+  e: [1, 2],
+};
+
+console.log(getResult(quesObj));
+console.log(
+  getResult({
+    a: 1,
+    b: (a, b) => a * b,
+    c: "OMG!! This is working",
+    d: [1, 2, 3, 4],
+    e: null,
+    f: {
+      a: 1,
+      b: [99, 98, 97],
+      c: { a: 1, b: 2 },
+      d: function () {
+        return 2;
+      },
+    },
+  })
+);
+
+function getResult(obj) {
+  // inner(obj);
+  function inner(obj) {
+    const result = {};
+    Object.entries(obj).forEach(([key, value]) => {
+      if (typeof value === "number" || !value||typeof value==="string") {
+        result[key] = value;
+      } else if (typeof value === "function") {
+        // console.log({ value, len: value.length,args:[...new Array(value.length).fill(Math.floor(Math.random() * value.length + 1)) ]});
+
+        result[key] = value(...new Array(value.length).fill(Math.floor(Math.random() * 10 + 1)));
+      } else if (typeof value === "object" && !Array.isArray(value)) {
+        result[key] = inner(value);
+      } else if (Array.isArray(value)) {
+        result[key] = value;
+      }
+    });
+    return result;
+  }
+  return inner(obj);
+}
+
+// Output:
+// {
+// a: 1,
+// b: 2,
+// c:{ d : 3},
+// e:[1,2]
+// }
+
+// ********************************** //
+
+

@@ -102,3 +102,37 @@ console.log(f);
 console.log(f.bar());
 console.log(f.baz());
 console.log(f.biz());
+
+// ################################################### //
+
+const iteratorObj = {
+  a: 1,
+  b: 2,
+};
+
+// iteratorObj[Symbol.iterator] = function () {
+//   return {
+//     len: Object.keys(this).length,
+//     start: 0,
+//     obj: this,
+//     next() {
+//       if (this.start < this.len) {
+//         return { done: false, value: `${Object.keys(this.obj)[this.start]} : ${Object.values(this.obj)[this.start++]}` };
+//       } else {
+//         return { done: true };
+//       }
+//     },
+//   };
+// };
+
+// using generators
+
+iteratorObj[Symbol.iterator] = function* () {
+  for(let i=0;i<Object.keys(this).length;i++){
+    yield `${Object.keys(this)[i]} : ${Object.values(this)[i]}`
+  }
+};
+
+for (let val of iteratorObj) {
+  console.log(val);
+}
