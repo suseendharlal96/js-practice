@@ -382,4 +382,14 @@ function getResult(obj) {
 
 // ********************************** //
 
+function pipe(...func){
+  return (arg)=>{
+    func.reduce((acc,curr)=>{
+      return curr.call(this,acc);
+    },arg)
+  }
+}
 
+
+let multiplyBy3AndAbsolute = pipe((num) => num * 2, Math.abs, console.log)
+multiplyBy3AndAbsolute(-50) // 100
