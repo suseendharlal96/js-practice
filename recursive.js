@@ -48,17 +48,6 @@ function sum(args1 = 0) {
 
 // ********************************** //
 
-const arr = [[1, [1.2], [2, [3, 4]]]];
-
-console.log(flatten(arr));
-console.log(flatten(arr, 2));
-
-function flatten(arr, depth = Infinity) {
-  return depth > 0 ? arr.reduce((acc, curr) => acc.concat(Array.isArray(curr) ? flatten(curr, depth - 1) : curr), []) : [...arr];
-}
-
-// ********************************** //
-
 const user = {
   name: "Susee",
   address: {
@@ -355,7 +344,7 @@ function getResult(obj) {
   function inner(obj) {
     const result = {};
     Object.entries(obj).forEach(([key, value]) => {
-      if (typeof value === "number" || !value||typeof value==="string") {
+      if (typeof value === "number" || !value || typeof value === "string") {
         result[key] = value;
       } else if (typeof value === "function") {
         // console.log({ value, len: value.length,args:[...new Array(value.length).fill(Math.floor(Math.random() * value.length + 1)) ]});
@@ -382,14 +371,54 @@ function getResult(obj) {
 
 // ********************************** //
 
-function pipe(...func){
-  return (arg)=>{
-    func.reduce((acc,curr)=>{
-      return curr.call(this,acc);
-    },arg)
-  }
+function pipe(...func) {
+  return (arg) => {
+    func.reduce((acc, curr) => {
+      return curr.call(this, acc);
+    }, arg);
+  };
 }
 
+let multiplyBy3AndAbsolute = pipe((num) => num * 2, Math.abs, console.log);
+multiplyBy3AndAbsolute(-50); // 100
 
-let multiplyBy3AndAbsolute = pipe((num) => num * 2, Math.abs, console.log)
-multiplyBy3AndAbsolute(-50) // 100
+const times = (y) => (x) => x * y;
+const plus = (y) => (x) => x + y;
+const subtract = (y) => (x) => x - y;
+const divide = (y) => (x) => x / y;
+
+function pipeAdv(arr) {
+  return (arg) => {
+    return arr.reduce((a, c) => c.call(this, a), arg);
+  };
+}
+
+console.log(pipeAdv([times(2), times(3)])(2));
+console.log(pipeAdv([times(2), subtract(3), divide(4)])(2));
+
+// ********************************** //
+
+const arr = [[1, [1.2], [2, [3, 4]]]];
+
+console.log(flatten(arr));
+console.log(flatten(arr, 2));
+
+// function flatten(arr, depth = Infinity) {
+//   return depth > 0 ? arr.reduce((acc, curr) => acc.concat(Array.isArray(curr) ? flatten(curr, depth - 1) : curr), []) : [...arr];
+// }
+
+function flatten(arr, depth = Infinity) {
+  const stack = [...arr.map((el) => [el, depth])];
+  const res = [];
+  while (stack.length) {
+    const [last, depth] = stack.pop();
+    if (Object.prototype.toString.call(last)==='[object Array]' && depth) {
+      stack.push(...last.map((el) => [el, depth - 1]));
+    } else {
+      res.push(last);
+    }
+  }
+  return res.reverse();
+}
+
+// ********************************** //
