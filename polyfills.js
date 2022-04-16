@@ -208,7 +208,7 @@ function customPromiseAll(arrPromise) {
   let count = 0;
   return new Promise((resolve, reject) => {
     arrPromise.forEach((promise, i) => {
-      promise
+      Promise.resolve(promise)
         .then((success) => {
           result[i] = success;
           count++;
@@ -228,5 +228,7 @@ function createPromise(ms, type) {
 // customPromiseAll([createPromise(1000, "success"), createPromise(3000, "success"), createPromise(2000, "fail")])
 //   .then((success) => console.log("success", success))
 //   .catch((err) => console.log("err", err));
+
+  customPromiseAll([[1,2,3,Promise.reject('error')]])
 
 // ***********************************//
