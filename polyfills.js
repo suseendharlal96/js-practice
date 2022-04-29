@@ -95,8 +95,8 @@ const obj = {
 
 const deepObj = {
   a: 1,
-  b(b, c) {
-    return [this.a, b, c];
+  b(...args) {
+    return [this.a, ...args];
   },
 };
 
@@ -107,16 +107,16 @@ function printDetails(args, args2) {
 
 Function.prototype.customBind = function (...args) {
   console.log(args);
-  let [object, ...params] = args;
+  let [thisContext, ...params] = args;
   let that = this;
   function a(...args2) {
-    return that.apply(object, args2);
+    return that.apply(thisContext, args2.concat(params));
   }
   return a;
 };
 
 // console.log(printDetails.customBind(obj, "madurai", "chennai", "bangalore")("america"));
-console.log(deepObj.b.customBind(deepObj, "madurai", "chennai", "bangalore")("america","london"));
+console.log(deepObj.b.customBind(deepObj, "madurai", "chennai", "bangalore")("america", "london"));
 
 function sample() {}
 sample.a = 12;
@@ -229,6 +229,24 @@ function createPromise(ms, type) {
 //   .then((success) => console.log("success", success))
 //   .catch((err) => console.log("err", err));
 
-  customPromiseAll([[1,2,3,Promise.reject('error')]])
+customPromiseAll([[1, 2, 3, Promise.reject("error")]]);
 
 // ***********************************//
+
+const clearAllIntervals = {
+  intervalIds: [],
+  setInterval(fn, delay) {
+    const id = setInterval(fn, delay);
+    this.intervalIds.push(id);
+  },
+  clearAllInterval() {
+    while (this.intervalIds.length) {
+      clearInterval(this.intervalIds.shift());
+    }
+  },
+};
+
+clearAllIntervals.setInterval(() => console.log("hi"), 1000);
+clearAllIntervals.setInterval(() => console.log("bye"), 2000);
+// const bounded=clearAllIntervals.clearAllInterval.bind(clearAllIntervals)
+setTimeout(()=>clearAllIntervals.clearAllInterval(), 5000);

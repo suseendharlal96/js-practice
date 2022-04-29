@@ -329,9 +329,20 @@ const person = {
  
  
  
+ var x=4
+ const thisObj={
+   x:3,
+   foo:function(){
+     let x=2;
+     setTimeout(()=>{
+       var x=1
+       console.log(this);
+       console.log(this.x);
+     })
+   }
+ }
  
- 
- 
+ thisObj.foo.call(thisObj.foo)
  
  
  
