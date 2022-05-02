@@ -128,8 +128,8 @@ const iteratorObj = {
 // using generators
 
 iteratorObj[Symbol.iterator] = function* () {
-  for(let i=0;i<Object.keys(this).length;i++){
-    yield `${Object.keys(this)[i]} : ${Object.values(this)[i]}`
+  for (let i = 0; i < Object.keys(this).length; i++) {
+    yield `${Object.keys(this)[i]} : ${Object.values(this)[i]}`;
   }
 };
 
@@ -138,213 +138,193 @@ for (let val of iteratorObj) {
 }
 
 const person = {
-  name: 'Prabhat',
+  name: "Prabhat",
   address: {
-  street: 'Kondapur HYD',
+    street: "Kondapur HYD",
   },
-  };
-  
-  Object.freeze(person);
- 
- person.address.street = "Hi-Tech City HYD"
- delete person.address.street
- 
- console.log(person)
- 
-  const add = x => y => z => {
+};
+
+Object.freeze(person);
+
+person.address.street = "Hi-Tech City HYD";
+delete person.address.street;
+
+console.log(person);
+
+const add = (x) => (y) => (z) => {
   console.log(x, y, z);
   return x + y + z;
-  };
-  
- console.log( add(7)(8)(9));
- 
-  (function test() {
-  console.log('len',
-  function () {}.apply.length
-  );
-  })();
- 
- 
-  class Animal {
+};
+
+console.log(add(7)(8)(9));
+
+(function test() {
+  console.log("len", function () {}.apply.length);
+})();
+
+class Animal {
   constructor() {
-  console.log("I'm a Cat");
+    console.log("I'm a Cat");
   }
-  }
-  
-  class Wild extends Animal {
+}
+
+class Wild extends Animal {
   constructor() {
-  console.log("I'm a Tiger");
-  super();
+    console.log("I'm a Tiger");
+    super();
   }
-  }
-  
-  const pet = new Wild();
- 
- 
-  var o = Object.assign(Object.create(null), { a: 1 }, { a: 2 }, { a: 3 });
- //  Object.assign(Object.prototype, { f: function() {} });
-  
-  for (var i in o) {
+}
+
+const pet = new Wild();
+
+var o = Object.assign(Object.create(null), { a: 1 }, { a: 2 }, { a: 3 });
+//  Object.assign(Object.prototype, { f: function() {} });
+
+for (var i in o) {
   console.log(o[i]);
+}
+
+declareBlock: {
+  var x, y;
+}
+
+forLoop1: for (x = 0; x < 3; x++) {
+  forLoop2: for (y = 0; y < 3; y++) {
+    if (x === 1 && y === 1) {
+      continue forLoop1;
+    }
+    console.log("x = " + x + ", y = " + y);
   }
- 
- 
- 
-  declareBlock: {
-  var x, y
-  }
-  
-  forLoop1:
-  for (x = 0; x < 3; x++){
-  forLoop2:
-  for (y = 0; y < 3; y++) {
-  if (x === 1 && y === 1){
-  continue forLoop1
-  }
-  console.log('x = ' + x + ', y = ' + y)
-  }
-  }
- 
-  loopBlock4: {
-  console.log('Hey There ! My name is Sam')
-  break loopBlock4
-  console.log('I love singing')
-  }
- 
- 
- 
-  const functionRadar = function() {
-  console.log(arguments.callee.name)
-  console.log(arguments.callee.caller.name)
-  console.log("This is a JavaScript Program!")
-  }
-  
-  void function main() {
-  functionRadar()
-  }()
- 
- 
- // [1, 2, 3, 4, 5].map(function(n) {
- // //    console.log(arguments.callee)
- //     return !(n > 1) ? 1 : arguments.callee(n - 1) * n;
- // });
- 
- 
- function create() {
-   console.log(arguments.callee.name)
-    return function(n) {
- //      console.log(arguments.callee.caller)
-       if (n <= 1)
-          return 1;
-       return n * arguments.callee(n - 1);
-    };
- }
- 
- // var result = create()(5);
- // 
- //  Set.prototype.union = (otherSet) =>
- //  { 
- //  let unionSet = new Set(); 
- //  for (let elem of this) 
- //  { 
- //  unionSet.add(elem); 
- //  } 
- //  for(let elem of otherSet) {
- //  unionSet.add(elem); 
- //  return unionSet; 
- //  } 
- // }
-  
- //  let set1 = new Set([10, 20, 30, 40, 50]); 
- //  let set2 = new Set([40, 50, 60, 70, 80]); 
-  
- //  let unionSet = set1.union(set2); 
- //  console.log(unionSet.values()); 
- 
- 
-  function Friend(name1, name2) {
-    console.log(2,this)
+}
+
+loopBlock4: {
+  console.log("Hey There ! My name is Sam");
+  break loopBlock4;
+  console.log("I love singing");
+}
+
+const functionRadar = function () {
+  console.log(arguments.callee.name);
+  console.log(arguments.callee.caller.name);
+  console.log("This is a JavaScript Program!");
+};
+
+void (function main() {
+  functionRadar();
+})();
+
+// [1, 2, 3, 4, 5].map(function(n) {
+// //    console.log(arguments.callee)
+//     return !(n > 1) ? 1 : arguments.callee(n - 1) * n;
+// });
+
+function create() {
+  console.log(arguments.callee.name);
+  return function (n) {
+    //      console.log(arguments.callee.caller)
+    if (n <= 1) return 1;
+    return n * arguments.callee(n - 1);
+  };
+}
+
+// var result = create()(5);
+//
+//  Set.prototype.union = (otherSet) =>
+//  {
+//  let unionSet = new Set();
+//  for (let elem of this)
+//  {
+//  unionSet.add(elem);
+//  }
+//  for(let elem of otherSet) {
+//  unionSet.add(elem);
+//  return unionSet;
+//  }
+// }
+
+//  let set1 = new Set([10, 20, 30, 40, 50]);
+//  let set2 = new Set([40, 50, 60, 70, 80]);
+
+//  let unionSet = set1.union(set2);
+//  console.log(unionSet.values());
+
+function Friend(name1, name2) {
+  console.log(2, this);
   this.name1 = name1 || "unknown";
-  this.name2 = name2 || "unknown"; 
-  }
-  
-  Friend.prototype.fun = function () {
+  this.name2 = name2 || "unknown";
+}
+
+Friend.prototype.fun = function () {
   return this.name1 + " " + this.name2;
-  }
-  function Student(name1, name2, schoolName, grade)
-  {
-    console.log(1,this)
+};
+function Student(name1, name2, schoolName, grade) {
+  console.log(1, this);
   Friend.call(this, name1, name2);
-  
+
   this.SchoolName = schoolName || "unknown";
   this.Grade = grade || 0;
-  }
-  Student.prototype = new Friend();
-  Student.prototype.constructor = Student;
-  
-  var std = new Student("Lily","Collins", "XYZ", 15);
-  
-  console.log(std.fun()); 
-  console.log(std instanceof Student); 
-  console.log(std instanceof Friend); 
- 
- 
- class Test{
-   constructor(){
-     
-   }
-   
-   test(){
-     
-   }
- }
- 
- console.log(typeof Test)
- const t=new Test()
- 
- function TestFn(){
-   this.test=function(){}
- }
- 
- TestFn.prototype.test=function(){}
- 
- const t2=new TestFn()
- 
- console.log('Fn')
- console.log(Object.getOwnPropertyNames(Object.getPrototypeOf(TestFn.prototype)),
-             Object.getOwnPropertyNames(TestFn),
-             Object.getOwnPropertyNames(Object.getPrototypeOf(Object.getPrototypeOf(TestFn))),
-             Object.getOwnPropertyNames(Object.getPrototypeOf(t2))
-            )
- console.log('Class')
- console.log(Object.getOwnPropertyNames(Test.prototype),
-             Object.getOwnPropertyNames(Test),
-             Object.getOwnPropertyNames(Object.getPrototypeOf(Test)),
-             Object.getPrototypeOf(t)
-            )
- 
- 
- // console.log(Object.getOwnPropertyNames(Object.getPrototypeOf(Test)),Object.getOwnPropertyNames(Object.getPrototypeOf(t)))
- console.log(Object.getOwnPropertyNames(Object.getPrototypeOf(Object.getPrototypeOf(t2))),Object.getOwnPropertyNames(Test))
- 
- 
- 
- var x=4
- const thisObj={
-   x:3,
-   foo:function(){
-     let x=2;
-     setTimeout(()=>{
-       var x=1
-       console.log(this);
-       console.log(this.x);
-     })
-   }
- }
- 
- thisObj.foo.call(thisObj.foo)
- 
- 
- 
- 
- 
+}
+Student.prototype = new Friend();
+Student.prototype.constructor = Student;
+
+var std = new Student("Lily", "Collins", "XYZ", 15);
+
+console.log(std.fun());
+console.log(std instanceof Student);
+console.log(std instanceof Friend);
+
+class Test {
+  constructor() {}
+
+  test() {}
+}
+
+console.log(typeof Test);
+const t = new Test();
+
+function TestFn() {
+  this.test = function () {};
+}
+
+TestFn.prototype.test = function () {};
+
+const t2 = new TestFn();
+
+console.log("Fn");
+console.log(
+  Object.getOwnPropertyNames(Object.getPrototypeOf(TestFn.prototype)),
+  Object.getOwnPropertyNames(TestFn),
+  Object.getOwnPropertyNames(Object.getPrototypeOf(Object.getPrototypeOf(TestFn))),
+  Object.getOwnPropertyNames(Object.getPrototypeOf(t2))
+);
+console.log("Class");
+console.log(Object.getOwnPropertyNames(Test.prototype), Object.getOwnPropertyNames(Test), Object.getOwnPropertyNames(Object.getPrototypeOf(Test)), Object.getPrototypeOf(t));
+
+// console.log(Object.getOwnPropertyNames(Object.getPrototypeOf(Test)),Object.getOwnPropertyNames(Object.getPrototypeOf(t)))
+console.log(Object.getOwnPropertyNames(Object.getPrototypeOf(Object.getPrototypeOf(t2))), Object.getOwnPropertyNames(Test));
+
+var x = 4;
+const thisObj = {
+  x: 3,
+  foo: function () {
+    let x = 2;
+    setTimeout(() => {
+      var x = 1;
+      console.log(this);
+      console.log(this.x);
+    });
+  },
+};
+
+thisObj.foo.call(thisObj.foo);
+
+const users = [
+  { firstName: "Jane", lastName: "Doe" },
+  { firstName: "John", lastName: "Doe" },
+];
+
+console.log(users.map((user) => user.firstName)); // ["Jane", "John"]
+
+const prop = (key) => (obj) => obj[key];
+
+console.log(users.map(prop("firstName"))); // ["Jane", "John"]

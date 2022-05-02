@@ -230,6 +230,35 @@ function createPromise(ms, type) {
 //   .catch((err) => console.log("err", err));
 
 customPromiseAll([[1, 2, 3, Promise.reject("error")]]);
+// ***********************************//
+
+function promiseAllSettled(promises) {
+  const result = [];
+  let count = 0;
+  return new Promise((resolve, reject) => {
+    if (!promises.length) resolve(promises);
+    promises.forEach((pr, i) => {
+      Promise.resolve(pr)
+        .then((res) => {
+          result[i] = { status: "fulfilled", value: res };
+          count++;
+          if (promises.length === count) {
+            resolve(result);
+          }
+        })
+        .catch((err) => {
+          result[i] = { status: "rejected", reason: err };
+          count++;
+          if (promises.length === count) {
+            resolve(result);
+          }
+        });
+    });
+    // resolve(result);
+  });
+}
+
+// promiseAllSettled([createPromise(2000, "success"), createPromise(1000, "fail"), createPromise(500, "success")]);
 
 // ***********************************//
 
@@ -249,4 +278,4 @@ const clearAllIntervals = {
 clearAllIntervals.setInterval(() => console.log("hi"), 1000);
 clearAllIntervals.setInterval(() => console.log("bye"), 2000);
 // const bounded=clearAllIntervals.clearAllInterval.bind(clearAllIntervals)
-setTimeout(()=>clearAllIntervals.clearAllInterval(), 5000);
+setTimeout(() => clearAllIntervals.clearAllInterval(), 5000);
