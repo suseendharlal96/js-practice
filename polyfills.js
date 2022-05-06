@@ -279,3 +279,32 @@ clearAllIntervals.setInterval(() => console.log("hi"), 1000);
 clearAllIntervals.setInterval(() => console.log("bye"), 2000);
 // const bounded=clearAllIntervals.clearAllInterval.bind(clearAllIntervals)
 setTimeout(() => clearAllIntervals.clearAllInterval(), 5000);
+
+// ***********************************//
+
+const button = document.querySelector("#button");
+
+let lastClicked = 0;
+let maxDiff = 500;
+button.addEventListener("click", (e) => {
+  console.log({ time: e.timeStamp });
+  if (e.timeStamp - lastClicked > maxDiff) {
+    lastClicked = e.timeStamp;
+    return;
+  }
+  const custEvent = new CustomEvent("custom:doubleclick", {
+    bubbles: true,
+    cancelable: true,
+    composed: true,
+    detail: {
+      time:e.timeStamp - lastClicked 
+    }
+  });
+  e.target.dispatchEvent(custEvent)
+  lastClicked=0
+});
+
+
+button.addEventListener('custom:doubleclick',(e)=>{
+  console.log({dblCLick:e.detail})
+})
