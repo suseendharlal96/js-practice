@@ -297,14 +297,49 @@ button.addEventListener("click", (e) => {
     cancelable: true,
     composed: true,
     detail: {
-      time:e.timeStamp - lastClicked 
-    }
+      time: e.timeStamp - lastClicked,
+    },
   });
-  e.target.dispatchEvent(custEvent)
-  lastClicked=0
+  e.target.dispatchEvent(custEvent);
+  lastClicked = 0;
 });
 
+button.addEventListener("custom:doubleclick", (e) => {
+  console.log({ dblCLick: e.detail });
+});
 
-button.addEventListener('custom:doubleclick',(e)=>{
-  console.log({dblCLick:e.detail})
-})
+// ***********************************//
+
+class VDocument {
+  constructor() {
+    this.document = window.document;
+  }
+
+  // createElement(element) {
+  //   this.element = this.createElement(element);
+  //   return this.element;
+  // }
+
+  // innerHTML(content) {
+  //   this.innerHTML = content;
+  // }
+
+  // appendChild(target) {
+  //   this.appendChild(target);
+  // }
+
+  // render() {}
+}
+
+const doc = new VDocument();
+console.log({doc});
+
+// const body = doc.createElement("body");
+// const div = doc.createElement("div");
+
+// div.innerHTML = "I am div";
+
+// doc.appendChild(body);
+// body.appendChild(div);
+
+// doc.render();

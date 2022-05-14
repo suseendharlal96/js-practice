@@ -37,21 +37,31 @@ const loopObj = {
   length: 3,
 };
 
-numObj[Symbol.iterator] = function () {
+loopObj[Symbol.iterator] = function () {
   let that = this;
   return {
     start: 0,
     next() {
-        if (this.start < Object.values(that).length) {
+      if (this.start < Object.values(that).length) {
         //   console.log({done: false, value: Object.values(that)[this.start++] });
         return { done: false, value: Object.values(that)[this.start++] };
       } else {
-        return { done: true,value:'sd' };
+        return { done: true, value: "sd" };
       }
     },
   };
 };
 // console.log(Array.from(numObj));
-for (let a of numObj) {
+for (let a of loopObj) {
   console.log(a);
+}
+
+loopObj[Symbol.iterator] = function* () {
+  for (let i = 0; i < Object.keys(this).length; i++) {
+    yield `${Object.keys(this)[i]} : ${Object.values(this)[i]}`;
+  }
+};
+
+for (let val of loopObj) {
+  console.log(val);
 }

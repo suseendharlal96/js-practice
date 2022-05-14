@@ -412,7 +412,7 @@ function flatten(arr, depth = Infinity) {
   const res = [];
   while (stack.length) {
     const [last, depth] = stack.pop();
-    if (Object.prototype.toString.call(last)==='[object Array]' && depth) {
+    if (Object.prototype.toString.call(last) === "[object Array]" && depth) {
       stack.push(...last.map((el) => [el, depth - 1]));
     } else {
       res.push(last);
@@ -422,3 +422,68 @@ function flatten(arr, depth = Infinity) {
 }
 
 // ********************************** //
+
+class CustNode {
+  constructor(name) {
+    this.name = name;
+    this.innerHTML = "";
+    this.children = [];
+  }
+  appendChild(child) {
+    this.children.push(child);
+  }
+}
+
+class CustDocument extends CustNode {
+  constructor(rootNode) {
+    super(rootNode);
+  }
+
+  createElement(nodeName) {
+    return new CustNode(nodeName);
+  }
+
+  calcSpace(level) {
+    return new Array(level * 4).fill(" ").join("");
+  }
+
+  render() {
+    function printDOM(node, level) {
+      const space = this.calcSpace(level);
+      let res = "";
+      res += `${space}<${node?.name}>\n`;
+      if (node?.innerHTML) {
+        res += `${space}${this.calcSpace(1)}${node?.innerHTML}\n`;
+      }
+      if (node?.children.length > 0) {
+        for (let child of node?.children) {
+          res += printDOM.call(this, child, level + 1);
+        }
+      }
+      res += `${space}<${node?.name}/>\n`;
+      return res;
+    }
+
+    return printDOM.call(this, this, 0);
+  }
+}
+
+const doc = new CustDocument("html");
+const body = doc.createElement("body");
+const div = doc.createElement("div");
+const span = doc.createElement("span");
+
+div.innerHTML = "Im div";
+span.innerHTML = "Im span";
+div.appendChild(span);
+body.appendChild(div);
+doc.appendChild(body);
+console.log(doc.render());
+
+{
+  /* <html>
+  <body>
+    <div>Im div</div>
+  </body>
+</html> */
+}
