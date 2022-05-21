@@ -158,7 +158,7 @@ let sum = (a) => (b) => b ? sum(a + b) : a;
 
 let count = 0;
 const getData = (args) => {
-  console.log(this);
+  // console.log(this);
   console.log("getting..", ++count, args);
 };
 
@@ -166,45 +166,44 @@ const debounce = function (cb, delay) {
   console.log("debounce initialised");
   let timer;
   // console.log(this);
-  return function (args) {
+  return function ({ target: { value } }) {
     // console.log(this);
     // console.log(args);
     clearTimeout(timer);
     timer = setTimeout(function () {
       // console.log(this);
-      cb(args);
+      cb(value);
     }, delay);
   };
 };
 
-// let returnedDebounce = debounce(getData, 1000);
-// document.getElementById("search").addEventListener("keyup", (e) => {
-//   returnedDebounce(e.target.value);
-// });
+document.getElementById("search").addEventListener("keyup", debounce(getData, 3000));
 
 function throttle(cb, delay) {
   console.log("throttle initialiased");
   let trigger = true;
+  let lastArgs = null;
   console.log(this);
   let context = this;
   return function (...args) {
     console.log(this);
     if (!trigger) {
-      return;
+      lastArgs = args;
     } else {
       cb.apply(this, args);
       trigger = false;
     }
     setTimeout(() => {
       trigger = true;
+      if (lastArgs) cb.apply(this, lastArgs);
     }, delay);
   };
 }
 
-let returnedThrottle = throttle(getData, 1000);
-document.getElementById("search").addEventListener("keyup", (e) => {
-  returnedThrottle(e.target.value);
-});
+// let returnedThrottle = throttle(getData, 1000);
+// document.getElementById("search").addEventListener("keyup", (e) => {
+//   returnedThrottle(e.target.value);
+// });
 
 /**********/
 
@@ -284,10 +283,10 @@ const flattenObj = (obj) => {
         flattendObj[parentName + "_" + key] = obj[key];
       }
     });
-    
+
     return flattendObj;
-  }
-  innerFn(obj)
+  };
+  innerFn(obj);
 };
 
 const helperObjFn = flattenObj(user);
@@ -848,13 +847,12 @@ const returned2 = outerMost(outerVar);
 returned1();
 returned2();
 
-
-Math.printName=function(){
-  return 'name'
-}
+Math.printName = function () {
+  return "name";
+};
 
 console.log(Math.random());
 
-console.log(Math.printName())
+console.log(Math.printName());
 // console.log(typeof Crypto.prototype.getRandomValues());
-console.log(window.crypto.getRandomValues([1,9]))
+// console.log(window.crypto.getRandomValues([1, 9]));
