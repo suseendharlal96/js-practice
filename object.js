@@ -328,3 +328,55 @@ console.log(users.map((user) => user.firstName)); // ["Jane", "John"]
 const prop = (key) => (obj) => obj[key];
 
 console.log(users.map(prop("firstName"))); // ["Jane", "John"]
+
+class PubSub {
+  constructor() {
+    this.obj = {};
+    this.children = [];
+  }
+  subscribe(type, cb) {
+    const id = Math.random();
+    if (this.obj[type]) {
+      this.obj[type].push({ id, cb });
+    } else {
+      this.obj[type] = [{ id, cb }];
+    }
+
+    const inner = () => {
+      const filteredData = this.obj[type].filter((data) => data.id !== id);
+      this.obj[type] = filteredData;
+    };
+    return inner;
+  }
+
+  publish(type) {
+    Object.values(this.obj[type]).forEach((val) => {
+      val.cb();
+    });
+  }
+}
+
+let myPubSub = new PubSub();
+
+let callback1 = function () {
+  console.log("Callback 1 executed");
+};
+
+let callback2 = function () {
+  console.log("Callback 2 executed");
+};
+
+let callback3 = function () {
+  console.log("Callback 3 executed");
+};
+
+const sub1Off = myPubSub.subscribe("add", callback1);
+const sub2Off = myPubSub.subscribe("add", callback2);
+const sub3Off = myPubSub.subscribe("add", callback3);
+const sub4Off = myPubSub.subscribe("add", callback3);
+
+// myPubSub.publish('add'); // Prints 7, 11 and 16, 16
+// {'add':[ {1:cb1},{1:cb2},{1:cb3},{1:cb4}]}
+
+sub1Off();
+myPubSub.publish("add"); // Print 11 and 16,
